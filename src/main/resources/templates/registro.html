@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Crear cuenta')}"></head>
+<body class="pagina-acceso">
+<main class="acceso-contenedor">
+    <a class="acceso-marca" th:href="@{/login}"><i class="bi bi-mortarboard-fill"></i> Planificador Académico</a>
+    <section class="acceso-panel">
+        <span class="acceso-emblema"><i class="bi bi-mortarboard"></i></span>
+        <span class="sobretitulo">Empecemos</span>
+        <h1>Crea tu cuenta.</h1>
+        <p class="text-body-secondary">Tu próxima semana empieza aquí.</p>
+        <div class="aviso-error" role="alert" th:if="${error}" th:text="${error}"></div>
+        <form th:action="@{/registro}" th:object="${cuenta}" method="post">
+            <label class="etiqueta-campo" for="email">Correo electrónico</label>
+            <input class="form-control campo" type="email" th:field="*{email}" autocomplete="username" maxlength="254" placeholder="nombre.apellido@universidad.edu.pe" required>
+            <small class="text-danger" th:errors="*{email}"></small>
+            <label class="etiqueta-campo mt-3" for="password">Contraseña</label>
+            <div class="campo-password">
+                <input class="form-control campo" id="password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="64" required>
+                <button class="ver-password" type="button" title="Mostrar contraseña" aria-label="Mostrar contraseña" aria-pressed="false"><i class="bi bi-eye"></i></button>
+            </div>
+            <small class="text-body-secondary">Al menos 8 caracteres.</small>
+            <small class="text-danger d-block" th:errors="*{password}"></small>
+            <button class="btn-premium w-100 mt-4" type="submit"><i class="bi bi-person-plus"></i>Crear mi cuenta</button>
+        </form>
+        <p class="mt-4 mb-0 text-center"><a th:href="@{/login}">Volver al inicio de sesión</a></p>
+    </section>
+</main>
+<script th:src="@{/js/acceso.js}"></script>
+</body>
+</html>

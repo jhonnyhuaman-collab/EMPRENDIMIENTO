@@ -1,0 +1,26 @@
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Base de datos H2 local
+data/
+*.mv.db
+*.trace.db
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+nbproject/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Secretos y logs
+.env
+*.log

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Configuración')}"></head>
+<body>
+<th:block th:replace="~{fragments/layout :: menu('configuracion', '/configuracion')}"></th:block>
+
+<main class="contenido">
+<div class="contenedor">
+
+    <div class="aviso-plan" role="status" th:if="${configuracionGuardada}">
+        <i class="bi bi-check-circle-fill"></i>
+        <div><strong>Configuración guardada.</strong> Se recalcularon las fechas de tus evaluaciones y tu plan.</div>
+    </div>
+
+    <header class="encabezado-pagina">
+        <div>
+            <span class="sobretitulo">Tu ciclo</span>
+            <h1 class="titulo-pagina">Configuración</h1>
+            <p class="subtitulo-pagina">Estos datos definen tus semanas, las fechas de tus evaluaciones y tu plan de estudio.</p>
+        </div>
+    </header>
+
+    <form th:action="@{/configuracion}" th:object="${configuracion}" method="post" novalidate class="row g-4">
+        <section class="col-12 perfil-configuracion">
+            <h2 class="tarjeta-titulo mb-3"><i class="bi bi-person-circle"></i>Mi perfil</h2>
+            <label class="etiqueta-campo" for="nombre">Tu nombre</label>
+            <input class="form-control campo" type="text" th:field="*{nombre}" maxlength="100" autocomplete="name" th:errorclass="is-invalid">
+            <div class="invalid-feedback" th:errors="*{nombre}"></div>
+            <p class="small text-body-secondary mt-2 mb-0" th:text="${correoPerfil}"></p>
+        </section>
+        <section class="col-lg-7">
+            <div class="tarjeta h-100">
+                <div class="tarjeta-cabecera">
+                    <h2 class="tarjeta-titulo"><span class="icono-titulo"><i class="bi bi-calendar-event"></i></span>Inicio del ciclo</h2>
+                </div>
+                <div class="tarjeta-cuerpo">
+                    <label class="etiqueta-campo" for="fechaInicioCiclo">Lunes de la semana 1</label>
+                    <input class="form-control campo" type="date" th:field="*{fechaInicioCiclo}" th:errorclass="is-invalid"
+                           th:attr="data-hoy=${hoy}">
+                    <div class="invalid-feedback" th:errors="*{fechaInicioCiclo}"></div>
+                    <div class="vista-semana mt-3" id="vistaSemana">
+                        <i class="bi bi-info-circle"></i>
+                        <span>Con esta fecha, hoy estás en la <strong id="semanaCalculada" th:text="'semana ' + ${semanaActual}">semana 8</strong>
+                            (<span id="semanaAB" th:text="${semanaActual % 2 == 0} ? 'Semana B' : 'Semana A'">Semana B</span>).</span>
+                    </div>
+                    <p class="small text-body-secondary mt-3 mb-0">
+                        Si eliges otro día, se usa el lunes de esa semana. Al guardar, cada evaluación mantiene su semana y su día
+                        (por ejemplo, «semana 6, lunes») y se recalcula su fecha. Semana A = semanas impares, Semana B = pares.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="col-lg-5">
+            <div class="tarjeta h-100">
+                <div class="tarjeta-cabecera">
+                    <h2 class="tarjeta-titulo"><span class="icono-titulo"><i class="bi bi-moon-stars"></i></span>Tu ritmo de estudio</h2>
+                </div>
+                <div class="tarjeta-cuerpo">
+                    <label class="etiqueta-campo" for="horasEstudioPorDia">Horas de estudio por día (máximo)</label>
+                    <input class="form-control campo" type="number" step="0.5" min="0.5" max="12"
+                           th:field="*{horasEstudioPorDia}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:errors="*{horasEstudioPorDia}"></div>
+
+                    <label class="etiqueta-campo mt-3" for="cargaMaximaDiaria">Carga máxima por día (clases + estudio)</label>
+                    <input class="form-control campo" type="number" step="0.5" min="3" max="16"
+                           th:field="*{cargaMaximaDiaria}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:errors="*{cargaMaximaDiaria}"></div>
+                    <p class="small text-body-secondary mt-1 mb-0">Ej. 9 h: un día con 6 h de clase recibe como máximo 3 h de estudio.</p>
+
+                    <label class="etiqueta-campo mt-3" for="horasMaximasCursoSemana">Horas de estudio por curso a la semana (máximo)</label>
+                    <input class="form-control campo" type="number" step="0.5" min="1" max="20"
+                           th:field="*{horasMaximasCursoSemana}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:errors="*{horasMaximasCursoSemana}"></div>
+                    <p class="small text-body-secondary mt-1 mb-0">Recomendado 3–4 h: así ningún curso te llena la semana.</p>
+
+                    <label class="etiqueta-campo mt-3">Días de estudio</label>
+                    <div class="opciones-tipo">
+                        <span class="opcion-dia-estudio" th:each="d : ${diasSemana}">
+                            <input type="checkbox" class="btn-check" th:field="*{diasEstudio}" th:value="${d.valor}" th:id="'dia-' + ${d.valor}">
+                            <label class="opcion-tipo" th:for="'dia-' + ${d.valor}" th:text="${#strings.substring(d.etiqueta, 0, 3)}">Lun</label>
+                        </span>
+                    </div>
+                    <div class="text-danger small mt-1" th:if="${#fields.hasErrors('diasEstudio')}" th:errors="*{diasEstudio}"></div>
+                    <p class="small text-body-secondary mt-1 mb-0">Por defecto de lunes a viernes: el fin de semana queda libre.</p>
+
+                    <label class="etiqueta-campo mt-3" for="horaDormir">Hora de dormir</label>
+                    <input class="form-control campo" type="time" th:field="*{horaDormir}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:errors="*{horaDormir}"></div>
+                    <p class="small text-body-secondary mt-3 mb-0">El plan termina tus bloques de estudio 1 hora antes de dormir.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="col-12">
+            <div class="barra-acciones mt-0">
+                <button type="submit" class="btn-premium"><i class="bi bi-check2-circle"></i>Guardar y recalcular</button>
+            </div>
+        </div>
+    </form>
+
+    <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</div>
+</main>
+<script>
+    // Vista previa: qué semana es hoy con la fecha elegida
+    (function () {
+        const campo = document.getElementById('fechaInicioCiclo');
+        const hoy = new Date(campo.dataset.hoy + 'T00:00:00');
+        campo.addEventListener('input', function () {
+            if (!campo.value) return;
+            const inicio = new Date(campo.value + 'T00:00:00');
+            const diaSemana = (inicio.getDay() + 6) % 7;          // lunes = 0
+            inicio.setDate(inicio.getDate() - diaSemana);         // lunes de esa semana
+            const dias = Math.round((hoy - inicio) / 86400000);
+            const semana = dias < 0 ? 0 : Math.floor(dias / 7) + 1;
+            document.getElementById('semanaCalculada').textContent = semana === 0 ? 'semana 0 (aún no empieza)' : 'semana ' + semana;
+            document.getElementById('semanaAB').textContent = semana % 2 === 0 ? 'Semana B' : 'Semana A';
+        });
+    })();
+</script>
+</body>
+</html>

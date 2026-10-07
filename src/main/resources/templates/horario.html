@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mi horario')}"></head>
+<body>
+<th:block th:replace="~{fragments/layout :: menu('horario', '/horario')}"></th:block>
+
+<main class="contenido">
+<div class="contenedor">
+
+    <th:block th:replace="~{fragments/layout :: avisoPlan}"></th:block>
+    <div class="aviso-plan" role="status" th:if="${resultadoHorario != null}">
+        <i class="bi bi-calendar2-check"></i>
+        <div><strong th:text="${resultadoHorario.mensaje}">Horario importado.</strong>
+            Tu plan de estudio ya no pondrá bloques encima de tus clases.</div>
+    </div>
+    <div class="aviso-error" role="alert" th:if="${error}">
+        <i class="bi bi-exclamation-circle-fill"></i><div th:text="${error}">Error</div>
+    </div>
+
+    <header class="encabezado-pagina">
+        <div>
+            <span class="sobretitulo">Tu semana de clases</span>
+            <h1 class="titulo-pagina">Mi horario</h1>
+            <p class="subtitulo-pagina" th:if="${!cursos.isEmpty()}">
+                <span th:text="${cursos.size()} + (${cursos.size() == 1} ? ' curso' : ' cursos')">5 cursos</span> ·
+                <span th:text="${#numbers.formatDecimal(horasSemanales, 1, 1)} + ' h de clase por semana'">22 h</span>
+            </p>
+            <p class="subtitulo-pagina" th:if="${cursos.isEmpty()}">Sube una foto de tu horario o tu consolidado de matrícula y la IA lo arma por ti.</p>
+        </div>
+        <button type="button" class="btn-premium" data-bs-toggle="collapse" data-bs-target="#importarHorario"
+                aria-controls="importarHorario" th:aria-expanded="${cursos.isEmpty()}">
+            <i class="bi bi-camera"></i>Importar horario
+        </button>
+    </header>
+
+    <!-- Importar desde foto o PDF -->
+    <section class="collapse mb-4" id="importarHorario" th:classappend="${cursos.isEmpty() or error != null} ? 'show'">
+        <div class="aviso-dorado" th:unless="${iaConfigurada}">
+            <i class="bi bi-key-fill"></i>
+            <div><strong>Falta configurar la IA.</strong> Define <code>GEMINI_API_KEY</code>, <code>GROQ_API_KEY</code> o <code>ANTHROPIC_API_KEY</code>
+                y reinicia VS Code y la aplicación.</div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <form class="tarjeta p-4 h-100" th:action="@{/horario/analizar}" method="post" enctype="multipart/form-data"
+                      id="formSubida">
+                    <label class="zona-subida" for="archivo" id="zonaSubida">
+                        <input type="file" id="archivo" name="archivo" accept="image/jpeg,image/png,image/webp,application/pdf,.jpg,.jpeg,.png,.webp,.pdf" required>
+                        <span class="zona-icono zona-icono-horario"><i class="bi bi-calendar-week"></i></span>
+                        <strong id="nombreArchivo">Arrastra la foto de tu horario aquí</strong>
+                        <span class="text-body-secondary small">o haz clic para elegir · JPG, PNG, WEBP o PDF (máx. 15 MB)</span>
+                    </label>
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-4">
+                        <small class="text-body-secondary">
+                            <th:block th:if="${iaConfigurada}"><i class="bi bi-cpu me-1"></i>
+                                <span th:text="${proveedorIa} + ' · ' + ${modeloIa} + (${#strings.isEmpty(respaldosIa)} ? '' : ' · respaldo: ' + ${respaldosIa})">Gemini</span></th:block>
+                        </small>
+                        <button type="submit" class="btn-premium" th:disabled="${!iaConfigurada}">
+                            <i class="bi bi-stars"></i>Leer horario con IA</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-5">
+                <div class="tarjeta h-100">
+                    <div class="tarjeta-cabecera">
+                        <h2 class="tarjeta-titulo"><span class="icono-titulo"><i class="bi bi-lightbulb"></i></span>Qué puedes subir</h2>
+                    </div>
+                    <div class="tarjeta-cuerpo">
+                        <ul class="lista-consejos">
+                            <li><i class="bi bi-phone"></i><span><strong>Captura o foto</strong> de tu horario semanal (Canvas, intranet o impreso).</span></li>
+                            <li><i class="bi bi-file-earmark-pdf"></i><span><strong>Consolidado o constancia de matrícula</strong> en PDF.</span></li>
+                            <li><i class="bi bi-brightness-high"></i><span>Que se lea bien: buena luz, sin cortes ni reflejos.</span></li>
+                            <li><i class="bi bi-palette"></i><span>Cada curso recibe <strong>su propio color</strong>; si ya existía, conserva el suyo y sus evaluaciones.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Semana A / Semana B (solo si hay clases quincenales) -->
+    <div class="selector-semana mb-3" th:if="${hayQuincenales}" role="group" aria-label="Elegir semana">
+        <button type="button" class="opcion-semana" data-semana="A" th:classappend="${semanaActual == 'A'} ? 'activa'">
+            Semana A <small>impares</small></button>
+        <button type="button" class="opcion-semana" data-semana="B" th:classappend="${semanaActual == 'B'} ? 'activa'">
+            Semana B <small>pares</small></button>
+        <span class="small text-body-secondary ms-2" th:text="'Esta semana es ' + ${semanaActual}">Esta semana es A</span>
+    </div>
+
+    <!-- Leyenda de colores -->
+    <div class="leyenda mb-3" th:if="${!cursos.isEmpty()}">
+        <span th:each="c : ${cursos}" class="chip-curso" th:style="|--color-curso: ${c.color}|"
+              th:text="${c.nombre}">Control Inteligente</span>
+    </div>
+
+    <!-- Horario semanal -->
+    <div class="tarjeta" th:if="${!cursos.isEmpty()}">
+        <div class="tarjeta-cuerpo pt-4">
+            <div id="horarioSemanal" th:data-url-eventos="@{/api/horario}"
+                 th:data-semana="${hayQuincenales} ? ${semanaActual} : ''"></div>
+        </div>
+    </div>
+
+    <div class="tarjeta vacio py-5" th:if="${cursos.isEmpty()}">
+        <i class="bi bi-calendar-week"></i>
+        <p class="fw-semibold mb-1">Aún no tienes horario</p>
+        <p class="small mb-0">Importa una foto de tu horario: verás tus clases ordenadas por colores aquí.</p>
+    </div>
+
+    <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</div>
+</main>
+
+<div class="cargando" id="cargando" aria-live="polite" hidden>
+    <div class="cargando-tarjeta">
+        <div class="cargando-anillo"></div>
+        <strong>Leyendo tu horario…</strong>
+        <span>La IA está identificando tus cursos, días y horas. Suele tardar entre 10 y 40 segundos.</span>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.15/locales/es.global.min.js"></script>
+<script th:src="@{/js/horario.js}"></script>
+<script th:src="@{/js/silabo.js}"></script>
+</body>
+</html>

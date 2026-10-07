@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Hoy')}"></head>
+<body>
+<th:block th:replace="~{fragments/layout :: menu('hoy', '/')}"></th:block>
+
+<main class="contenido">
+<div class="contenedor">
+
+    <th:block th:replace="~{fragments/layout :: avisoPlan}"></th:block>
+
+    <!-- Bienvenida -->
+    <section class="hero">
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-4 position-relative">
+            <div>
+                <span class="sobretitulo mayuscula-inicial"
+                      th:text="${#temporals.format(panel.hoy, 'EEEE d ''de'' MMMM')}">domingo 4 de octubre</span>
+                <h1 class="hero-titulo"><span th:text="${panel.saludo}">Buenas tardes</span>,
+                    <span th:text="${panel.nombreEstudiante}">Estudiante</span></h1>
+                <p class="hero-texto" th:if="${!panel.bloquesHoy.isEmpty()}">
+                    Hoy tienes <strong class="text-white" th:text="${panel.bloquesHoy.size()} + ' bloques de estudio'">3 bloques</strong>
+                    (<span th:text="${#numbers.formatDecimal(panel.horasPlanificadasHoy, 1, 1)} + ' h'">4.5 h</span>).
+                    Vas por buen camino: un paso a la vez.</p>
+                <p class="hero-texto" th:if="${panel.bloquesHoy.isEmpty()}">
+                    Hoy no tienes bloques de estudio. Aprovecha para descansar o adelantar algo.</p>
+            </div>
+            <div class="hero-ciclo" th:if="${panel.semanaCiclo > 0}">
+                <small>Avance del ciclo</small>
+                <div class="d-flex align-items-baseline gap-2 mb-2">
+                    <strong th:text="'Semana ' + ${panel.semanaCiclo}">Semana 7</strong>
+                    <small th:text="'de ' + ${panel.totalSemanas}">de 16</small>
+                </div>
+                <div class="barra-progreso"><span th:style="|width: ${panel.porcentajeCiclo}%|"></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Indicadores -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="indicador">
+                <div class="indicador-etiqueta"><i class="bi bi-hourglass-split"></i>Estudio de hoy</div>
+                <div class="indicador-valor">
+                    <span th:text="${#numbers.formatDecimal(panel.horasCompletadasHoy, 1, 1)}">0.0</span>
+                    <small th:text="'/ ' + ${#numbers.formatDecimal(panel.horasPlanificadasHoy, 1, 1)} + ' h'">/ 4.5 h</small>
+                </div>
+                <div class="barra-progreso clara mt-2"><span th:style="|width: ${panel.porcentajeHoy}%|"></span></div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="indicador">
+                <div class="indicador-etiqueta"><i class="bi bi-flag"></i>Entregas en 7 días</div>
+                <div class="indicador-valor" th:text="${panel.entregasSemana.size()}">2</div>
+                <div class="indicador-nota">evaluaciones por rendir</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="indicador">
+                <div class="indicador-etiqueta"><i class="bi bi-trophy"></i>Nota en juego</div>
+                <div class="indicador-valor" th:text="${#numbers.formatDecimal(panel.pesoEnJuegoSemana, 1, 1)} + '%'">27.8%</div>
+                <div class="indicador-nota">de tus notas finales esta semana</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="indicador">
+                <div class="indicador-etiqueta"><i class="bi bi-alarm"></i>Próxima entrega</div>
+                <th:block th:if="${panel.proximaEvaluacion != null}">
+                    <div class="indicador-valor mayuscula-inicial" th:text="${panel.proximaEvaluacion.textoDias}">en 3 días</div>
+                    <div class="indicador-nota text-truncate"
+                         th:text="${panel.proximaEvaluacion.evaluacion.curso.nombre} + ' · ' + ${panel.proximaEvaluacion.evaluacion.nombre} + ' · ' + ${#temporals.format(panel.proximaEvaluacion.evaluacion.fecha, 'EEE d MMM')}">MA3001 · Examen parcial</div>
+                </th:block>
+                <th:block th:if="${panel.proximaEvaluacion == null}">
+                    <div class="indicador-valor">—</div>
+                    <div class="indicador-nota">Semana libre</div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerta de semana crítica -->
+    <section class="aviso-critico" role="alert" th:if="${panel.semanaCritica}">
+        <div class="aviso-icono"><i class="bi bi-lightning-charge-fill"></i></div>
+        <div>
+            <h2>Se viene una semana crítica</h2>
+            <p>Tienes <strong th:text="${panel.evaluacionesCriticas.size()}">3</strong> evaluaciones en los próximos 14 días.
+                Tu plan ya reparte el estudio para que llegues con tiempo.</p>
+            <div class="chips-criticos">
+                <a class="chip-critico" th:each="c : ${panel.evaluacionesCriticas}"
+                   th:href="@{/evaluaciones/{id}(id=${c.evaluacion.id})}">
+                    <span th:text="${c.evaluacion.curso.nombre} + ' · ' + ${c.evaluacion.nombre}">MA3001 · Examen parcial</span>
+                    <span class="opacity-75" th:text="${#temporals.format(c.evaluacion.fecha, 'd MMM')}">7 oct</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="aviso-dorado" th:if="${!panel.cursosSinSilabo.isEmpty()}">
+        <i class="bi bi-file-earmark-arrow-up"></i>
+        <div>
+            <strong th:text="${panel.cursosSinSilabo.size()} + (${panel.cursosSinSilabo.size() == 1} ? ' curso aún no tiene sílabo' : ' cursos aún no tienen sílabo')">4 cursos aún no tienen sílabo</strong>
+            (<span th:text="${#strings.listJoin(panel.cursosSinSilabo, ', ')}">GI4101, EL5102</span>):
+            sin sus evaluaciones no podemos planificar su estudio.
+            <a th:href="@{/silabos/subir}">Subir sílabo</a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Plan de hoy -->
+        <section class="col-lg-7">
+            <div class="tarjeta h-100">
+                <div class="tarjeta-cabecera">
+                    <h2 class="tarjeta-titulo"><span class="icono-titulo"><i class="bi bi-clock"></i></span>Tu plan de hoy</h2>
+                    <a class="btn-suave py-2" th:href="@{/calendario}"><i class="bi bi-calendar3"></i><span class="d-none d-sm-inline">Calendario</span></a>
+                </div>
+
+                <ul class="lista-bloques" th:if="${!panel.bloquesHoy.isEmpty()}">
+                    <li class="bloque" th:each="b : ${panel.bloquesHoy}"
+                        th:with="faltan=${T(java.time.temporal.ChronoUnit).DAYS.between(panel.hoy, b.evaluacion.fecha)}"
+                        th:classappend="${b.completado} ? 'hecho' : (${faltan <= 3} ? 'urgente' : '')"
+                        th:style="|--color-curso: ${b.evaluacion.curso.color}|">
+                        <div class="bloque-hora">
+                            <strong th:text="${#temporals.format(b.horaInicio, 'HH:mm')}">08:00</strong>
+                            <span th:text="${#temporals.format(b.horaFin, 'HH:mm')}">09:30</span>
+                        </div>
+                        <div class="bloque-linea"></div>
+                        <div class="bloque-cuerpo">
+                            <div class="bloque-titulo" th:text="${b.descripcion}">6.2 Sistemas difusos</div>
+                            <div class="bloque-meta">
+                                <span class="chip-curso" th:text="${b.evaluacion.curso.nombre}">Robótica Industrial</span>
+                                <a th:href="@{/evaluaciones/{id}(id=${b.evaluacion.id})}" th:text="'Para ' + ${b.evaluacion.nombre}">Para EC2</a>
+                                <span class="etiqueta-urgente" th:if="${!b.completado and faltan <= 3}"
+                                      th:text="${faltan == 0} ? '¡Es hoy!' : (${faltan == 1} ? '¡Es mañana!' : '¡En ' + ${faltan} + ' días!')">¡En 2 días!</span>
+                                <span th:text="'· ' + ${#numbers.formatDecimal(b.duracionHoras, 1, 1)} + ' h'">· 1.5 h</span>
+                            </div>
+                        </div>
+                        <div th:replace="~{fragments/layout :: checkBloque(${b}, '/')}"></div>
+                    </li>
+                </ul>
+
+                <div class="vacio" th:if="${panel.bloquesHoy.isEmpty()}">
+                    <i class="bi bi-cup-hot"></i>
+                    <p class="fw-semibold mb-1">Nada pendiente para hoy</p>
+                    <p class="small mb-3" th:if="${panel.proximoBloque != null}">
+                        Tu próximo bloque es el
+                        <strong class="mayuscula-inicial" th:text="${#temporals.format(panel.proximoBloque.fecha, 'EEEE d ''de'' MMMM')} + ' a las ' + ${#temporals.format(panel.proximoBloque.horaInicio, 'HH:mm')}">jueves 8 de octubre a las 08:00</strong>:
+                        <span th:text="${panel.proximoBloque.evaluacion.curso.nombre} + ' · ' + ${panel.proximoBloque.descripcion}">MT5306 · Repasar</span>.
+                    </p>
+                    <th:block th:if="${!panel.tieneCursos}">
+                        <p class="small mb-3">Aún no tienes cursos. Sube tu primer sílabo y armamos tu plan.</p>
+                        <a class="btn-premium" th:href="@{/silabos/subir}"><i class="bi bi-cloud-arrow-up"></i>Subir mi primer sílabo</a>
+                    </th:block>
+                    <p class="small mb-3" th:if="${panel.tieneCursos and !panel.tienePlan}">Genera tu plan para repartir el estudio de toda la semana.</p>
+                    <form th:action="@{/plan/generar}" method="post" th:if="${panel.tieneCursos and !panel.tienePlan}">
+                        <input type="hidden" name="volverA" value="/">
+                        <button class="btn-premium" type="submit"><i class="bi bi-stars"></i>Generar mi plan</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Entregas de la semana -->
+        <section class="col-lg-5">
+            <div class="tarjeta h-100">
+                <div class="tarjeta-cabecera">
+                    <h2 class="tarjeta-titulo"><span class="icono-titulo"><i class="bi bi-flag"></i></span>Entregas de la semana</h2>
+                    <a class="btn-suave py-2" th:href="@{/agenda} + '#nuevo'"><i class="bi bi-plus-lg"></i><span class="d-none d-sm-inline">Agregar</span></a>
+                </div>
+
+                <ul class="lista-entregas" th:if="${!panel.entregasSemana.isEmpty()}">
+                    <li th:each="ent : ${panel.entregasSemana}" th:with="e=${ent.evaluacion}">
+                        <a class="entrega" th:classappend="${ent.urgente} ? 'urgente'" th:href="@{/evaluaciones/{id}(id=${e.id})}"
+                           th:style="|--color-curso: ${e.curso.color}|">
+                            <div class="entrega-fecha">
+                                <span th:text="${#strings.replace(#temporals.format(e.fecha, 'EEE'), '.', '')}">mié</span>
+                                <strong th:text="${#temporals.format(e.fecha, 'd')}">7</strong>
+                            </div>
+                            <div class="entrega-cuerpo">
+                                <div class="entrega-titulo" th:text="${e.nombre}">Examen parcial</div>
+                                <div class="entrega-meta">
+                                    <span class="chip-curso" th:text="${e.curso.nombre}">Robótica Industrial</span>
+                                    <span th:text="${ent.textoDias}">en 3 días</span>
+                                </div>
+                            </div>
+                            <div class="entrega-lado">
+                                <span th:replace="~{fragments/layout :: insigniaPeso(${e.pesoEnNotaFinal})}"></span>
+                                <span class="prioridad" th:classappend="${ent.prioridad.claseCss}" th:text="${ent.prioridad.etiqueta}">Prioridad alta</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="vacio" th:if="${panel.entregasSemana.isEmpty()}">
+                    <i class="bi bi-emoji-smile"></i>
+                    <p class="fw-semibold mb-0">Sin entregas en los próximos 7 días</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carga de los próximos 7 días -->
+        <section class="col-12">
+            <div class="tarjeta">
+                <div class="tarjeta-cabecera">
+                    <h2 class="tarjeta-titulo"><span class="icono-titulo"><i class="bi bi-bar-chart"></i></span>Tu semana de estudio</h2>
+                    <small class="text-body-secondary">Horas planificadas por día</small>
+                </div>
+                <div class="tarjeta-cuerpo">
+                    <div class="carga">
+                        <div class="carga-dia" th:each="d : ${panel.cargaProximosDias}" th:classappend="${d.hoy} ? 'hoy'"
+                             th:title="${#numbers.formatDecimal(d.horas, 1, 1)} + ' h planificadas'">
+                            <div class="carga-barra"><span th:style="|height: ${d.porcentaje}%|"></span></div>
+                            <div class="carga-horas" th:text="${#numbers.formatDecimal(d.horas, 1, 1)} + ' h'">2.5 h</div>
+                            <div class="carga-nombre" th:text="${d.hoy} ? 'Hoy' : ${#strings.replace(#temporals.format(d.fecha, 'EEE'), '.', '')}">lun</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</div>
+</main>
+</body>
+</html>

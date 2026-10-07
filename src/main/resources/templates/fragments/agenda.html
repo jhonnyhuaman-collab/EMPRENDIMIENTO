@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Un pendiente de la lista -->
+    <div th:fragment="itemAgenda(ent)" th:remove="tag">
+        <div class="item-agenda" th:with="e=${ent.evaluacion}" th:classappend="${e.completada} ? 'hecho' : (${ent.urgente} ? 'urgente' : '')"
+             th:style="|--color-curso: ${e.curso.color}|">
+            <form th:action="@{/agenda/{id}/completar(id=${e.id})}" method="post" class="m-0">
+                <button type="submit" class="boton-check" th:classappend="${e.completada} ? 'marcado'"
+                        th:title="${e.completada} ? 'Marcar como pendiente' : 'Marcar como entregado'"
+                        th:aria-label="${e.completada} ? 'Marcar como pendiente' : 'Marcar como entregado'">
+                    <i class="bi bi-check-lg"></i></button>
+            </form>
+            <div class="item-agenda-cuerpo">
+                <a class="item-agenda-titulo" th:href="@{/evaluaciones/{id}(id=${e.id})}" th:text="${e.nombre}">Informe lab 3</a>
+                <div class="item-agenda-meta">
+                    <span class="chip-curso" th:text="${e.curso.nombre}">Robótica Industrial</span>
+                    <span><i class="bi" th:classappend="${e.tipo.icono}"></i> <span th:text="${e.tipo.etiqueta}">Tarea</span></span>
+                    <span th:if="${e.horaEntrega != null}"><i class="bi bi-alarm"></i>
+                        <span th:text="${#temporals.format(e.horaEntrega, 'HH:mm')}">23:59</span></span>
+                    <span th:if="${ent.diasRestantes < 0}" class="texto-vencido" th:text="'Venció hace ' + ${-ent.diasRestantes} + (${ent.diasRestantes == -1} ? ' día' : ' días')">Venció</span>
+                    <span class="etiqueta-origen" th:if="${e.esDeAgenda()}">Agenda</span>
+                    <span class="etiqueta-urgente" th:if="${ent.urgente}"
+                          th:text="${ent.diasRestantes == 0} ? '¡Es hoy!' : (${ent.diasRestantes == 1} ? '¡Es mañana!' : '¡En ' + ${ent.diasRestantes} + ' días!')">¡En 2 días!</span>
+                </div>
+                <div class="item-agenda-notas" th:if="${e.notas != null}" th:text="${e.notas}">En grupo</div>
+            </div>
+            <div class="item-agenda-lado">
+                <th:block th:if="${e.pesoEnNotaFinal != null and e.pesoEnNotaFinal > 0}">
+                    <span th:replace="~{fragments/layout :: insigniaPeso(${e.pesoEnNotaFinal})}"></span>
+                </th:block>
+                <div class="d-flex gap-1">
+                    <a class="boton-quitar" th:href="@{/agenda/{id}/editar(id=${e.id})} + '#nuevo'" title="Editar" aria-label="Editar">
+                        <i class="bi bi-pencil"></i></a>
+                    <form th:action="@{/agenda/{id}/eliminar(id=${e.id})}" method="post" class="m-0"
+                          th:attr="data-confirmar='¿Eliminar «' + ${e.nombre} + '»?' + (${e.esDeAgenda()} ? '' : ' Es del sílabo: volverá si subes el sílabo otra vez.')">
+                        <button type="submit" class="boton-quitar" title="Eliminar" aria-label="Eliminar"><i class="bi bi-trash3"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

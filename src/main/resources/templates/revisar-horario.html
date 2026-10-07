@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Revisar horario')}"></head>
+<body>
+<th:block th:replace="~{fragments/layout :: menu('horario', '/horario')}"></th:block>
+
+<main class="contenido">
+<div class="contenedor">
+
+    <nav class="migas" aria-label="Ruta">
+        <a th:href="@{/horario}">Mi horario</a><i class="bi bi-chevron-right"></i>
+        <span class="text-body">Revisión</span>
+    </nav>
+
+    <header class="encabezado-pagina">
+        <div>
+            <span class="sobretitulo" th:text="${horario.nombreArchivo != null and !#strings.isEmpty(horario.nombreArchivo)} ? 'Leído de ' + ${horario.nombreArchivo} : 'Horario'">Leído de horario.png</span>
+            <h1 class="titulo-pagina">Revisa tu horario</h1>
+            <p class="subtitulo-pagina">Corrige lo que haga falta y elige el color de cada curso. Todo es editable.</p>
+        </div>
+    </header>
+
+    <div class="aviso-error" role="alert" th:if="${error}">
+        <i class="bi bi-exclamation-circle-fill"></i><div th:text="${error}">Error</div>
+    </div>
+    <div class="aviso-error" role="alert" th:if="${#fields.hasErrors('${horario.*}')}">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        <div>Hay campos por corregir (marcados en rojo).
+            <ul class="mb-0 mt-1" th:if="${#fields.hasErrors('${horario.cursos}')}">
+                <li th:each="e : ${#fields.errors('${horario.cursos}')}" th:text="${e}">Agrega al menos un curso</li>
+            </ul>
+        </div>
+    </div>
+    <div class="aviso-dorado" th:if="${horario.observaciones != null and !#strings.isEmpty(horario.observaciones)}">
+        <i class="bi bi-lightbulb-fill"></i>
+        <div><strong>Notas de la IA:</strong> <span th:text="${horario.observaciones}">Una celda era ilegible.</span></div>
+    </div>
+
+    <form th:action="@{/horario/guardar}" th:object="${horario}" method="post" novalidate>
+        <input type="hidden" th:field="*{nombreArchivo}">
+        <input type="hidden" th:field="*{observaciones}">
+
+        <!-- Cursos -->
+        <section class="tarjeta mb-4">
+            <div class="tarjeta-cabecera">
+                <h2 class="tarjeta-titulo"><span class="icono-titulo"><i class="bi bi-palette"></i></span>Cursos y colores</h2>
+            </div>
+            <div class="table-responsive px-3">
+                <table class="table tabla-edicion align-middle">
+                    <thead>
+                    <tr>
+                        <th style="width: 70px">Color</th>
+                        <th style="width: 130px">Código</th>
+                        <th style="min-width: 220px">Nombre</th>
+                        <th style="width: 90px">Créditos</th>
+                        <th style="width: 110px">Estado</th>
+                        <th style="width: 44px"></th>
+                    </tr>
+                    </thead>
+                    <tbody id="filasCursos">
+                    <tr th:each="c, i : *{cursos}">
+                        <td><input class="form-control form-control-color campo w-100" type="color" th:field="*{cursos[__${i.index}__].color}"></td>
+                        <td><input class="form-control campo" th:field="*{cursos[__${i.index}__].codigo}" th:errorclass="is-invalid" data-codigo-curso></td>
+                        <td><input class="form-control campo" th:field="*{cursos[__${i.index}__].nombre}" th:errorclass="is-invalid"></td>
+                        <td><input class="form-control campo" type="number" min="0" max="10" th:field="*{cursos[__${i.index}__].creditos}" th:errorclass="is-invalid"></td>
+                        <td>
+                            <input type="hidden" th:field="*{cursos[__${i.index}__].existente}">
+                            <span class="etiqueta-estado" th:classappend="${c.existente} ? 'existente' : 'nuevo'"
+                                  th:text="${c.existente} ? 'Ya existe' : 'Nuevo'">Nuevo</span>
+                        </td>
+                        <td><button type="button" class="boton-quitar" data-quitar title="Quitar curso" aria-label="Quitar curso"><i class="bi bi-x-lg"></i></button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tarjeta-cuerpo pt-0">
+                <button type="button" class="btn-suave" data-agregar="filasCursos" data-plantilla="plantillaCurso">
+                    <i class="bi bi-plus-lg"></i>Agregar curso</button>
+                <span class="small text-body-secondary ms-2">Si el curso ya existe, se reemplaza su horario y se conservan sus evaluaciones.</span>
+            </div>
+        </section>
+
+        <!-- Clases de la semana -->
+        <section class="tarjeta">
+            <div class="tarjeta-cabecera">
+                <h2 class="tarjeta-titulo"><span class="icono-titulo"><i class="bi bi-calendar-week"></i></span>Clases de la semana</h2>
+            </div>
+            <div class="table-responsive px-3">
+                <table class="table tabla-edicion align-middle">
+                    <thead>
+                    <tr>
+                        <th style="width: 140px">Curso (código)</th>
+                        <th style="min-width: 130px">Día</th>
+                        <th style="width: 120px">Inicio</th>
+                        <th style="width: 120px">Fin</th>
+                        <th style="min-width: 150px">Frecuencia</th>
+                        <th style="min-width: 180px">Detalle (tipo · aula)</th>
+                        <th style="width: 44px"></th>
+                    </tr>
+                    </thead>
+                    <tbody id="filasSesiones">
+                    <tr th:each="s, i : *{sesiones}">
+                        <td><input class="form-control campo" list="codigosCursos" th:field="*{sesiones[__${i.index}__].codigoCurso}" th:errorclass="is-invalid"></td>
+                        <td>
+                            <select class="form-select campo" th:field="*{sesiones[__${i.index}__].dia}">
+                                <option th:each="d : ${dias}" th:value="${d.valor}" th:text="${d.etiqueta}">Lunes</option>
+                            </select>
+                        </td>
+                        <td><input class="form-control campo" type="time" th:field="*{sesiones[__${i.index}__].horaInicio}" th:errorclass="is-invalid"></td>
+                        <td><input class="form-control campo" type="time" th:field="*{sesiones[__${i.index}__].horaFin}" th:errorclass="is-invalid"></td>
+                        <td>
+                            <select class="form-select campo" th:field="*{sesiones[__${i.index}__].frecuencia}">
+                                <option th:each="f : ${frecuencias}" th:value="${f}" th:text="${f.etiqueta}">Todas las semanas</option>
+                            </select>
+                        </td>
+                        <td><input class="form-control campo" placeholder="Ej. Teoría · A-505" th:field="*{sesiones[__${i.index}__].detalle}"></td>
+                        <td><button type="button" class="boton-quitar" data-quitar title="Quitar clase" aria-label="Quitar clase"><i class="bi bi-x-lg"></i></button></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <datalist id="codigosCursos">
+                    <option th:each="c : *{cursos}" th:value="${c.codigo}" th:text="${c.nombre}">MT5307</option>
+                </datalist>
+            </div>
+            <div class="tarjeta-cuerpo pt-0">
+                <button type="button" class="btn-suave" data-agregar="filasSesiones" data-plantilla="plantillaSesion">
+                    <i class="bi bi-plus-lg"></i>Agregar clase</button>
+            </div>
+        </section>
+
+        <div class="barra-acciones">
+            <a class="btn-suave" th:href="@{/horario}"><i class="bi bi-arrow-left"></i>Cancelar</a>
+            <button type="submit" class="btn-premium"><i class="bi bi-check2-circle"></i>Guardar horario</button>
+        </div>
+    </form>
+
+    <!-- Plantillas para agregar filas -->
+    <template id="plantillaCurso">
+        <tr>
+            <td><input class="form-control form-control-color campo w-100" type="color" name="cursos[__i__].color" value="#7B5EA7"></td>
+            <td><input class="form-control campo" name="cursos[__i__].codigo" placeholder="Ej. MA2001" data-codigo-curso></td>
+            <td><input class="form-control campo" name="cursos[__i__].nombre" placeholder="Nombre del curso"></td>
+            <td><input class="form-control campo" type="number" min="0" max="10" name="cursos[__i__].creditos" value="0"></td>
+            <td><input type="hidden" name="cursos[__i__].existente" value="false"><span class="etiqueta-estado nuevo">Nuevo</span></td>
+            <td><button type="button" class="boton-quitar" data-quitar title="Quitar curso" aria-label="Quitar curso"><i class="bi bi-x-lg"></i></button></td>
+        </tr>
+    </template>
+    <template id="plantillaSesion">
+        <tr>
+            <td><input class="form-control campo" list="codigosCursos" name="sesiones[__i__].codigoCurso" placeholder="Código"></td>
+            <td><select class="form-select campo" name="sesiones[__i__].dia">
+                <option th:each="d : ${dias}" th:value="${d.valor}" th:text="${d.etiqueta}">Lunes</option></select></td>
+            <td><input class="form-control campo" type="time" name="sesiones[__i__].horaInicio" value="08:00"></td>
+            <td><input class="form-control campo" type="time" name="sesiones[__i__].horaFin" value="10:00"></td>
+            <td><select class="form-select campo" name="sesiones[__i__].frecuencia">
+                <option th:each="f : ${frecuencias}" th:value="${f}" th:text="${f.etiqueta}">Todas las semanas</option></select></td>
+            <td><input class="form-control campo" name="sesiones[__i__].detalle" placeholder="Ej. Teoría · A-505"></td>
+            <td><button type="button" class="boton-quitar" data-quitar title="Quitar clase" aria-label="Quitar clase"><i class="bi bi-x-lg"></i></button></td>
+        </tr>
+    </template>
+
+    <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</div>
+</main>
+<script th:src="@{/js/silabo.js}"></script>
+<script>
+    // Mantiene la lista de códigos de las clases al día con la tabla de cursos
+    document.addEventListener('input', function (e) {
+        if (!e.target.matches('[data-codigo-curso]')) return;
+        const lista = document.getElementById('codigosCursos');
+        lista.innerHTML = '';
+        document.querySelectorAll('[data-codigo-curso]').forEach(function (campo) {
+            if (campo.value.trim()) {
+                const opcion = document.createElement('option');
+                opcion.value = campo.value.trim().toUpperCase();
+                lista.appendChild(opcion);
+            }
+        });
+    });
+</script>
+</body>
+</html>

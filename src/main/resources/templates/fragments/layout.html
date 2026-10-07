@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Cabecera común: <head th:replace="~{fragments/layout :: head('Título')}"> -->
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#235B4E">
+    <title th:text="${titulo} + ' · Planificador Académico'">Planificador Académico</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+
+<body>
+
+<!-- Menú: lateral en computadora, barra superior + inferior en celular.
+     Uso: <th:block th:replace="~{fragments/layout :: menu('hoy', '/')}"> -->
+<th:block th:fragment="menu(activo, ruta)">
+    <aside class="barra-lateral">
+        <a class="marca" th:href="@{/}">
+            <span class="marca-icono"><i class="bi bi-mortarboard-fill"></i></span>
+            <span class="marca-texto"><strong>Planificador</strong><small>Académico</small></span>
+        </a>
+
+        <nav>
+            <span class="menu-seccion">Mi semana</span>
+            <a class="menu-item" th:classappend="${activo == 'hoy'} ? 'activo'" th:href="@{/}">
+                <i class="bi bi-sun"></i>Hoy</a>
+            <a class="menu-item" th:classappend="${activo == 'calendario'} ? 'activo'" th:href="@{/calendario}">
+                <i class="bi bi-calendar3"></i>Calendario</a>
+            <a class="menu-item" th:classappend="${activo == 'agenda'} ? 'activo'" th:href="@{/agenda}">
+                <i class="bi bi-list-task"></i>Agenda</a>
+            <a class="menu-item" th:classappend="${activo == 'horario'} ? 'activo'" th:href="@{/horario}">
+                <i class="bi bi-calendar-week"></i>Mi horario</a>
+
+            <span class="menu-seccion">Académico</span>
+            <a class="menu-item" th:classappend="${activo == 'cursos'} ? 'activo'" th:href="@{/cursos}">
+                <i class="bi bi-journal-bookmark"></i>Mis cursos</a>
+            <a class="menu-item" th:classappend="${activo == 'silabo'} ? 'activo'" th:href="@{/silabos/subir}">
+                <i class="bi bi-cloud-arrow-up"></i>Subir sílabo<span class="etiqueta-pronto">IA</span></a>
+            <a class="menu-item" th:classappend="${activo == 'configuracion'} ? 'activo'" th:href="@{/configuracion}">
+                <i class="bi bi-gear"></i>Configuración</a>
+        </nav>
+
+        <div class="lateral-pie">
+            <div class="perfil-lateral">
+                <span class="perfil-avatar"><i class="bi bi-person-fill"></i></span>
+                <div class="perfil-datos"><strong th:text="${nombrePerfil}">Estudiante</strong><small th:text="${correoPerfil}" th:title="${correoPerfil}">correo</small></div>
+                <form th:action="@{/logout}" method="post">
+                    <button class="perfil-salir" type="submit" title="Cerrar sesión" aria-label="Cerrar sesión"><i class="bi bi-box-arrow-right"></i></button>
+                </form>
+            </div>
+            <div class="tarjeta-plan-lateral">
+                <div class="fw-semibold text-white mb-1"><i class="bi bi-stars me-1"></i>Plan inteligente</div>
+                <p class="mb-3">Reparte tus horas según fechas, pesos y dificultad.</p>
+                <form th:action="@{/plan/generar}" method="post" class="m-0">
+                    <input type="hidden" name="volverA" th:value="${ruta}">
+                    <button type="submit" class="btn-dorado w-100"><i class="bi bi-arrow-repeat"></i>Actualizar mi plan</button>
+                </form>
+            </div>
+        </div>
+    </aside>
+
+    <div class="barra-espacio">
+        <div class="ruta-espacio"><i class="bi bi-grid-1x2"></i><span>Mi espacio</span><i class="bi bi-chevron-right"></i>
+            <strong th:text="${#strings.capitalize(activo)}">Agenda</strong></div>
+        <a class="usuario-espacio" th:href="@{/configuracion}">
+            <div><strong th:text="${nombrePerfil}">Estudiante</strong><small>Mi perfil</small></div>
+            <span class="perfil-avatar" th:text="${#strings.substring(nombrePerfil, 0, 1)}">E</span>
+        </a>
+    </div>
+
+    <header class="barra-movil">
+        <a class="marca" th:href="@{/}">
+            <span class="marca-icono"><i class="bi bi-mortarboard-fill"></i></span>
+            <span class="marca-texto"><strong>Planificador</strong></span>
+        </a>
+        <div class="d-flex align-items-center gap-2">
+            <form th:action="@{/logout}" method="post" class="m-0">
+                <button class="perfil-salir" type="submit" title="Cerrar sesión" aria-label="Cerrar sesión"><i class="bi bi-box-arrow-right"></i></button>
+            </form>
+            <a class="boton-config-movil" th:href="@{/configuracion}" aria-label="Configuración"><i class="bi bi-gear"></i></a>
+            <form th:action="@{/plan/generar}" method="post" class="m-0">
+                <input type="hidden" name="volverA" th:value="${ruta}">
+                <button type="submit" class="btn-dorado py-2 px-3"><i class="bi bi-arrow-repeat"></i>Plan</button>
+            </form>
+        </div>
+    </header>
+
+    <div class="perfil-movil"><i class="bi bi-person-circle"></i><strong th:text="${nombrePerfil}">Estudiante</strong><small th:text="${correoPerfil}"></small></div>
+
+    <nav class="nav-inferior" aria-label="Navegación principal">
+        <a th:classappend="${activo == 'hoy'} ? 'activo'" th:href="@{/}"><i class="bi bi-sun"></i>Hoy</a>
+        <a th:classappend="${activo == 'calendario'} ? 'activo'" th:href="@{/calendario}"><i class="bi bi-calendar3"></i>Calendario</a>
+        <a th:classappend="${activo == 'horario'} ? 'activo'" th:href="@{/horario}"><i class="bi bi-calendar-week"></i>Horario</a>
+        <a th:classappend="${activo == 'cursos'} ? 'activo'" th:href="@{/cursos}"><i class="bi bi-journal-bookmark"></i>Cursos</a>
+        <a th:classappend="${activo == 'agenda'} ? 'activo'" th:href="@{/agenda}"><i class="bi bi-list-task"></i>Agenda</a>
+    </nav>
+</th:block>
+
+<!-- Avisos del plan: replanificación automática y resultado de "Actualizar mi plan" -->
+<th:block th:fragment="avisoPlan">
+    <div th:if="${replanificacion != null}" class="aviso-replan" role="status">
+        <span class="aviso-replan-icono"><i class="bi bi-arrow-repeat"></i></span>
+        <div>
+            <strong>Tu plan se reorganizó automáticamente</strong>
+            <p class="mb-0" th:text="${replanificacion.mensaje}">Quedaron 2 bloques sin hacer.</p>
+            <ul th:if="${!replanificacion.plan.advertencias.isEmpty()}">
+                <li th:each="a : ${replanificacion.plan.advertencias}" th:text="${a}">Advertencia</li>
+            </ul>
+        </div>
+    </div>
+    <div th:if="${resultadoPlan != null}" class="aviso-plan" role="status">
+        <i class="bi bi-check-circle-fill"></i>
+        <div>
+            <strong th:text="${resultadoPlan.mensaje}">Plan actualizado.</strong>
+            <ul th:if="${!resultadoPlan.advertencias.isEmpty()}">
+                <li th:each="a : ${resultadoPlan.advertencias}" th:text="${a}">Advertencia</li>
+            </ul>
+        </div>
+    </div>
+</th:block>
+
+<!-- Pie y scripts comunes -->
+<th:block th:fragment="scripts">
+    <footer class="pie">Planificador Académico · Proyecto de Emprendimiento UTEC 2026-2</footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</th:block>
+
+<!-- Insignia de peso: dorada si pesa mucho -->
+<span th:fragment="insigniaPeso(peso)" class="insignia-peso"
+      th:classappend="${peso >= 15} ? 'alto' : (${peso >= 5} ? 'medio' : '')"
+      th:text="${#numbers.formatDecimal(peso, 1, 1)} + '%'">19.8%</span>
+
+<!-- Check de un bloque de estudio -->
+<form th:fragment="checkBloque(bloque, volverA)" th:action="@{/bloques/{id}/alternar(id=${bloque.id})}"
+      method="post" class="m-0 flex-none">
+    <input type="hidden" name="volverA" th:value="${volverA}">
+    <button type="submit" class="boton-check" th:classappend="${bloque.completado} ? 'marcado'"
+            th:title="${bloque.completado} ? 'Marcar como pendiente' : 'Marcar como completado'"
+            th:aria-label="${bloque.completado} ? 'Marcar como pendiente' : 'Marcar como completado'">
+        <i class="bi bi-check-lg"></i>
+    </button>
+</form>
+
+</body>
+</html>

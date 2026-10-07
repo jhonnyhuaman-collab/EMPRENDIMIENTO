@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Iniciar sesión')}"></head>
+<body class="pagina-acceso">
+<main class="acceso-contenedor">
+    <a class="acceso-marca" th:href="@{/login}"><i class="bi bi-mortarboard-fill"></i> Planificador Académico</a>
+    <section class="acceso-panel">
+        <span class="acceso-emblema"><i class="bi bi-sunrise"></i></span>
+        <span class="sobretitulo">Tu espacio de estudio</span>
+        <h1>Qué bueno verte.</h1>
+        <p class="text-body-secondary">Tu semana, a tu ritmo.</p>
+        <div class="aviso-error" role="alert" th:if="${param.error}">Correo o contraseña incorrectos.</div>
+        <div class="aviso-plan" role="status" th:if="${param.registrado}">Tu cuenta está lista. Ya puedes ingresar.</div>
+        <div class="aviso-plan" role="status" th:if="${param.salida}">Cerraste sesión correctamente.</div>
+        <form th:action="@{/login}" method="post">
+            <label class="etiqueta-campo" for="email">Correo electrónico</label>
+            <input class="form-control campo" id="email" name="email" type="email" autocomplete="username" maxlength="254" placeholder="nombre@universidad.edu.pe" required>
+            <label class="etiqueta-campo mt-3" for="password">Contraseña</label>
+            <div class="campo-password">
+                <input class="form-control campo" id="password" name="password" type="password" autocomplete="current-password" required>
+                <button class="ver-password" type="button" title="Mostrar contraseña" aria-label="Mostrar contraseña" aria-pressed="false"><i class="bi bi-eye"></i></button>
+            </div>
+            <button class="btn-premium w-100 mt-4" type="submit"><i class="bi bi-box-arrow-in-right"></i>Iniciar sesión</button>
+        </form>
+        <p class="mt-4 mb-0 text-center">¿Primera vez? <a th:href="@{/registro}">Crear cuenta</a></p>
+    </section>
+    <p class="acceso-pie">Un día a la vez. Tú puedes.</p>
+</main>
+<script th:src="@{/js/acceso.js}"></script>
+</body>
+</html>

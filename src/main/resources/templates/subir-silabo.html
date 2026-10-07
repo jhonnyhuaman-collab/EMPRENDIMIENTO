@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Subir sílabo')}"></head>
+<body>
+<th:block th:replace="~{fragments/layout :: menu('silabo', '/silabos/subir')}"></th:block>
+
+<main class="contenido">
+<div class="contenedor">
+
+    <header class="encabezado-pagina">
+        <div>
+            <span class="sobretitulo">Con inteligencia artificial</span>
+            <h1 class="titulo-pagina">Sube tu sílabo</h1>
+            <p class="subtitulo-pagina">La IA lee el PDF y encuentra tus evaluaciones, semanas, pesos y temas. Tú revisas y listo.</p>
+        </div>
+    </header>
+
+    <div class="aviso-error" role="alert" th:if="${error}">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        <div th:text="${error}">No se pudo leer el PDF.</div>
+    </div>
+
+    <div class="aviso-dorado" th:unless="${iaConfigurada}">
+        <i class="bi bi-key-fill"></i>
+        <div>
+            <strong>Falta configurar la IA.</strong>
+            Define la variable de entorno de tu proveedor (una sola basta) y reinicia VS Code y la aplicación:
+            <pre class="bloque-codigo"># Gemini (clave de aistudio.google.com)
+setx GEMINI_API_KEY "tu-api-key"
+
+# o Groq (clave de console.groq.com, empieza con gsk_)
+setx GROQ_API_KEY "tu-api-key"
+
+# o Claude (clave de console.anthropic.com, empieza con sk-ant-)
+setx ANTHROPIC_API_KEY "tu-api-key"</pre>
+            Mientras tanto, puedes <a th:href="@{/silabos/manual}">registrar el curso manualmente</a>.
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <section class="col-lg-7">
+            <form class="tarjeta p-4" th:action="@{/silabos/analizar}" method="post" enctype="multipart/form-data"
+                  id="formSubida">
+                <label class="zona-subida" for="archivo" id="zonaSubida">
+                    <input type="file" id="archivo" name="archivo" accept="application/pdf,.pdf" required>
+                    <span class="zona-icono"><i class="bi bi-file-earmark-pdf"></i></span>
+                    <strong id="nombreArchivo">Arrastra tu sílabo aquí</strong>
+                    <span class="text-body-secondary small">o haz clic para elegir un PDF (máx. 15 MB)</span>
+                </label>
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-4">
+                    <small class="text-body-secondary">
+                        <th:block th:if="${iaConfigurada}"><i class="bi bi-cpu me-1"></i>
+                            <span th:text="${proveedorIa} + ' · ' + ${modeloIa} + (${#strings.isEmpty(respaldosIa)} ? '' : ' · respaldo: ' + ${respaldosIa})">Gemini (Google) · gemini-3.8-flash</span></th:block>
+                    </small>
+                    <button type="submit" class="btn-premium" th:disabled="${!iaConfigurada}">
+                        <i class="bi bi-stars"></i>Analizar con IA
+                    </button>
+                </div>
+            </form>
+            <p class="small text-body-secondary mt-3 mb-0">
+                ¿Prefieres hacerlo tú? <a th:href="@{/silabos/manual}">Registra el curso manualmente</a>.
+            </p>
+        </section>
+
+        <section class="col-lg-5">
+            <div class="tarjeta h-100">
+                <div class="tarjeta-cabecera">
+                    <h2 class="tarjeta-titulo"><span class="icono-titulo"><i class="bi bi-magic"></i></span>Cómo funciona</h2>
+                </div>
+                <div class="tarjeta-cuerpo">
+                    <ol class="pasos">
+                        <li class="paso"><div class="paso-cuerpo"><div>
+                            <div class="paso-titulo">Sube el PDF del sílabo</div>
+                            <div class="paso-detalle">Leemos el texto con Apache PDFBox.</div></div></div></li>
+                        <li class="paso"><div class="paso-cuerpo"><div>
+                            <div class="paso-titulo">La IA extrae las evaluaciones</div>
+                            <div class="paso-detalle">Semanas, pesos reales (ej. 60% × 33% = 19.8%) y temas.</div></div></div></li>
+                        <li class="paso"><div class="paso-cuerpo"><div>
+                            <div class="paso-titulo">Revisas y corriges</div>
+                            <div class="paso-detalle">Todo es editable antes de guardar.</div></div></div></li>
+                        <li class="paso"><div class="paso-cuerpo"><div>
+                            <div class="paso-titulo">Tu plan se actualiza</div>
+                            <div class="paso-detalle">El curso aparece en tu calendario y en tu plan diario.</div></div></div></li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</div>
+</main>
+
+<!-- Pantalla de espera mientras la IA analiza -->
+<div class="cargando" id="cargando" aria-live="polite" hidden>
+    <div class="cargando-tarjeta">
+        <div class="cargando-anillo"></div>
+        <strong>Analizando tu sílabo…</strong>
+        <span>La IA está leyendo evaluaciones, pesos y temas. Suele tardar entre 20 y 60 segundos.</span>
+    </div>
+</div>
+
+<script th:src="@{/js/silabo.js}"></script>
+</body>
+</html>

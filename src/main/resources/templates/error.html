@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Error')}"></head>
+<body>
+<th:block th:replace="~{fragments/layout :: menu('', '/')}"></th:block>
+
+<main class="contenido">
+<div class="contenedor">
+    <div class="tarjeta vacio py-5">
+        <i class="bi bi-compass"></i>
+        <h1 class="titulo-pagina fs-3" th:if="${status == 404}">No encontramos lo que buscabas</h1>
+        <h1 class="titulo-pagina fs-3" th:unless="${status == 404}">Ocurrió un error inesperado</h1>
+        <p class="text-body-secondary mt-2" th:text="'Código ' + ${status}">Código 500</p>
+        <a class="btn-premium" th:href="@{/}"><i class="bi bi-sun"></i>Volver a Hoy</a>
+    </div>
+    <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</div>
+</main>
+</body>
+</html>

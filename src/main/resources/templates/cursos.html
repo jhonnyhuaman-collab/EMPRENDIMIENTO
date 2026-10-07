@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mis cursos')}"></head>
+<body>
+<th:block th:replace="~{fragments/layout :: menu('cursos', '/cursos')}"></th:block>
+
+<main class="contenido">
+<div class="contenedor">
+
+    <div class="aviso-plan" role="status" th:if="${cursoGuardado != null}">
+        <i class="bi bi-journal-check"></i>
+        <div><strong th:text="'Curso ' + ${cursoGuardado} + ' guardado.'">Curso guardado.</strong> Ya aparece en tu calendario y en tu plan.</div>
+    </div>
+    <div class="aviso-plan" role="status" th:if="${cursoEliminado != null}">
+        <i class="bi bi-trash3"></i>
+        <div><strong th:text="'Curso ' + ${cursoEliminado} + ' eliminado.'">Curso eliminado.</strong> Tu plan se actualizó.</div>
+    </div>
+    <th:block th:replace="~{fragments/layout :: avisoPlan}"></th:block>
+
+    <header class="encabezado-pagina">
+        <div>
+            <span class="sobretitulo">Ciclo 2026-2</span>
+            <h1 class="titulo-pagina">Mis cursos</h1>
+            <p class="subtitulo-pagina">Evaluaciones, peso real en tu nota final y temas de cada curso.</p>
+        </div>
+        <a class="btn-premium" th:href="@{/silabos/subir}"><i class="bi bi-cloud-arrow-up"></i>Subir sílabo</a>
+    </header>
+
+    <div class="row g-4">
+        <div class="col-12 col-xl-6" th:each="c : ${cursos}">
+            <article class="tarjeta tarjeta-curso" th:style="|--color-curso: ${c.color}|">
+                <div class="curso-cabecera">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <span class="chip-curso solido" th:text="${c.codigo}">MT5307</span>
+                        <form th:action="@{/cursos/{id}/eliminar(id=${c.id})}" method="post" class="m-0"
+                              th:attr="data-confirmar='¿Eliminar ' + ${c.codigo} + ' · ' + ${c.nombre} + '? Se borrarán sus evaluaciones y bloques de estudio.'">
+                            <button type="submit" class="boton-quitar" title="Eliminar curso" aria-label="Eliminar curso">
+                                <i class="bi bi-trash3"></i></button>
+                        </form>
+                    </div>
+                    <h2 class="curso-nombre" th:text="${c.nombre}">Control Inteligente</h2>
+                    <div class="curso-datos">
+                        <span><i class="bi bi-award"></i><span th:text="${c.creditos} + ' créditos'">4 créditos</span></span>
+                        <span th:title="'Dificultad ' + ${c.dificultad} + ' de 5'">
+                            Dificultad
+                            <span class="dificultad">
+                                <i th:each="i : ${#numbers.sequence(1, 5)}" th:classappend="${i <= c.dificultad} ? 'lleno'"></i>
+                            </span>
+                        </span>
+                        <span th:if="${!c.horarios.isEmpty()}"><i class="bi bi-clock"></i>
+                            <span th:each="h, it : ${c.horarios}"
+                                  th:text="${#strings.substring(h.diaTexto, 0, 3)} + ' ' + ${#temporals.format(h.horaInicio, 'HH:mm')} + (${it.last} ? '' : ' · ')">Lun 14:00</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="tarjeta-cuerpo pt-4">
+                    <div class="aviso-sin-silabo" th:if="${c.evaluaciones.isEmpty()}">
+                        <i class="bi bi-file-earmark-arrow-up"></i>
+                        <div>
+                            <strong>Falta el sílabo de este curso.</strong>
+                            <span>Súbelo para conocer sus evaluaciones y planificar tu estudio.</span>
+                        </div>
+                        <a class="btn-suave py-2" th:href="@{/silabos/subir}">Subir sílabo</a>
+                    </div>
+                    <th:block th:unless="${c.evaluaciones.isEmpty()}">
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <h3 class="seccion-mini">Evaluaciones</h3>
+                        <small class="text-body-secondary"
+                               th:text="'Total ' + ${#numbers.formatDecimal(c.pesoTotal, 1, 1)} + '%'">Total 100%</small>
+                    </div>
+                    <div class="reparto-pesos" title="Reparto del peso en la nota final">
+                        <span th:each="e : ${c.evaluaciones}" th:style="|flex: ${e.pesoEnNotaFinal}|"
+                              th:title="${e.nombre} + ': ' + ${e.pesoEnNotaFinal} + '%'"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <a class="fila-evaluacion" th:each="e : ${c.evaluaciones}"
+                           th:classappend="${e.fecha.isBefore(hoy)} ? 'pasada'"
+                           th:href="@{/evaluaciones/{id}(id=${e.id})}">
+                            <span class="text-truncate">
+                                <i class="bi icono-tipo" th:classappend="${e.tipo.icono}" th:title="${e.tipo.etiqueta}"></i><span th:text="${e.nombre}">EC1</span>
+                            </span>
+                            <span class="fecha-corta" th:text="'Sem ' + ${e.semana} + ' · ' + ${#temporals.format(e.fecha, 'd MMM')}">Sem 6 · 21 sep</span>
+                            <span th:replace="~{fragments/layout :: insigniaPeso(${e.pesoEnNotaFinal})}"></span>
+                        </a>
+                    </div>
+                    </th:block>
+
+                    <h3 class="seccion-mini" th:if="${!c.temas.isEmpty()}">Temas</h3>
+                    <div class="chips-temas">
+                        <span class="chip-tema" th:each="t : ${c.temas}">
+                            <strong th:text="${t.numero}">6.1</strong><span th:text="${t.titulo}">Introducción</span>
+                        </span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <div class="tarjeta vacio py-5" th:if="${cursos.isEmpty()}">
+        <i class="bi bi-journal-plus"></i>
+        <p class="fw-semibold mb-1">Aún no tienes cursos</p>
+        <p class="small mb-3">Sube el sílabo de tu primer curso y la IA armará tu plan de estudio.</p>
+        <a class="btn-premium" th:href="@{/silabos/subir}"><i class="bi bi-cloud-arrow-up"></i>Subir mi primer sílabo</a>
+    </div>
+
+    <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+    <script>
+        // Pide confirmación antes de eliminar un curso
+        document.querySelectorAll('form[data-confirmar]').forEach(f =>
+            f.addEventListener('submit', e => { if (!confirm(f.dataset.confirmar)) e.preventDefault(); }));
+    </script>
+</div>
+</main>
+</body>
+</html>

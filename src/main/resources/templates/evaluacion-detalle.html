@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${guia.evaluacion.nombre})}"></head>
+<body>
+<th:block th:replace="~{fragments/layout :: menu('cursos', ${'/evaluaciones/' + guia.evaluacion.id})}"></th:block>
+
+<main class="contenido" th:with="e=${guia.evaluacion}">
+<div class="contenedor" th:style="|--color-curso: ${e.curso.color}|">
+
+    <th:block th:replace="~{fragments/layout :: avisoPlan}"></th:block>
+
+    <nav class="migas" aria-label="Ruta">
+        <a th:href="@{/cursos}">Mis cursos</a><i class="bi bi-chevron-right"></i>
+        <span th:text="${e.curso.nombre}">Robótica Industrial</span><i class="bi bi-chevron-right"></i>
+        <span class="text-body" th:text="${e.nombre}">EC2</span>
+    </nav>
+
+    <!-- Encabezado de la evaluación -->
+    <section class="hero-evaluacion">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-4">
+            <div>
+                <span class="chip-curso" th:text="${e.curso.nombre}">MT5307 · Control Inteligente</span>
+                <h1 class="titulo-pagina mt-2">
+                    <span th:text="${e.nombre}">EC2</span>
+                </h1>
+                <div class="d-flex flex-wrap gap-3 align-items-center mt-2">
+                    <span class="text-body-secondary"><i class="bi me-1" th:classappend="${e.tipo.icono}"></i><span th:text="${e.tipo.etiqueta}">Examen</span></span>
+                    <span class="prioridad" th:classappend="${guia.prioridad.claseCss}" th:text="${guia.prioridad.etiqueta}">Prioridad alta</span>
+                    <span class="etiqueta-origen" th:if="${e.esDeAgenda()}">Agenda</span>
+                    <span class="etiqueta-estado nuevo" th:if="${e.completada}"><i class="bi bi-check2"></i> Entregada</span>
+                </div>
+                <div class="d-flex flex-wrap gap-2 mt-3">
+                    <form th:action="@{/agenda/{id}/completar(id=${e.id})}" method="post" class="m-0">
+                        <input type="hidden" name="volverA" th:value="${'/evaluaciones/' + e.id}">
+                        <button type="submit" class="btn-suave py-2">
+                            <i class="bi" th:classappend="${e.completada} ? 'bi-arrow-counterclockwise' : 'bi-check2-circle'"></i>
+                            <span th:text="${e.completada} ? 'Marcar como pendiente' : 'Ya la entregué / rendí'">Ya la entregué</span>
+                        </button>
+                    </form>
+                    <a class="btn-suave py-2" th:href="@{/agenda/{id}/editar(id=${e.id})} + '#nuevo'">
+                        <i class="bi bi-pencil"></i>Cambiar fecha o datos</a>
+                </div>
+            </div>
+            <div class="anillo" th:style="|--valor: ${e.pesoEnNotaFinal}|">
+                <div class="anillo-interior">
+                    <div>
+                        <strong th:text="${#numbers.formatDecimal(e.pesoEnNotaFinal, 1, 1)} + '%'">19.8%</strong><br>
+                        <small>de tu nota</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="datos-evaluacion">
+            <div class="dato">
+                <small>Fecha</small>
+                <strong class="mayuscula-inicial" th:text="${#temporals.format(e.fecha, 'EEE d ''de'' MMMM')}">lun 26 de octubre</strong>
+            </div>
+            <div class="dato">
+                <small>Faltan</small>
+                <strong th:if="${guia.diasRestantes > 1}" th:text="${guia.diasRestantes} + ' días'">22 días</strong>
+                <strong th:if="${guia.diasRestantes == 1}">Mañana</strong>
+                <strong th:if="${guia.diasRestantes == 0}" class="text-danger">¡Es hoy!</strong>
+                <strong th:if="${guia.diasRestantes < 0}" class="text-body-secondary">Ya pasó</strong>
+            </div>
+            <div class="dato">
+                <small>Horas estimadas</small>
+                <strong th:text="${#numbers.formatDecimal(e.horasEstimadas, 1, 1)} + ' h'">14.0 h</strong>
+            </div>
+            <div class="dato">
+                <small>Empieza a estudiar</small>
+                <strong class="mayuscula-inicial" th:text="${#temporals.format(guia.inicioRecomendado, 'EEE d MMM')}">lun 14 oct</strong>
+            </div>
+            <div class="dato">
+                <small>Semana del ciclo</small>
+                <strong th:text="'Semana ' + ${e.semana}">Semana 11</strong>
+            </div>
+            <div class="dato" th:if="${e.horaEntrega != null}">
+                <small>Hora límite</small>
+                <strong th:text="${#temporals.format(e.horaEntrega, 'HH:mm')}">23:59</strong>
+            </div>
+            <div class="dato" th:if="${e.notas != null}">
+                <small>Notas</small>
+                <strong th:text="${e.notas}">En grupo</strong>
+            </div>
+            <div class="dato" th:if="${e.nota != null}">
+                <small>Nota obtenida</small>
+                <strong th:text="${#numbers.formatDecimal(e.nota, 1, 1)}">15.0</strong>
+            </div>
+        </div>
+    </section>
+
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <!-- Temas -->
+            <section class="tarjeta mb-4">
+                <div class="tarjeta-cabecera">
+                    <h2 class="tarjeta-titulo"><span class="icono-titulo"><i class="bi bi-bookmarks"></i></span>Temas que entran</h2>
+                </div>
+                <div class="tarjeta-cuerpo">
+                    <ul class="lista-temas" th:if="${!e.temas.isEmpty()}">
+                        <li th:each="t : ${e.temas}">
+                            <span class="numero-tema" th:text="${t.numero}">6.3</span>
+                            <span th:text="${t.titulo}">Algoritmos evolutivos</span>
+                        </li>
+                    </ul>
+                    <p class="text-body-secondary small mb-0" th:if="${e.temas.isEmpty()}">
+                        Esta evaluación no tiene temas asociados en el sílabo.</p>
+                </div>
+            </section>
+
+            <!-- Plan de repaso -->
+            <section class="tarjeta">
+                <div class="tarjeta-cabecera">
+                    <h2 class="tarjeta-titulo"><span class="icono-titulo"><i class="bi bi-signpost-2"></i></span>Plan de repaso</h2>
+                </div>
+                <div class="tarjeta-cuerpo">
+                    <ol class="pasos">
+                        <li class="paso" th:each="p : ${guia.planRepaso}">
+                            <div class="paso-cuerpo">
+                                <div>
+                                    <div class="paso-titulo" th:text="${p.titulo}">6.3 Algoritmos evolutivos</div>
+                                    <div class="paso-detalle" th:text="${p.detalle}">Repasar teoría</div>
+                                </div>
+                                <span class="paso-horas" th:text="${#numbers.formatDecimal(p.horas, 1, 1)} + ' h'">5.5 h</span>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+
+        <!-- Checklist de estudio -->
+        <div class="col-lg-7">
+            <section class="tarjeta h-100">
+                <div class="tarjeta-cabecera">
+                    <h2 class="tarjeta-titulo"><span class="icono-titulo"><i class="bi bi-list-check"></i></span>Checklist de estudio</h2>
+                    <span class="insignia-peso medio" th:if="${!e.bloques.isEmpty()}"
+                          th:text="${guia.porcentajeAvance} + '% completado'">0% completado</span>
+                </div>
+
+                <div class="tarjeta-cuerpo pb-2" th:if="${!e.bloques.isEmpty()}">
+                    <div class="d-flex justify-content-between small text-body-secondary mb-2">
+                        <span th:text="${#numbers.formatDecimal(guia.horasCompletadas, 1, 1)} + ' h estudiadas'">0 h estudiadas</span>
+                        <span th:text="${#numbers.formatDecimal(guia.horasPlanificadas, 1, 1)} + ' h planificadas'">14 h planificadas</span>
+                    </div>
+                    <div class="barra-progreso clara"><span th:style="|width: ${guia.porcentajeAvance}%|"></span></div>
+                </div>
+
+                <ul class="lista-bloques" th:if="${!e.bloques.isEmpty()}">
+                    <li class="bloque" th:each="b : ${e.bloques}"
+                        th:classappend="${b.completado} ? 'hecho' : (${b.reprogramado} ? 'reprogramado' : '')">
+                        <div class="bloque-hora">
+                            <strong th:text="${#temporals.format(b.fecha, 'd MMM')}">14 oct</strong>
+                            <span class="mayuscula-inicial" th:text="${#strings.replace(#temporals.format(b.fecha, 'EEE'), '.', '')}">mié</span>
+                        </div>
+                        <div class="bloque-linea"></div>
+                        <div class="bloque-cuerpo">
+                            <div class="bloque-titulo" th:text="${b.descripcion}">6.3 Algoritmos evolutivos</div>
+                            <div class="bloque-meta">
+                                <span th:text="${#temporals.format(b.horaInicio, 'HH:mm')} + ' – ' + ${#temporals.format(b.horaFin, 'HH:mm')}">08:00 – 09:30</span>
+                                <span th:text="'· ' + ${#numbers.formatDecimal(b.duracionHoras, 1, 1)} + ' h'">· 1.5 h</span>
+                                <span class="etiqueta-reprogramado" th:if="${b.reprogramado}"
+                                      title="No se hizo a tiempo: sus horas se repartieron en otros días. Si lo hiciste, márcalo.">Reprogramado</span>
+                            </div>
+                        </div>
+                        <div th:replace="~{fragments/layout :: checkBloque(${b}, ${'/evaluaciones/' + e.id})}"></div>
+                    </li>
+                </ul>
+
+                <div class="vacio" th:if="${e.bloques.isEmpty()}">
+                    <i class="bi bi-calendar-plus"></i>
+                    <p class="fw-semibold mb-1" th:if="${guia.diasRestantes > 0}">Aún no hay bloques para esta evaluación</p>
+                    <p class="fw-semibold mb-1" th:if="${guia.diasRestantes <= 0}">Esta evaluación ya pasó</p>
+                    <p class="small mb-0" th:if="${guia.diasRestantes > 0}">Pulsa «Actualizar mi plan» para generarlos.</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</div>
+</main>
+</body>
+</html>
