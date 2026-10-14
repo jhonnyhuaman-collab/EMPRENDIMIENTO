@@ -1,0 +1,43 @@
+name: Verificar aplicacion
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: planificador_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: prueba_ci_local
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d planificador_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      POSTGRES_TEST_URL: jdbc:postgresql://localhost:5432/planificador_test
+      POSTGRES_TEST_USER: postgres
+      POSTGRES_TEST_PASSWORD: prueba_ci_local
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Pruebas H2 y PostgreSQL
+        run: mvn -B -ntp verify
+      - name: Construir contenedor de Render
+        run: docker build -t planificador-ci .

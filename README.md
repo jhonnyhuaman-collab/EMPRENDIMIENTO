@@ -56,7 +56,15 @@ java -jar target/planificador-academico-0.1.0.jar
 - Al cambiar el inicio, cada evaluación conserva su semana y su día, se recalcula su fecha y se rehace el plan.
 - Valor por defecto: lunes 10/08/2026 (ciclo 2026-2).
 
-## Base de datos
+## Publicar en Render con PostgreSQL
+
+El proyecto incluye `Dockerfile`, `render.yaml` y un perfil `prod` para usar
+PostgreSQL de Neon en Render Free, sin subir la base local ni las claves de IA.
+La nube empieza sin cursos ni cuentas registradas. Sigue la
+[guía de despliegue](docs/despliegue-render.md) para configurar las credenciales
+y crear el servicio. El chequeo público `/actuator/health` solo muestra el estado.
+
+## Base de datos local
 - H2 en archivo, en la carpeta `./data/` (se crea sola).
 - La app empieza **sin cursos**: subes tus sílabos desde **Subir sílabo** (o los registras a mano).
 - Cada curso se puede eliminar desde **Mis cursos** (ícono de papelera); el plan se recalcula.

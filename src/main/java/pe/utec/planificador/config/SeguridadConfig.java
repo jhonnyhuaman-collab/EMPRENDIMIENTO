@@ -2,6 +2,7 @@ package pe.utec.planificador.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +30,7 @@ public class SeguridadConfig {
     @Bean
     SecurityFilterChain seguridad(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(reglas -> reglas
+                        .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
                         .requestMatchers("/login", "/registro", "/css/**", "/js/**", "/images/**", "/favicon.ico", "/error").permitAll()
                         .requestMatchers("/h2-console/**").denyAll()
                         .anyRequest().authenticated())

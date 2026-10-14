@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: planificador-academico
+    runtime: docker
+    repo: https://github.com/jhonnyhuaman-collab/EMPRENDIMIENTO
+    branch: main
+    plan: free
+    region: virginia
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /actuator/health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: IA_PROVEEDOR
+        value: groq
+      - key: JDBC_DATABASE_URL
+        sync: false
+      - key: DATABASE_USERNAME
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
