@@ -24,6 +24,7 @@
             <button class="btn-premium w-100 mt-4" type="submit"><i class="bi bi-person-plus"></i>Crear mi cuenta</button>
         </form>
         <p class="mt-4 mb-0 text-center"><a th:href="@{/login}">Volver al inicio de sesión</a></p>
+        <th:block th:replace="~{fragments/layout :: instalar}"></th:block>
     </section>
 </main>
 <script th:src="@{/js/acceso.js}"></script>

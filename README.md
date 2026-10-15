@@ -64,6 +64,15 @@ La nube empieza sin cursos ni cuentas registradas. Sigue la
 [guía de despliegue](docs/despliegue-render.md) para configurar las credenciales
 y crear el servicio. El chequeo público `/actuator/health` solo muestra el estado.
 
+## Instalar en Android y iPhone
+
+El aplicativo incluye una PWA con icono propio y apertura en ventana independiente.
+En Android se instala desde Chrome; en iPhone desde Safari > Compartir > Anadir a
+pantalla de inicio. Primero hay que publicar esta version en Render.
+Consulta la [guia de instalacion](docs/instalar-celular.md).
+Se necesita internet para acceder a las cuentas, guardar cambios y usar IA.
+El modo sin conexion no guarda paginas privadas ni envia formularios pendientes.
+
 ## Base de datos local
 - H2 en archivo, en la carpeta `./data/` (se crea sola).
 - La app empieza **sin cursos**: subes tus sílabos desde **Subir sílabo** (o los registras a mano).

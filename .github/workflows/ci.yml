@@ -39,5 +39,10 @@ jobs:
           cache: maven
       - name: Pruebas H2 y PostgreSQL
         run: mvn -B -ntp verify
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Pruebas del worker y la instalacion
+        run: node --test scripts/test-pwa.mjs
       - name: Construir contenedor de Render
         run: docker build -t planificador-ci .

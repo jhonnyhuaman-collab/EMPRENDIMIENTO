@@ -31,6 +31,7 @@ public class SeguridadConfig {
     SecurityFilterChain seguridad(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(reglas -> reglas
                         .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/manifest.webmanifest", "/sw.js", "/offline.html").permitAll()
                         .requestMatchers("/login", "/registro", "/css/**", "/js/**", "/images/**", "/favicon.ico", "/error").permitAll()
                         .requestMatchers("/h2-console/**").denyAll()
                         .anyRequest().authenticated())

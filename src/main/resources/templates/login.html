@@ -23,6 +23,7 @@
             <button class="btn-premium w-100 mt-4" type="submit"><i class="bi bi-box-arrow-in-right"></i>Iniciar sesión</button>
         </form>
         <p class="mt-4 mb-0 text-center">¿Primera vez? <a th:href="@{/registro}">Crear cuenta</a></p>
+        <th:block th:replace="~{fragments/layout :: instalar}"></th:block>
     </section>
     <p class="acceso-pie">Un día a la vez. Tú puedes.</p>
 </main>
