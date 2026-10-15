@@ -1,13 +1,13 @@
 'use strict';
 
-const CACHE = 'planificador-publico-v1';
+const CACHE = 'planificador-publico-v2';
 const OFFLINE = '/offline.html';
 const PUBLIC_ASSETS = [
     OFFLINE,
-    '/images/pwa/icon-192.png',
-    '/images/pwa/icon-512.png',
-    '/images/pwa/icon-maskable-512.png',
-    '/images/pwa/apple-touch-icon.png'
+    '/images/pwa/icon-192-v2.png',
+    '/images/pwa/icon-512-v2.png',
+    '/images/pwa/icon-maskable-512-v2.png',
+    '/images/pwa/apple-touch-icon-v2.png'
 ];
 
 self.addEventListener('install', event => {

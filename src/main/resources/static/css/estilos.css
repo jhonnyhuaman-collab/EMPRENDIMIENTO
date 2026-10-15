@@ -378,7 +378,7 @@ a { text-decoration: none; }
     padding: 36px 16px;
 }
 
-.vacio i {
+.vacio > i {
     display: inline-grid;
     place-items: center;
     width: 56px;

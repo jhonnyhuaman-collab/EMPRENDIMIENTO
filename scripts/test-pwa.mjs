@@ -25,7 +25,7 @@ function worker(offline = false) {
         },
         caches: {
             open: async () => cache,
-            keys: async () => ['planificador-publico-v0', 'otra-aplicacion', 'planificador-publico-v1'],
+            keys: async () => ['planificador-publico-v0', 'planificador-publico-v1', 'otra-aplicacion', 'planificador-publico-v2'],
             delete: async name => deleted.push(name)
         },
         self: {
@@ -58,11 +58,11 @@ test('solo precarga pantalla publica e iconos, nunca paginas ni API privadas', a
     const app = worker();
     await lifecycle(app.handlers.install);
     assert.deepEqual([...app.cached.keys()], [
-        '/offline.html', '/images/pwa/icon-192.png', '/images/pwa/icon-512.png',
-        '/images/pwa/icon-maskable-512.png', '/images/pwa/apple-touch-icon.png'
+        '/offline.html', '/images/pwa/icon-192-v2.png', '/images/pwa/icon-512-v2.png',
+        '/images/pwa/icon-maskable-512-v2.png', '/images/pwa/apple-touch-icon-v2.png'
     ]);
     await lifecycle(app.handlers.activate);
-    assert.deepEqual(app.deleted, ['planificador-publico-v0']);
+    assert.deepEqual(app.deleted, ['planificador-publico-v0', 'planificador-publico-v1']);
 });
 
 test('las navegaciones conectadas siempre van al servidor sin guardarse', async () => {
@@ -80,7 +80,7 @@ test('sin conexion muestra solo la pantalla publica y puede cargar su icono', as
     const app = worker(true);
     await lifecycle(app.handlers.install);
     assert.equal(await response(app, request('/agenda')), app.fallback);
-    assert.equal(await response(app, request('/images/pwa/icon-192.png', 'no-cors')), app.fallback);
+    assert.equal(await response(app, request('/images/pwa/icon-192-v2.png', 'no-cors')), app.fallback);
 });
 
 test('no intercepta envios, API, descargas privadas ni peticiones externas', () => {

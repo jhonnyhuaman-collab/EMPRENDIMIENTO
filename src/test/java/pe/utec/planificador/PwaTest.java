@@ -40,11 +40,13 @@ class PwaTest {
         JsonNode manifest = json.readTree(response.getContentAsByteArray());
         assertThat(manifest.get("id").asText()).isEqualTo("/");
         for (JsonNode icon : manifest.get("icons")) {
+            assertThat(icon.get("src").asText()).endsWith("-v2.png");
             byte[] bytes = mvc.perform(get(icon.get("src").asText()))
                     .andExpect(status().isOk()).andExpect(content().contentType("image/png"))
                     .andReturn().getResponse().getContentAsByteArray();
             var image = ImageIO.read(new ByteArrayInputStream(bytes));
             assertThat(image).isNotNull();
+            assertThat(image.getColorModel().hasAlpha()).isFalse();
             assertThat(icon.get("sizes").asText()).isEqualTo(image.getWidth() + "x" + image.getHeight());
         }
     }
@@ -53,10 +55,10 @@ class PwaTest {
     void workerYPantallaSinConexionSonPublicosYNoRetienenElWorkerEnCacheHttp() throws Exception {
         mvc.perform(get("/sw.js")).andExpect(status().isOk())
                 .andExpect(header().string("Cache-Control", containsString("no-cache")))
-                .andExpect(content().string(containsString("planificador-publico-v1")));
+                .andExpect(content().string(containsString("planificador-publico-v2")));
         mvc.perform(get("/offline.html")).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Sin conexi")));
-        mvc.perform(get("/images/pwa/apple-touch-icon.png"))
+        mvc.perform(get("/images/pwa/apple-touch-icon-v2.png"))
                 .andExpect(status().isOk()).andExpect(content().contentType("image/png"));
     }
 
@@ -67,6 +69,8 @@ class PwaTest {
                     .andExpect(content().string(containsString("rel=\"manifest\"")))
                     .andExpect(content().string(containsString("apple-touch-icon")))
                     .andExpect(content().string(containsString("/js/pwa-")))
+                    .andExpect(content().string(containsString("icon-192-v2-")))
+                    .andExpect(content().string(containsString("/css/marca-")))
                     .andExpect(content().string(containsString("Crear cuenta")))
                     .andExpect(content().string(containsString("name=\"_csrf\"")));
         }
@@ -88,6 +92,8 @@ class PwaTest {
         estudiantes.save(estudiante);
         mvc.perform(get("/configuracion")).andExpect(status().isOk())
                 .andExpect(content().string(containsString("rel=\"manifest\"")))
+                .andExpect(content().string(containsString("marca-logo")))
+                .andExpect(content().string(containsString("icon-192-v2-")))
                 .andExpect(content().string(containsString("pwa-instalar")));
     }
 }

@@ -1,8 +1,6 @@
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,44 +9,32 @@ import javax.imageio.ImageIO;
 /** Ejecutar desde la raiz: java scripts/GenerarIconos.java */
 class GenerarIconos {
     public static void main(String[] args) throws Exception {
+        Path source = Path.of("docs/marca/planificador-premium.png");
+        BufferedImage original = ImageIO.read(source.toFile());
+        if (original == null || original.getWidth() != original.getHeight()) {
+            throw new IllegalArgumentException("El logo debe ser una imagen cuadrada valida: " + source);
+        }
         Path directory = Path.of("src/main/resources/static/images/pwa");
         Files.createDirectories(directory);
-        icon(directory.resolve("icon-192.png"), 192);
-        icon(directory.resolve("icon-512.png"), 512);
-        icon(directory.resolve("icon-maskable-512.png"), 512);
-        icon(directory.resolve("apple-touch-icon.png"), 180);
+        icon(original, directory.resolve("icon-192-v2.png"), 192, 1.0);
+        icon(original, directory.resolve("icon-512-v2.png"), 512, 1.0);
+        icon(original, directory.resolve("icon-maskable-512-v2.png"), 512, 0.84);
+        icon(original, directory.resolve("apple-touch-icon-v2.png"), 180, 1.0);
+        icon(original, directory.resolve("favicon-32-v2.png"), 32, 1.0);
     }
 
-    private static void icon(Path path, int size) throws Exception {
+    private static void icon(BufferedImage original, Path path, int size, double scale) throws Exception {
         BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = image.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.scale(size / 512.0, size / 512.0);
-        g.setColor(Color.decode("#235B4E"));
-        g.fillRect(0, 0, 512, 512);
-
-        // El birrete queda dentro del circulo seguro de los iconos adaptativos.
-        Path2D base = new Path2D.Double();
-        base.moveTo(152, 250);
-        base.lineTo(360, 250);
-        base.lineTo(360, 310);
-        base.quadTo(256, 378, 152, 310);
-        base.closePath();
-        g.setColor(Color.decode("#9FC6D4"));
-        g.fill(base);
-        Path2D cap = new Path2D.Double();
-        cap.moveTo(90, 215);
-        cap.lineTo(256, 150);
-        cap.lineTo(422, 215);
-        cap.lineTo(256, 282);
-        cap.closePath();
-        g.setColor(Color.decode("#F8FBFA"));
-        g.fill(cap);
-        g.setColor(Color.decode("#EACAA6"));
-        g.setStroke(new BasicStroke(12, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-        g.drawLine(256, 215, 393, 245);
-        g.drawLine(393, 245, 393, 311);
-        g.fillRoundRect(383, 303, 20, 34, 10, 10);
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setColor(Color.decode("#17191A"));
+        g.fillRect(0, 0, size, size);
+        // Margen adicional para conservar el monograma con las mascaras de Android.
+        int contentSize = (int) Math.round(size * scale);
+        int inset = (size - contentSize) / 2;
+        g.drawImage(original, inset, inset, contentSize, contentSize, null);
         g.dispose();
         ImageIO.write(image, "png", path.toFile());
     }

@@ -39,7 +39,7 @@
     <div class="row g-3 mb-4">
         <div class="col-6 col-lg-3">
             <div class="indicador">
-                <div class="indicador-etiqueta"><i class="bi bi-hourglass-split"></i>Estudio de hoy</div>
+                <div class="indicador-etiqueta"><i class="bi bi-stopwatch-fill" aria-hidden="true"></i>Estudio de hoy</div>
                 <div class="indicador-valor">
                     <span th:text="${#numbers.formatDecimal(panel.horasCompletadasHoy, 1, 1)}">0.0</span>
                     <small th:text="'/ ' + ${#numbers.formatDecimal(panel.horasPlanificadasHoy, 1, 1)} + ' h'">/ 4.5 h</small>
@@ -49,21 +49,21 @@
         </div>
         <div class="col-6 col-lg-3">
             <div class="indicador">
-                <div class="indicador-etiqueta"><i class="bi bi-flag"></i>Entregas en 7 días</div>
+                <div class="indicador-etiqueta"><i class="bi bi-flag-fill" aria-hidden="true"></i>Entregas en 7 días</div>
                 <div class="indicador-valor" th:text="${panel.entregasSemana.size()}">2</div>
                 <div class="indicador-nota">evaluaciones por rendir</div>
             </div>
         </div>
         <div class="col-6 col-lg-3">
             <div class="indicador">
-                <div class="indicador-etiqueta"><i class="bi bi-trophy"></i>Nota en juego</div>
+                <div class="indicador-etiqueta"><i class="bi bi-trophy-fill" aria-hidden="true"></i>Nota en juego</div>
                 <div class="indicador-valor" th:text="${#numbers.formatDecimal(panel.pesoEnJuegoSemana, 1, 1)} + '%'">27.8%</div>
                 <div class="indicador-nota">de tus notas finales esta semana</div>
             </div>
         </div>
         <div class="col-6 col-lg-3">
             <div class="indicador">
-                <div class="indicador-etiqueta"><i class="bi bi-alarm"></i>Próxima entrega</div>
+                <div class="indicador-etiqueta"><i class="bi bi-alarm-fill" aria-hidden="true"></i>Próxima entrega</div>
                 <th:block th:if="${panel.proximaEvaluacion != null}">
                     <div class="indicador-valor mayuscula-inicial" th:text="${panel.proximaEvaluacion.textoDias}">en 3 días</div>
                     <div class="indicador-nota text-truncate"

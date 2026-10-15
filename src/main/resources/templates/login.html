@@ -3,10 +3,12 @@
 <head th:replace="~{fragments/layout :: head('Iniciar sesión')}"></head>
 <body class="pagina-acceso">
 <main class="acceso-contenedor">
-    <a class="acceso-marca" th:href="@{/login}"><i class="bi bi-mortarboard-fill"></i> Planificador Académico</a>
+    <th:block th:replace="~{fragments/layout :: marcaAcceso}"></th:block>
     <section class="acceso-panel">
-        <span class="acceso-emblema"><i class="bi bi-sunrise"></i></span>
-        <span class="sobretitulo">Tu espacio de estudio</span>
+        <div class="acceso-cabecera">
+            <span class="acceso-emblema"><i class="bi bi-door-open-fill" aria-hidden="true"></i></span>
+            <span class="sobretitulo">Tu espacio de estudio</span>
+        </div>
         <h1>Qué bueno verte.</h1>
         <p class="text-body-secondary">Tu semana, a tu ritmo.</p>
         <div class="aviso-error" role="alert" th:if="${param.error}">Correo o contraseña incorrectos.</div>
@@ -14,9 +16,13 @@
         <div class="aviso-plan" role="status" th:if="${param.salida}">Cerraste sesión correctamente.</div>
         <form th:action="@{/login}" method="post">
             <label class="etiqueta-campo" for="email">Correo electrónico</label>
-            <input class="form-control campo" id="email" name="email" type="email" autocomplete="username" maxlength="254" placeholder="nombre@universidad.edu.pe" required>
+            <div class="campo-acceso">
+                <i class="bi bi-envelope" aria-hidden="true"></i>
+                <input class="form-control campo" id="email" name="email" type="email" autocomplete="username" maxlength="254" placeholder="nombre@universidad.edu.pe" required>
+            </div>
             <label class="etiqueta-campo mt-3" for="password">Contraseña</label>
-            <div class="campo-password">
+            <div class="campo-password campo-acceso">
+                <i class="bi bi-lock" aria-hidden="true"></i>
                 <input class="form-control campo" id="password" name="password" type="password" autocomplete="current-password" required>
                 <button class="ver-password" type="button" title="Mostrar contraseña" aria-label="Mostrar contraseña" aria-pressed="false"><i class="bi bi-eye"></i></button>
             </div>

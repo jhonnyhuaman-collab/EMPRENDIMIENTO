@@ -45,6 +45,12 @@ para instalarla de esta forma.
 - Si se modifica la pantalla sin conexion o sus iconos, aumentar la version de `CACHE`
   en `src/main/resources/static/sw.js`.
 - Los PNG se regeneran desde la raiz con `java scripts/GenerarIconos.java`.
+  El original aprobado esta en `docs/marca/planificador-premium.png`; no se redibuja
+  el logo al regenerarlos. La variante adaptativa deja mas margen para no recortar la P.
+- El manifiesto ahora utiliza archivos `-v2.png` y el worker limpia la cache publica
+  anterior. El cambio del icono en el sistema depende del navegador: si el acceso
+  instalado conserva el anterior, quitar solo ese acceso y volver a instalarlo.
+  No borrar la cuenta ni los datos de Neon.
 
 ## Comprobacion manual
 

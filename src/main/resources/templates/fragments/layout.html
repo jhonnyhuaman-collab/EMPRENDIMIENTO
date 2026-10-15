@@ -10,8 +10,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Mi Planificador">
     <link rel="manifest" href="/manifest.webmanifest">
-    <link rel="icon" type="image/png" sizes="192x192" th:href="@{/images/pwa/icon-192.png}">
-    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/images/pwa/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/images/pwa/favicon-32-v2.png}">
+    <link rel="icon" type="image/png" sizes="192x192" th:href="@{/images/pwa/icon-192-v2.png}">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/images/pwa/apple-touch-icon-v2.png}">
     <script th:src="@{/js/pwa.js}" defer></script>
     <title th:text="${titulo} + ' · Planificador Académico'">Planificador Académico</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,6 +23,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
     <link rel="stylesheet" th:href="@{/css/pwa.css}">
+    <link rel="stylesheet" th:href="@{/css/marca.css}">
 </head>
 
 <body>
@@ -31,28 +33,28 @@
 <th:block th:fragment="menu(activo, ruta)">
     <aside class="barra-lateral">
         <a class="marca" th:href="@{/}">
-            <span class="marca-icono"><i class="bi bi-mortarboard-fill"></i></span>
+            <img class="marca-icono marca-logo" th:src="@{/images/pwa/icon-192-v2.png}" alt="" width="48" height="48">
             <span class="marca-texto"><strong>Planificador</strong><small>Académico</small></span>
         </a>
 
         <nav>
             <span class="menu-seccion">Mi semana</span>
             <a class="menu-item" th:classappend="${activo == 'hoy'} ? 'activo'" th:href="@{/}">
-                <i class="bi bi-sun"></i>Hoy</a>
+                <i class="bi bi-sun-fill" aria-hidden="true"></i>Hoy</a>
             <a class="menu-item" th:classappend="${activo == 'calendario'} ? 'activo'" th:href="@{/calendario}">
-                <i class="bi bi-calendar3"></i>Calendario</a>
+                <i class="bi bi-calendar2-week-fill" aria-hidden="true"></i>Calendario</a>
             <a class="menu-item" th:classappend="${activo == 'agenda'} ? 'activo'" th:href="@{/agenda}">
-                <i class="bi bi-list-task"></i>Agenda</a>
+                <i class="bi bi-clipboard2-check-fill" aria-hidden="true"></i>Agenda</a>
             <a class="menu-item" th:classappend="${activo == 'horario'} ? 'activo'" th:href="@{/horario}">
-                <i class="bi bi-calendar-week"></i>Mi horario</a>
+                <i class="bi bi-calendar2-range-fill" aria-hidden="true"></i>Mi horario</a>
 
             <span class="menu-seccion">Académico</span>
             <a class="menu-item" th:classappend="${activo == 'cursos'} ? 'activo'" th:href="@{/cursos}">
-                <i class="bi bi-journal-bookmark"></i>Mis cursos</a>
+                <i class="bi bi-journal-bookmark-fill" aria-hidden="true"></i>Mis cursos</a>
             <a class="menu-item" th:classappend="${activo == 'silabo'} ? 'activo'" th:href="@{/silabos/subir}">
-                <i class="bi bi-cloud-arrow-up"></i>Subir sílabo<span class="etiqueta-pronto">IA</span></a>
+                <i class="bi bi-cloud-arrow-up-fill" aria-hidden="true"></i>Subir sílabo<span class="etiqueta-pronto">IA</span></a>
             <a class="menu-item" th:classappend="${activo == 'configuracion'} ? 'activo'" th:href="@{/configuracion}">
-                <i class="bi bi-gear"></i>Configuración</a>
+                <i class="bi bi-gear-fill" aria-hidden="true"></i>Configuración</a>
             <th:block th:replace="~{fragments/layout :: instalar}"></th:block>
         </nav>
 
@@ -86,14 +88,14 @@
 
     <header class="barra-movil">
         <a class="marca" th:href="@{/}">
-            <span class="marca-icono"><i class="bi bi-mortarboard-fill"></i></span>
+            <img class="marca-icono marca-logo" th:src="@{/images/pwa/icon-192-v2.png}" alt="" width="48" height="48">
             <span class="marca-texto"><strong>Planificador</strong></span>
         </a>
         <div class="d-flex align-items-center gap-2">
             <form th:action="@{/logout}" method="post" class="m-0">
                 <button class="perfil-salir" type="submit" title="Cerrar sesión" aria-label="Cerrar sesión"><i class="bi bi-box-arrow-right"></i></button>
             </form>
-            <a class="boton-config-movil" th:href="@{/configuracion}" aria-label="Configuración"><i class="bi bi-gear"></i></a>
+            <a class="boton-config-movil" th:href="@{/configuracion}" aria-label="Configuración" title="Configuración"><i class="bi bi-gear-fill" aria-hidden="true"></i></a>
             <form th:action="@{/plan/generar}" method="post" class="m-0">
                 <input type="hidden" name="volverA" th:value="${ruta}">
                 <button type="submit" class="btn-dorado py-2 px-3"><i class="bi bi-arrow-repeat"></i>Plan</button>
@@ -106,17 +108,22 @@
     </div>
 
     <nav class="nav-inferior" aria-label="Navegación principal">
-        <a th:classappend="${activo == 'hoy'} ? 'activo'" th:href="@{/}"><i class="bi bi-sun"></i>Hoy</a>
-        <a th:classappend="${activo == 'calendario'} ? 'activo'" th:href="@{/calendario}"><i class="bi bi-calendar3"></i>Calendario</a>
-        <a th:classappend="${activo == 'horario'} ? 'activo'" th:href="@{/horario}"><i class="bi bi-calendar-week"></i>Horario</a>
-        <a th:classappend="${activo == 'cursos'} ? 'activo'" th:href="@{/cursos}"><i class="bi bi-journal-bookmark"></i>Cursos</a>
-        <a th:classappend="${activo == 'agenda'} ? 'activo'" th:href="@{/agenda}"><i class="bi bi-list-task"></i>Agenda</a>
+        <a th:classappend="${activo == 'hoy'} ? 'activo'" th:href="@{/}"><i class="bi bi-sun-fill" aria-hidden="true"></i>Hoy</a>
+        <a th:classappend="${activo == 'calendario'} ? 'activo'" th:href="@{/calendario}"><i class="bi bi-calendar2-week-fill" aria-hidden="true"></i>Calendario</a>
+        <a th:classappend="${activo == 'horario'} ? 'activo'" th:href="@{/horario}"><i class="bi bi-calendar2-range-fill" aria-hidden="true"></i>Horario</a>
+        <a th:classappend="${activo == 'cursos'} ? 'activo'" th:href="@{/cursos}"><i class="bi bi-journal-bookmark-fill" aria-hidden="true"></i>Cursos</a>
+        <a th:classappend="${activo == 'agenda'} ? 'activo'" th:href="@{/agenda}"><i class="bi bi-clipboard2-check-fill" aria-hidden="true"></i>Agenda</a>
     </nav>
 </th:block>
 
 <button th:fragment="instalar" class="pwa-instalar" type="button" hidden>
     <i class="bi bi-download" aria-hidden="true"></i><span>Instalar aplicación</span>
 </button>
+
+<a th:fragment="marcaAcceso" class="acceso-marca" th:href="@{/login}">
+    <img th:src="@{/images/pwa/icon-192-v2.png}" alt="" width="64" height="64">
+    <span><strong>Planificador</strong><small>Académico</small></span>
+</a>
 
 <!-- Avisos del plan: replanificación automática y resultado de "Actualizar mi plan" -->
 <th:block th:fragment="avisoPlan">
