@@ -35,3 +35,32 @@ test('rechaza datos invalidos devueltos por IA en lugar de guardarlos', async ()
   assert.equal(importSchema.safeParse({ kind: 'silabo', text: 'x' }).success, false);
   assert.equal(importSchema.safeParse({ kind: 'horario', image: 'https://url-arbitraria.example' }).success, false);
 });
+
+test('informa errores HTTP sin filtrar claves ni mensajes privados del proveedor', async () => {
+  for (const [code, expected] of [[401, /clave rechazada/], [403, /acceso denegado/], [404, /modelo o recurso/], [429, /cuota o limite/], [400, /incompatible/], [503, /temporalmente/]]) {
+    await assert.rejects(analyze(input, { GROQ_API_KEY: 'clave-privada' }, '2026-08-10', async () => Response.json({ error: 'documento y clave-privada' }, { status: code })), error => {
+      assert.equal(error.status, 502); assert.match(error.message, expected);
+      assert.ok(!error.message.includes('clave-privada')); assert.ok(!error.message.includes('documento y'));
+      return true;
+    });
+  }
+});
+
+test('un timeout de proveedor permite intentar el siguiente y normaliza auto', async () => {
+  let calls = 0;
+  const result = await analyze(input, { IA_PROVEEDOR: ' AUTO ', GROQ_API_KEY: 'test', GEMINI_API_KEY: 'test' }, '2026-08-10', async (url, options) => {
+    assert.ok(options.signal instanceof AbortSignal); calls++;
+    if (url.includes('groq.com')) throw new DOMException('dato privado', 'TimeoutError');
+    return Response.json({ candidates: [{ content: { parts: [{ text: JSON.stringify(data) }] } }] });
+  });
+  assert.equal(result.provider, 'gemini'); assert.equal(calls, 2);
+});
+
+test('imagen omite Groq sin modelo de vision aunque haya otros proveedores', async () => {
+  const timetable = { courses: [data.course], classes: [], warnings: [] };
+  const result = await analyze({ kind: 'horario', text: '', image: 'data:image/jpeg;base64,YQ==' }, { GROQ_API_KEY: 'test', GEMINI_API_KEY: 'test' }, '2026-08-10', async url => {
+    assert.ok(!url.includes('groq.com'));
+    return Response.json({ candidates: [{ content: { parts: [{ text: JSON.stringify(timetable) }] } }] });
+  });
+  assert.equal(result.provider, 'gemini');
+});
