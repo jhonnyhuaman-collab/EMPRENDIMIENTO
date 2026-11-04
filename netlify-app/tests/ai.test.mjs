@@ -1,9 +1,25 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { analyze, importSchema, providerInfo } from '../server/ai.mjs';
+import { analyze, importSchema, providerInfo, normalizeExtraction } from '../server/ai.mjs';
 
 const input = { kind: 'silabo', text: 'Texto academico de prueba con una evaluacion.' };
 const data = { course: { code: 'MT', name: 'Control', credits: 4, difficulty: 3, color: '#235B4E', topics: [] }, evaluations: [{ name: 'PC1', type: 'PRACTICA', week: 4, weekday: 5, weight: 19.8 }], warnings: [] };
+
+test('horario admite perfil ausente con advertencias y formatos equivalentes', async () => {
+  const extracted = { courses: [{ code: 'mt', name: 'Control', credits: null, difficulty: null, color: null, topics: null }], classes: [{ code: ' mt ', weekday: '1', start: '8:00', end: '10:00:00', frequency: 'SEMANA_A', detail: null }] };
+  const result = await analyze({ kind: 'horario', text: input.text }, { GROQ_API_KEY: 'test' }, '2026-08-10', async () => Response.json({ choices: [{ message: { content: JSON.stringify(extracted) } }] }));
+  assert.equal(result.courses[0].credits, 3); assert.equal(result.courses[0].code, 'MT');
+  assert.equal(result.classes[0].code, 'MT'); assert.equal(result.classes[0].start, '08:00');
+  assert.equal(result.classes[0].end, '10:00'); assert.equal(result.classes[0].frequency, 'A');
+  assert.equal(result.warnings.length, 2); assert.equal(extracted.courses[0].credits, null);
+});
+
+test('no inventa el dia, no acepta horas invalidas ni referencias ajenas', async () => {
+  for (const entry of [{ code: 'MT', start: '08:00', end: '10:00' }, { code: 'MT', weekday: 1, start: '25:00', end: '26:00' }, { code: 'OTRO', weekday: 1, start: '08:00', end: '10:00' }]) {
+    await assert.rejects(analyze({ kind: 'horario', text: input.text }, { GROQ_API_KEY: 'test' }, '2026-08-10', async () => Response.json({ choices: [{ message: { content: JSON.stringify({ courses: [data.course], classes: [entry] }) } }] })), error => error.status === 502);
+  }
+  assert.equal(normalizeExtraction({ courses: [{ credits: '4,5', difficulty: '3' }] }, 'horario').courses[0].credits, 4.5);
+});
 test('no intenta usar proveedores sin clave y nunca expone los valores de claves', async () => {
   await assert.rejects(analyze(input, {}, '2026-08-10', async () => { throw new Error('No debe llamar a la red'); }), e => e.status === 503);
   assert.deepEqual(providerInfo({ GROQ_API_KEY: 'secreto' }), { configured: ['groq'], selected: 'auto' });
