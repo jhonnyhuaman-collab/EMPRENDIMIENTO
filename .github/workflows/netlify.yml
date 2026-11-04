@@ -1,0 +1,31 @@
+name: Verificar version Netlify
+on:
+  push:
+    paths:
+      - 'netlify-app/**'
+      - '.github/workflows/netlify.yml'
+  pull_request:
+    paths:
+      - 'netlify-app/**'
+      - '.github/workflows/netlify.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: netlify-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: netlify-app/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npm run check:functions
