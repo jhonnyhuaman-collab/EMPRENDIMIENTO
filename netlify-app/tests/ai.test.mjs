@@ -1,9 +1,35 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { analyze, importSchema, providerInfo, normalizeExtraction } from '../server/ai.mjs';
+import { analyze, importSchema, providerInfo, normalizeExtraction, extractionJsonSchema } from '../server/ai.mjs';
 
 const input = { kind: 'silabo', text: 'Texto academico de prueba con una evaluacion.' };
 const data = { course: { code: 'MT', name: 'Control', credits: 4, difficulty: 3, color: '#235B4E', topics: [] }, evaluations: [{ name: 'PC1', type: 'PRACTICA', week: 4, weekday: 5, weight: 19.8 }], warnings: [] };
+
+test('Groq compatible recibe esquema estricto cerrado y todas las propiedades requeridas', async () => {
+  const visit = node => { if (node.type === 'object') { assert.equal(node.additionalProperties, false); assert.deepEqual(node.required.sort(), Object.keys(node.properties).sort()); Object.values(node.properties).forEach(visit); } if (node.items) visit(node.items); node.anyOf?.forEach(visit); };
+  visit(extractionJsonSchema('silabo')); visit(extractionJsonSchema('horario'));
+  await analyze(input, { GROQ_API_KEY: 'test' }, '2026-08-10', async (_, options) => { const sent = JSON.parse(options.body); assert.equal(sent.response_format.type, 'json_schema'); assert.equal(sent.response_format.json_schema.strict, true); assert.equal(sent.reasoning_effort, 'low'); return Response.json({ choices: [{ message: { content: JSON.stringify(data) } }] }); });
+});
+
+test('modelos personalizados conservan JSON mode sin exigir soporte de esquema estricto', async () => {
+  await analyze(input, { GROQ_API_KEY: 'test', GROQ_MODEL: 'modelo-personalizado' }, '2026-08-10', async (_, options) => { assert.equal(JSON.parse(options.body).response_format.type, 'json_object'); return Response.json({ choices: [{ message: { content: JSON.stringify(data) } }] }); });
+});
+
+test('un horario subido como silabo muestra instrucciones y no inventa un curso', async () => {
+  let calls = 0;
+  await assert.rejects(analyze(input, { GROQ_API_KEY: 'test', GEMINI_API_KEY: 'test' }, '2026-08-10', async () => { calls++; return Response.json({ choices: [{ message: { content: JSON.stringify({ documentType: 'horario', course: null, evaluations: [], warnings: [] }) } }] }); }), e => e.status === 422 && /Mi horario/.test(e.message));
+  assert.equal(calls, 1);
+});
+
+test('reconoce nombres en espanol sin convertir una lista de cursos en un silabo', () => {
+  const result = normalizeExtraction({ curso: { codigo: 'MT', nombre: 'Control', creditos: '4', dificultad: '3', temas: [] }, evaluaciones: [] }, 'silabo');
+  assert.equal(result.course.name, 'Control'); assert.equal(result.course.credits, 4);
+  assert.equal(normalizeExtraction({ courses: [data.course] }, 'silabo').course, undefined);
+});
+
+test('una respuesta cortada no se acepta aunque contenga JSON parseable', async () => {
+  await assert.rejects(analyze(input, { GROQ_API_KEY: 'test' }, '2026-08-10', async () => Response.json({ choices: [{ finish_reason: 'length', message: { content: JSON.stringify(data) } }] })), e => /respuesta incompleta/.test(e.message));
+});
 
 test('horario admite perfil ausente con advertencias y formatos equivalentes', async () => {
   const extracted = { courses: [{ code: 'mt', name: 'Control', credits: null, difficulty: null, color: null, topics: null }], classes: [{ code: ' mt ', weekday: '1', start: '8:00', end: '10:00:00', frequency: 'SEMANA_A', detail: null }] };

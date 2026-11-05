@@ -1,5 +1,6 @@
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist/legacy/build/pdf.mjs';
 import workerUrl from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?url';
+import { pageText } from './pdf-layout.mjs';
 GlobalWorkerOptions.workerSrc = workerUrl;
 
 export async function readDocument(file, kind) {
@@ -15,13 +16,7 @@ export async function readDocument(file, kind) {
       for (let p = 1; p <= pdf.numPages; p++) {
         const page = await pdf.getPage(p); const content = await page.getTextContent();
         text += `\n--- Pagina ${p} ---\n`;
-        let previousY = null;
-        for (const item of content.items) {
-          if (!('str' in item)) continue;
-          const y = item.transform?.[5];
-          text += (previousY !== null && Math.abs(y - previousY) > 4 ? '\n' : ' ') + item.str + (item.hasEOL ? '\n' : '');
-          previousY = y;
-        }
+        text += pageText(content.items) + '\n';
         if (text.length > 150000) throw new Error('El documento tiene demasiado texto. Divide el PDF antes de analizarlo.');
         page.cleanup();
       }
