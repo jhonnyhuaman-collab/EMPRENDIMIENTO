@@ -15,6 +15,34 @@ test('modelos personalizados conservan JSON mode sin exigir soporte de esquema e
   await analyze(input, { GROQ_API_KEY: 'test', GROQ_MODEL: 'modelo-personalizado' }, '2026-08-10', async (_, options) => { assert.equal(JSON.parse(options.body).response_format.type, 'json_object'); return Response.json({ choices: [{ message: { content: JSON.stringify(data) } }] }); });
 });
 
+test('silabo reintenta una sola vez en JSON mode si Groq rechaza el esquema con 400', async () => {
+  const formats = [];
+  const result = await analyze(input, { GROQ_API_KEY: 'test' }, '2026-08-10', async (_, options) => {
+    formats.push(JSON.parse(options.body).response_format.type);
+    if (formats.length === 1) return Response.json({ error: { code: 'json_validate_failed', message: 'Failed to generate JSON' } }, { status: 400 });
+    return Response.json({ choices: [{ message: { content: JSON.stringify(data) } }] });
+  });
+  assert.deepEqual(formats, ['json_schema', 'json_object']); assert.equal(result.course.code, 'MT');
+});
+
+test('el respaldo de silabos conserva validacion y tiene un maximo de dos solicitudes', async () => {
+  let calls = 0;
+  await assert.rejects(analyze(input, { GROQ_API_KEY: 'test' }, '2026-08-10', async () => { calls++; return Response.json({ error: {} }, { status: 400 }); }), e => e.status === 502);
+  assert.equal(calls, 2);
+});
+
+test('contexto demasiado largo no se reintenta con el mismo texto', async () => {
+  let calls = 0;
+  await assert.rejects(analyze(input, { GROQ_API_KEY: 'test' }, '2026-08-10', async () => { calls++; return Response.json({ error: { message: 'maximum context length exceeded' } }, { status: 400 }); }), e => /divide el silabo/.test(e.message));
+  assert.equal(calls, 1);
+});
+
+test('el cambio de compatibilidad no reintenta horarios con error 400', async () => {
+  let calls = 0;
+  await assert.rejects(analyze({ ...input, kind: 'horario' }, { GROQ_API_KEY: 'test' }, '2026-08-10', async () => { calls++; return new Response('', { status: 400 }); }), e => e.status === 502);
+  assert.equal(calls, 1);
+});
+
 test('un horario subido como silabo muestra instrucciones y no inventa un curso', async () => {
   let calls = 0;
   await assert.rejects(analyze(input, { GROQ_API_KEY: 'test', GEMINI_API_KEY: 'test' }, '2026-08-10', async () => { calls++; return Response.json({ choices: [{ message: { content: JSON.stringify({ documentType: 'horario', course: null, evaluations: [], warnings: [] }) } }] }); }), e => e.status === 422 && /Mi horario/.test(e.message));

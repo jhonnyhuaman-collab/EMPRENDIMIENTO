@@ -85,6 +85,7 @@ export function providerInfo(env) {
 }
 
 function failureReason(error) {
+  if (error.code === 'CONTEXT_LIMIT') return 'el texto supera el limite del modelo; divide el silabo en partes';
   if (error.code === 'TRUNCATED') return 'respuesta incompleta; divide el documento en secciones mas pequenas';
   if (error.name === 'TimeoutError' || error.name === 'AbortError') return 'tiempo de espera agotado';
   if (error.code === 401) return 'clave rechazada (401)';
@@ -125,9 +126,18 @@ ${input.kind === 'silabo' ? 'Devuelve {course:{code,name,credits,difficulty,colo
         const model = input.image ? env.GROQ_VISION_MODEL : env.GROQ_MODEL || 'openai/gpt-oss-120b';
         const structured = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b'].includes(model);
         const user = input.image ? [{ type: 'text', text: input.text || 'Lee el horario de esta imagen.' }, { type: 'image_url', image_url: { url: input.image } }] : input.text;
-        response = await requestFetch('https://api.groq.com/openai/v1/chat/completions', { ...common,
-          headers: { ...common.headers, Authorization: `Bearer ${env.GROQ_API_KEY}` },
-          body: JSON.stringify({ model, messages: [{ role: 'system', content: system }, { role: 'user', content: user }], response_format: structured ? { type: 'json_schema', json_schema: { name: `academic_${input.kind}`, strict: true, schema: extractionJsonSchema(input.kind) } } : { type: 'json_object' }, ...(structured ? { reasoning_effort: 'low' } : {}), temperature: .1, max_completion_tokens: 6000 }) });
+        const payload = { model, messages: [{ role: 'system', content: system }, { role: 'user', content: user }], response_format: structured ? { type: 'json_schema', json_schema: { name: `academic_${input.kind}`, strict: true, schema: extractionJsonSchema(input.kind) } } : { type: 'json_object' }, ...(structured ? { reasoning_effort: 'low' } : {}), temperature: .1, max_completion_tokens: 6000 };
+        const send = body => requestFetch('https://api.groq.com/openai/v1/chat/completions', { ...common, headers: { ...common.headers, Authorization: `Bearer ${env.GROQ_API_KEY}` }, body: JSON.stringify(body) });
+        response = await send(payload);
+        // Algunos silabos provocan un 400 de generacion/esquema en modo estricto.
+        // Reintentar una sola vez con JSON mode, conservando el plazo y Zod.
+        // No cambiar el camino de horarios, que ya funciona.
+        if (response.status === 400 && structured && input.kind === 'silabo') {
+          const detail = await response.json().catch(() => ({}));
+          const message = typeof detail.error?.message === 'string' ? detail.error.message : '';
+          if (/context[_ ]?(length|window)|maximum context|too many tokens|reduce.*tokens|input.*too (long|large)/i.test(message)) throw Object.assign(new Error('Limite de texto'), { code: 'CONTEXT_LIMIT' });
+          response = await send({ ...payload, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: system + '\nFormato obligatorio de la respuesta JSON: ' + JSON.stringify(extractionJsonSchema('silabo')) }, { role: 'user', content: user }] });
+        }
         if (!response.ok) throw Object.assign(new Error('Proveedor no disponible'), { code: response.status });
         data = await response.json();
         if (data.choices?.[0]?.finish_reason === 'length') throw Object.assign(new Error('Respuesta incompleta'), { code: 'TRUNCATED' });
