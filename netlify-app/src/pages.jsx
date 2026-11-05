@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { formatPercent } from './percent.mjs';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -42,7 +43,7 @@ export function EvaluationList({ items, grouped = true }) {
       <div className={`evaluation-row ${e.completed ? 'done' : ''}`} style={{ '--course': course?.color }}>
         <button className="check-button" type="button" aria-label={e.completed ? 'Marcar pendiente' : 'Completar pendiente'} aria-pressed={e.completed} onClick={() => mutate(`/evaluations/${e.id}/toggle`, 'POST', {})}><Check size={15} /></button>
         <div className="row-main"><Link className="row-title" to={`/evaluaciones/${e.id}`}>{e.name}</Link><div className="row-meta"><CourseTag course={course} /><span><Icon size={13} />{LABELS[e.type]}</span>{e.time && <span><Clock3 size={13} />{e.time}</span>}{!grouped && <span>{dateLabel(e.date, { day: 'numeric', month: 'short' })}</span>}</div></div>
-        <div className="row-actions"><span className="weight">{e.weight.toFixed(1)}%</span><div><IconButton icon={Pencil} label={`Editar ${e.name}`} onClick={() => setEditing(e)} /><IconButton icon={Trash2} label={`Eliminar ${e.name}`} onClick={() => setDeleting(e)} /></div></div>
+        <div className="row-actions"><span className="weight">{formatPercent(e.weight)}%</span><div><IconButton icon={Pencil} label={`Editar ${e.name}`} onClick={() => setEditing(e)} /><IconButton icon={Trash2} label={`Eliminar ${e.name}`} onClick={() => setDeleting(e)} /></div></div>
       </div></React.Fragment>;
   })}</div>
     {editing && <EvaluationForm evaluation={editing} onClose={() => setEditing(null)} />}

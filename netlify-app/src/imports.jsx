@@ -75,7 +75,7 @@ export function ImportPage({ initialKind, embedded = false, manual = false }) {
           <Field label="Tipo"><select value={e.type} onChange={ev => updateRow('evaluations', i, 'type', ev.target.value)}>{Object.entries(LABELS).map(([v, t]) => <option key={v} value={v}>{t}</option>)}</select></Field>
           <Field label="Fecha"><input type="date" value={e.date} required onChange={ev => updateRow('evaluations', i, 'date', ev.target.value)} /></Field>
           <Field label="Hora"><input type="time" value={e.time || ''} onChange={ev => updateRow('evaluations', i, 'time', ev.target.value)} /></Field>
-          <Field label="Peso final (%)"><input type="number" min="0" max="100" step="0.1" value={e.weight} required onChange={ev => updateRow('evaluations', i, 'weight', Number(ev.target.value))} /></Field>
+          <Field label="Peso final (%)"><input type="number" min="0" max="100" step="any" value={e.weight} required onChange={ev => updateRow('evaluations', i, 'weight', Number(ev.target.value))} /></Field>
           <IconButton icon={Trash2} label={`Quitar ${e.name}`} onClick={() => patch({ evaluations: active.evaluations.filter((_, n) => n !== i) })} />
         </div>) : active.classes.map((cl, i) => <div className="review-row" key={i}>
           <Field label="Curso"><select value={cl.code} onChange={e => updateRow('classes', i, 'code', e.target.value)}>{active.courses.map(c => <option key={c.code} value={c.code}>{c.code}</option>)}</select></Field>

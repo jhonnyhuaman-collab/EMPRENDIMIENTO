@@ -1,0 +1,7960 @@
+[
+  {
+    "name": "rescate_por_curso_y_temas",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-13",
+          "estimatedHours": 8,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-16",
+          "estimatedHours": 5,
+          "type": "PRACTICA",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-12",
+          "estimatedHours": 6,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-18",
+          "estimatedHours": 10,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 480
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-05",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-05",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-06",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-06",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-11",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-12",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "09:45",
+        "end": "10:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-17",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "capacidad_uno_y_medio",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 1.5,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-13",
+          "estimatedHours": 8,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-16",
+          "estimatedHours": 5,
+          "type": "PRACTICA",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-12",
+          "estimatedHours": 6,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-18",
+          "estimatedHours": 10,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 480
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-05",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-05",
+        "start": "09:15",
+        "end": "09:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-06",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "09:15",
+        "end": "09:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "09:15",
+        "end": "09:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "09:15",
+        "end": "09:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "09:15",
+        "end": "09:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-12",
+        "start": "09:15",
+        "end": "09:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-13",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-13",
+        "start": "09:15",
+        "end": "09:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-17",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "solo_treinta_minutos_despues_de_clase",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "18:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-13",
+          "estimatedHours": 8,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-16",
+          "estimatedHours": 5,
+          "type": "PRACTICA",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-12",
+          "estimatedHours": 6,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-18",
+          "estimatedHours": 10,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "courseId": "A",
+          "weekday": 1,
+          "start": "10:00",
+          "end": "16:15",
+          "frequency": "SEMANAL",
+          "detail": ""
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 480
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-05",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-05",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-06",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-06",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "09:15",
+        "end": "09:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "16:30",
+        "end": "17:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-11",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-12",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-12",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "16:30",
+        "end": "17:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-17",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-17",
+        "start": "09:45",
+        "end": "10:15",
+        "description": "Simulacro final",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "clases_AB_y_fines_de_semana",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          3,
+          5,
+          6,
+          7
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-13",
+          "estimatedHours": 8,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-16",
+          "estimatedHours": 5,
+          "type": "PRACTICA",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-12",
+          "estimatedHours": 6,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-18",
+          "estimatedHours": 10,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "courseId": "A",
+          "weekday": 1,
+          "start": "09:00",
+          "end": "13:00",
+          "frequency": "A"
+        },
+        {
+          "courseId": "B",
+          "weekday": 1,
+          "start": "15:00",
+          "end": "18:00",
+          "frequency": "B"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 480
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-02",
+        "start": "13:15",
+        "end": "14:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-06",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-06",
+        "start": "09:45",
+        "end": "10:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-07",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-07",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-08",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-08",
+        "start": "09:15",
+        "end": "10:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "19:30",
+        "end": "20:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "20:45",
+        "end": "21:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-11",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-13",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-13",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-14",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-14",
+        "start": "08:45",
+        "end": "09:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "13:15",
+        "end": "14:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "15:00",
+        "end": "16:30",
+        "description": "Simulacro final",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "bloques_completados_y_secuencia",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-13",
+          "estimatedHours": 8,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-16",
+          "estimatedHours": 5,
+          "type": "PRACTICA",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-12",
+          "estimatedHours": 6,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-18",
+          "estimatedHours": 10,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [],
+      "blocks": [
+        {
+          "id": "done1",
+          "evaluationId": "z1",
+          "date": "2026-10-30",
+          "start": "08:00",
+          "end": "09:30",
+          "description": "1.1 Teoría",
+          "completed": true,
+          "reprogrammed": false
+        },
+        {
+          "id": "done2",
+          "evaluationId": "z1",
+          "date": "2026-11-02",
+          "start": "08:00",
+          "end": "09:00",
+          "description": "1.1 Teoría",
+          "completed": true,
+          "reprogrammed": false
+        }
+      ],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 480
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-02",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": true
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-05",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-05",
+        "start": "09:45",
+        "end": "10:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-06",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-06",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "09:45",
+        "end": "10:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-11",
+        "start": "11:00",
+        "end": "11:30",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-12",
+        "start": "09:15",
+        "end": "10:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "09:45",
+        "end": "10:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-17",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "restante_de_media_hora",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "a",
+          "courseId": "A",
+          "name": "a",
+          "date": "2026-11-04",
+          "estimatedHours": 0.5,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 480
+    },
+    "expected": [
+      {
+        "evaluationId": "a",
+        "date": "2026-11-02",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "cursos_con_mismo_puntaje_orden_de_fecha",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z",
+          "courseId": "A",
+          "name": "z",
+          "date": "2026-11-10",
+          "estimatedHours": 6,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a",
+          "courseId": "B",
+          "name": "a",
+          "date": "2026-11-10",
+          "estimatedHours": 6,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 480
+    },
+    "expected": [
+      {
+        "evaluationId": "z",
+        "date": "2026-11-03",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a",
+        "date": "2026-11-03",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a",
+        "date": "2026-11-04",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z",
+        "date": "2026-11-05",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a",
+        "date": "2026-11-05",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z",
+        "date": "2026-11-09",
+        "start": "09:45",
+        "end": "10:15",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "a",
+        "date": "2026-11-09",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "clases_superpuestas_cuentan_una_vez",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-13",
+          "estimatedHours": 8,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-16",
+          "estimatedHours": 5,
+          "type": "PRACTICA",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-12",
+          "estimatedHours": 6,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-18",
+          "estimatedHours": 10,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "08:00",
+          "end": "14:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 1,
+          "start": "12:00",
+          "end": "18:00",
+          "frequency": "SEMANAL"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 480
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-05",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-05",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-06",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-06",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-11",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-12",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-12",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-13",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-17",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-17",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "dormir_despues_de_medianoche",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "01:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-13",
+          "estimatedHours": 8,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-16",
+          "estimatedHours": 5,
+          "type": "PRACTICA",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-12",
+          "estimatedHours": 6,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-18",
+          "estimatedHours": 10,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 1290
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-05",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-05",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-06",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-06",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-11",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-12",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "09:45",
+        "end": "10:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-17",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "ya_es_tarde_hoy",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-13",
+          "estimatedHours": 8,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-16",
+          "estimatedHours": 5,
+          "type": "PRACTICA",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-12",
+          "estimatedHours": 6,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-18",
+          "estimatedHours": 10,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 1435
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-05",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-05",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-06",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-06",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-11",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-12",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "09:45",
+        "end": "10:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-17",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "repaso_generico_por_tipo",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-13",
+          "estimatedHours": 8,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-16",
+          "estimatedHours": 5,
+          "type": "PRACTICA",
+          "weight": 0.25,
+          "topics": [],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-12",
+          "estimatedHours": 6,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-18",
+          "estimatedHours": 10,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [],
+          "completed": false
+        }
+      ],
+      "classes": [],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 480
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "Repasar teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-05",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "Leer la guía",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-05",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "Repasar teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-06",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "Preparar la práctica",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "Definir alcance",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-06",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "Repasar teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "Preparar la práctica",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "Definir alcance",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "Resolver ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "Preparar la práctica",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "Desarrollo del proyecto",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "Resolver ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "Redactar el informe",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "Desarrollo del proyecto",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-11",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "Resolver ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "Desarrollo del proyecto",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-12",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "Desarrollo del proyecto",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "09:45",
+        "end": "10:45",
+        "description": "Desarrollo del proyecto",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-17",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "Desarrollo del proyecto",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "limite_semanal_bajo",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 6,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 1,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-13",
+          "estimatedHours": 8,
+          "type": "EXAMEN",
+          "weight": 20,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-16",
+          "estimatedHours": 5,
+          "type": "PRACTICA",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-12",
+          "estimatedHours": 6,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-18",
+          "estimatedHours": 10,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 480
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-05",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_1",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 3,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-18",
+          "estimatedHours": 11,
+          "type": "EXAMEN",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-19",
+          "estimatedHours": 5.5,
+          "type": "PRACTICA",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-08",
+          "estimatedHours": 10,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-13",
+          "estimatedHours": 8.5,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "10:00",
+          "end": "16:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 2,
+          "start": "11:00",
+          "end": "17:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 3,
+          "start": "08:00",
+          "end": "18:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 4,
+          "start": "09:00",
+          "end": "18:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 5,
+          "start": "10:00",
+          "end": "14:00",
+          "frequency": "SEMANAL"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 583
+    },
+    "expected": [
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-02",
+        "start": "10:00",
+        "end": "11:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-02",
+        "start": "11:45",
+        "end": "12:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-03",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-04",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-05",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-05",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "14:15",
+        "end": "14:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-06",
+        "start": "15:00",
+        "end": "16:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "16:15",
+        "end": "17:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "18:00",
+        "end": "19:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "17:15",
+        "end": "18:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "19:00",
+        "end": "20:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-16",
+        "start": "09:45",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-16",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_2",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 1,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-08",
+          "estimatedHours": 6,
+          "type": "EXAMEN",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-21",
+          "estimatedHours": 4.5,
+          "type": "PRACTICA",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-22",
+          "estimatedHours": 9,
+          "type": "LABORATORIO",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-07",
+          "estimatedHours": 3.5,
+          "type": "PROYECTO",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "08:00",
+          "end": "16:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 2,
+          "start": "09:00",
+          "end": "17:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 3,
+          "start": "10:00",
+          "end": "17:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 4,
+          "start": "11:00",
+          "end": "14:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 5,
+          "start": "08:00",
+          "end": "16:00",
+          "frequency": "SEMANAL"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 1013
+    },
+    "expected": [
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-03",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-04",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-05",
+        "start": "14:15",
+        "end": "15:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "16:15",
+        "end": "16:45",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-06",
+        "start": "17:00",
+        "end": "17:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-07",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-14",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-17",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-18",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-19",
+        "start": "14:15",
+        "end": "15:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-20",
+        "start": "16:15",
+        "end": "17:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-21",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_3",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 5,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 3,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-06",
+          "estimatedHours": 1,
+          "type": "EXAMEN",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-15",
+          "estimatedHours": 11.5,
+          "type": "PRACTICA",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-04",
+          "estimatedHours": 12,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-05",
+          "estimatedHours": 6.5,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "10:00",
+          "end": "16:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 2,
+          "start": "11:00",
+          "end": "15:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 3,
+          "start": "08:00",
+          "end": "18:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 4,
+          "start": "09:00",
+          "end": "16:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 5,
+          "start": "10:00",
+          "end": "15:00",
+          "frequency": "SEMANAL"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 547
+    },
+    "expected": [
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-02",
+        "start": "09:30",
+        "end": "11:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-02",
+        "start": "11:15",
+        "end": "12:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-02",
+        "start": "12:30",
+        "end": "14:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-02",
+        "start": "14:15",
+        "end": "14:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-03",
+        "start": "15:15",
+        "end": "15:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-03",
+        "start": "16:00",
+        "end": "17:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-03",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-03",
+        "start": "18:30",
+        "end": "20:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-04",
+        "start": "18:15",
+        "end": "18:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-09",
+        "start": "16:15",
+        "end": "17:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-09",
+        "start": "18:00",
+        "end": "18:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_4",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 2,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-16",
+          "estimatedHours": 8,
+          "type": "EXAMEN",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-13",
+          "estimatedHours": 2.5,
+          "type": "PRACTICA",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-18",
+          "estimatedHours": 3,
+          "type": "LABORATORIO",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-15",
+          "estimatedHours": 5.5,
+          "type": "PROYECTO",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "08:00",
+          "end": "15:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 2,
+          "start": "09:00",
+          "end": "17:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 3,
+          "start": "10:00",
+          "end": "17:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 4,
+          "start": "11:00",
+          "end": "18:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 5,
+          "start": "08:00",
+          "end": "15:00",
+          "frequency": "SEMANAL"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 841
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-07",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "15:15",
+        "end": "16:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-11",
+        "start": "17:15",
+        "end": "17:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "18:00",
+        "end": "19:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-14",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-16",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-17",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "Simulacro final",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_5",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 1.5,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 6,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-06",
+          "estimatedHours": 11,
+          "type": "EXAMEN",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-23",
+          "estimatedHours": 9.5,
+          "type": "PRACTICA",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-20",
+          "estimatedHours": 6,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-21",
+          "estimatedHours": 0.5,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "10:00",
+          "end": "17:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 2,
+          "start": "11:00",
+          "end": "16:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 3,
+          "start": "08:00",
+          "end": "15:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 4,
+          "start": "09:00",
+          "end": "17:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 5,
+          "start": "10:00",
+          "end": "14:00",
+          "frequency": "A"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 743
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-02",
+        "start": "17:15",
+        "end": "18:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-03",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-05",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-11",
+        "start": "15:15",
+        "end": "16:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-12",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-13",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-13",
+        "start": "09:15",
+        "end": "09:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-16",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-16",
+        "start": "18:30",
+        "end": "19:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-17",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-17",
+        "start": "09:15",
+        "end": "09:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-18",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-18",
+        "start": "08:45",
+        "end": "09:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-19",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-19",
+        "start": "09:15",
+        "end": "09:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-20",
+        "start": "14:15",
+        "end": "15:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_6",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 0.5,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 3,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-12",
+          "estimatedHours": 10,
+          "type": "EXAMEN",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-05",
+          "estimatedHours": 0.5,
+          "type": "PRACTICA",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-18",
+          "estimatedHours": 9,
+          "type": "LABORATORIO",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-15",
+          "estimatedHours": 3.5,
+          "type": "PROYECTO",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "08:00",
+          "end": "16:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 2,
+          "start": "09:00",
+          "end": "17:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 3,
+          "start": "10:00",
+          "end": "17:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 4,
+          "start": "11:00",
+          "end": "18:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 5,
+          "start": "08:00",
+          "end": "18:00",
+          "frequency": "SEMANAL"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 709
+    },
+    "expected": [
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-02",
+        "start": "16:15",
+        "end": "16:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-03",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-05",
+        "start": "18:15",
+        "end": "18:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-06",
+        "start": "18:15",
+        "end": "18:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-07",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "17:15",
+        "end": "17:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-11",
+        "start": "17:15",
+        "end": "17:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "18:15",
+        "end": "18:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-13",
+        "start": "18:15",
+        "end": "18:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-14",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-16",
+        "start": "16:15",
+        "end": "16:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-17",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_7",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-22",
+          "estimatedHours": 1,
+          "type": "EXAMEN",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-07",
+          "estimatedHours": 7.5,
+          "type": "PRACTICA",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-08",
+          "estimatedHours": 8,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-17",
+          "estimatedHours": 2.5,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "10:00",
+          "end": "18:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 2,
+          "start": "11:00",
+          "end": "18:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 3,
+          "start": "08:00",
+          "end": "14:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 4,
+          "start": "09:00",
+          "end": "18:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 5,
+          "start": "10:00",
+          "end": "15:00",
+          "frequency": "SEMANAL"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 739
+    },
+    "expected": [
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-02",
+        "start": "12:30",
+        "end": "14:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-02",
+        "start": "14:15",
+        "end": "14:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-02",
+        "start": "15:00",
+        "end": "16:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-03",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-03",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-04",
+        "start": "08:45",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-13",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-18",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_8",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-20",
+          "estimatedHours": 12,
+          "type": "EXAMEN",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-21",
+          "estimatedHours": 2.5,
+          "type": "PRACTICA",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-10",
+          "estimatedHours": 7,
+          "type": "LABORATORIO",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-23",
+          "estimatedHours": 5.5,
+          "type": "PROYECTO",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "08:00",
+          "end": "18:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 2,
+          "start": "09:00",
+          "end": "16:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 3,
+          "start": "10:00",
+          "end": "18:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 4,
+          "start": "11:00",
+          "end": "15:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 5,
+          "start": "08:00",
+          "end": "15:00",
+          "frequency": "A"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 1057
+    },
+    "expected": [
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-03",
+        "start": "16:15",
+        "end": "17:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-04",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-05",
+        "start": "15:15",
+        "end": "16:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-12",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-16",
+        "start": "09:45",
+        "end": "10:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-17",
+        "start": "16:15",
+        "end": "17:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-17",
+        "start": "17:30",
+        "end": "18:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-18",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-19",
+        "start": "15:15",
+        "end": "16:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-20",
+        "start": "15:15",
+        "end": "16:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_9",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 1,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 4,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-18",
+          "estimatedHours": 11,
+          "type": "EXAMEN",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-07",
+          "estimatedHours": 5.5,
+          "type": "PRACTICA",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-04",
+          "estimatedHours": 2,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-17",
+          "estimatedHours": 4.5,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "10:00",
+          "end": "15:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 2,
+          "start": "11:00",
+          "end": "15:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 3,
+          "start": "08:00",
+          "end": "17:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 4,
+          "start": "09:00",
+          "end": "17:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 5,
+          "start": "10:00",
+          "end": "15:00",
+          "frequency": "SEMANAL"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 1015
+    },
+    "expected": [
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-02",
+        "start": "17:00",
+        "end": "18:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-03",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-04",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-05",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-06",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-13",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-17",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_10",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 1,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 2,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-16",
+          "estimatedHours": 6,
+          "type": "EXAMEN",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-13",
+          "estimatedHours": 0.5,
+          "type": "PRACTICA",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-10",
+          "estimatedHours": 1,
+          "type": "LABORATORIO",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-15",
+          "estimatedHours": 11.5,
+          "type": "PROYECTO",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "08:00",
+          "end": "14:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 2,
+          "start": "09:00",
+          "end": "16:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 3,
+          "start": "10:00",
+          "end": "17:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 4,
+          "start": "11:00",
+          "end": "18:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 5,
+          "start": "08:00",
+          "end": "16:00",
+          "frequency": "A"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 805
+    },
+    "expected": [
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-05",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "16:15",
+        "end": "17:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-07",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "14:15",
+        "end": "15:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "08:45",
+        "end": "09:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-11",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-12",
+        "start": "08:45",
+        "end": "09:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_11",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 6,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-06",
+          "estimatedHours": 9,
+          "type": "EXAMEN",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-11",
+          "estimatedHours": 11.5,
+          "type": "PRACTICA",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-16",
+          "estimatedHours": 12,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-21",
+          "estimatedHours": 10.5,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "10:00",
+          "end": "17:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 2,
+          "start": "11:00",
+          "end": "16:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 3,
+          "start": "08:00",
+          "end": "15:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 4,
+          "start": "09:00",
+          "end": "18:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 5,
+          "start": "10:00",
+          "end": "16:00",
+          "frequency": "B"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 691
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-02",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-02",
+        "start": "18:30",
+        "end": "19:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-03",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-03",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-03",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-04",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-04",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-04",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-05",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-06",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-09",
+        "start": "18:30",
+        "end": "19:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-10",
+        "start": "16:15",
+        "end": "17:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-10",
+        "start": "18:00",
+        "end": "18:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-10",
+        "start": "18:45",
+        "end": "19:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "16:30",
+        "end": "17:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-12",
+        "start": "09:45",
+        "end": "10:15",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-13",
+        "start": "16:15",
+        "end": "17:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "17:15",
+        "end": "18:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-17",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-18",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-19",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-20",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "Simulacro final",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_12",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 0.5,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 1,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-04",
+          "estimatedHours": 4,
+          "type": "EXAMEN",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-17",
+          "estimatedHours": 6.5,
+          "type": "PRACTICA",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-14",
+          "estimatedHours": 11,
+          "type": "LABORATORIO",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-07",
+          "estimatedHours": 9.5,
+          "type": "PROYECTO",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "08:00",
+          "end": "15:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 2,
+          "start": "09:00",
+          "end": "17:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 3,
+          "start": "10:00",
+          "end": "14:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 4,
+          "start": "11:00",
+          "end": "18:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 5,
+          "start": "08:00",
+          "end": "15:00",
+          "frequency": "SEMANAL"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 953
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-02",
+        "start": "16:00",
+        "end": "16:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-03",
+        "start": "17:15",
+        "end": "17:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-04",
+        "start": "14:15",
+        "end": "14:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-05",
+        "start": "18:15",
+        "end": "18:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-06",
+        "start": "15:15",
+        "end": "15:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-07",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-12",
+        "start": "18:15",
+        "end": "18:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-16",
+        "start": "15:15",
+        "end": "15:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_13",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 1,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 1,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-22",
+          "estimatedHours": 11,
+          "type": "EXAMEN",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-19",
+          "estimatedHours": 5.5,
+          "type": "PRACTICA",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-04",
+          "estimatedHours": 10,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-05",
+          "estimatedHours": 0.5,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "10:00",
+          "end": "14:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 2,
+          "start": "11:00",
+          "end": "14:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 3,
+          "start": "08:00",
+          "end": "17:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 4,
+          "start": "09:00",
+          "end": "16:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 5,
+          "start": "10:00",
+          "end": "17:00",
+          "frequency": "A"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 719
+    },
+    "expected": [
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-02",
+        "start": "14:15",
+        "end": "14:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-02",
+        "start": "15:00",
+        "end": "15:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-03",
+        "start": "14:15",
+        "end": "14:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-16",
+        "start": "14:15",
+        "end": "15:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_14",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 5,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 6,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-12",
+          "estimatedHours": 2,
+          "type": "EXAMEN",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-21",
+          "estimatedHours": 0.5,
+          "type": "PRACTICA",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-22",
+          "estimatedHours": 1,
+          "type": "LABORATORIO",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-23",
+          "estimatedHours": 3.5,
+          "type": "PROYECTO",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "08:00",
+          "end": "14:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 2,
+          "start": "09:00",
+          "end": "17:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 3,
+          "start": "10:00",
+          "end": "15:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 4,
+          "start": "11:00",
+          "end": "15:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 5,
+          "start": "08:00",
+          "end": "15:00",
+          "frequency": "B"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 669
+    },
+    "expected": [
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-18",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-18",
+        "start": "08:45",
+        "end": "09:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-19",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-19",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-20",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-21",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "Simulacro final",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_15",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 1,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 2,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-18",
+          "estimatedHours": 1,
+          "type": "EXAMEN",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-07",
+          "estimatedHours": 7.5,
+          "type": "PRACTICA",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-12",
+          "estimatedHours": 8,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-13",
+          "estimatedHours": 6.5,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "10:00",
+          "end": "18:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 2,
+          "start": "11:00",
+          "end": "16:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 3,
+          "start": "08:00",
+          "end": "18:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 4,
+          "start": "09:00",
+          "end": "16:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 5,
+          "start": "10:00",
+          "end": "15:00",
+          "frequency": "SEMANAL"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 723
+    },
+    "expected": [
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-02",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-03",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-04",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-05",
+        "start": "16:15",
+        "end": "17:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "16:15",
+        "end": "17:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-13",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_16",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 6,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-04",
+          "estimatedHours": 8,
+          "type": "EXAMEN",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-05",
+          "estimatedHours": 2.5,
+          "type": "PRACTICA",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-18",
+          "estimatedHours": 11,
+          "type": "LABORATORIO",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-15",
+          "estimatedHours": 1.5,
+          "type": "PROYECTO",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "08:00",
+          "end": "15:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 2,
+          "start": "09:00",
+          "end": "15:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 3,
+          "start": "10:00",
+          "end": "18:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 4,
+          "start": "11:00",
+          "end": "16:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 5,
+          "start": "08:00",
+          "end": "14:00",
+          "frequency": "SEMANAL"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 713
+    },
+    "expected": [
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-02",
+        "start": "12:00",
+        "end": "13:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-02",
+        "start": "13:15",
+        "end": "14:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-02",
+        "start": "15:00",
+        "end": "15:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-03",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-03",
+        "start": "16:30",
+        "end": "18:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-03",
+        "start": "18:15",
+        "end": "18:45",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-07",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "15:15",
+        "end": "16:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-10",
+        "start": "15:15",
+        "end": "16:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-12",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-13",
+        "start": "14:15",
+        "end": "14:45",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-13",
+        "start": "15:00",
+        "end": "15:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-16",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-16",
+        "start": "09:45",
+        "end": "10:15",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-17",
+        "start": "15:15",
+        "end": "16:45",
+        "description": "Simulacro final",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_17",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 0.5,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 2,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-14",
+          "estimatedHours": 11,
+          "type": "EXAMEN",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-07",
+          "estimatedHours": 5.5,
+          "type": "PRACTICA",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-16",
+          "estimatedHours": 2,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-09",
+          "estimatedHours": 4.5,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "10:00",
+          "end": "16:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 2,
+          "start": "11:00",
+          "end": "17:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 3,
+          "start": "08:00",
+          "end": "17:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 4,
+          "start": "09:00",
+          "end": "14:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 5,
+          "start": "10:00",
+          "end": "16:00",
+          "frequency": "A"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 1023
+    },
+    "expected": [
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-02",
+        "start": "17:30",
+        "end": "18:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-03",
+        "start": "17:15",
+        "end": "17:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-04",
+        "start": "17:15",
+        "end": "17:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-05",
+        "start": "14:15",
+        "end": "14:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-06",
+        "start": "16:15",
+        "end": "16:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "16:15",
+        "end": "16:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-12",
+        "start": "14:15",
+        "end": "14:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-13",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_18",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 1,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 3,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-20",
+          "estimatedHours": 10,
+          "type": "EXAMEN",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-13",
+          "estimatedHours": 0.5,
+          "type": "PRACTICA",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-18",
+          "estimatedHours": 5,
+          "type": "LABORATORIO",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-15",
+          "estimatedHours": 7.5,
+          "type": "PROYECTO",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "08:00",
+          "end": "17:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 2,
+          "start": "09:00",
+          "end": "17:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 3,
+          "start": "10:00",
+          "end": "16:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 4,
+          "start": "11:00",
+          "end": "17:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 5,
+          "start": "08:00",
+          "end": "18:00",
+          "frequency": "B"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 829
+    },
+    "expected": [
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-10",
+        "start": "08:00",
+        "end": "08:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-10",
+        "start": "08:45",
+        "end": "09:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-11",
+        "start": "16:15",
+        "end": "17:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-12",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-13",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-14",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-16",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-17",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-18",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_19",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 3,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 6,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-18",
+          "estimatedHours": 9,
+          "type": "EXAMEN",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-11",
+          "estimatedHours": 11.5,
+          "type": "PRACTICA",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-16",
+          "estimatedHours": 12,
+          "type": "LABORATORIO",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-17",
+          "estimatedHours": 2.5,
+          "type": "PROYECTO",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "10:00",
+          "end": "17:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 2,
+          "start": "11:00",
+          "end": "16:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 3,
+          "start": "08:00",
+          "end": "18:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 4,
+          "start": "09:00",
+          "end": "17:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 5,
+          "start": "10:00",
+          "end": "14:00",
+          "frequency": "A"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 523
+    },
+    "expected": [
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-02",
+        "start": "17:15",
+        "end": "18:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-02",
+        "start": "19:00",
+        "end": "19:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-03",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-03",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-04",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-05",
+        "start": "17:15",
+        "end": "18:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-06",
+        "start": "14:15",
+        "end": "15:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-06",
+        "start": "16:00",
+        "end": "17:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-09",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-09",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-10",
+        "start": "16:15",
+        "end": "17:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-10",
+        "start": "17:30",
+        "end": "18:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "18:45",
+        "end": "19:45",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "18:15",
+        "end": "19:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-12",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-12",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-13",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-13",
+        "start": "09:15",
+        "end": "10:15",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-13",
+        "start": "10:30",
+        "end": "11:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-16",
+        "start": "17:15",
+        "end": "17:45",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-16",
+        "start": "18:00",
+        "end": "19:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-17",
+        "start": "08:00",
+        "end": "09:30",
+        "description": "1.2 Ejercicios",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-17",
+        "start": "09:45",
+        "end": "11:15",
+        "description": "Simulacro final",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "combinacion_20",
+    "document": {
+      "settings": {
+        "name": "Prueba",
+        "cycleStart": "2026-08-10",
+        "dailyHours": 1,
+        "totalDailyHours": 9,
+        "weeklyCourseHours": 2,
+        "studyDays": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "sleepTime": "23:00"
+      },
+      "courses": [
+        {
+          "id": "A",
+          "code": "A",
+          "name": "Curso A",
+          "difficulty": 3,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "B",
+          "code": "B",
+          "name": "Curso B",
+          "difficulty": 4,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        },
+        {
+          "id": "C",
+          "code": "C",
+          "name": "Curso C",
+          "difficulty": 5,
+          "credits": 4,
+          "color": "#235b4e",
+          "topics": []
+        }
+      ],
+      "evaluations": [
+        {
+          "id": "z1",
+          "courseId": "A",
+          "name": "z1",
+          "date": "2026-11-12",
+          "estimatedHours": 12,
+          "type": "EXAMEN",
+          "weight": 19.8,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "a2",
+          "courseId": "A",
+          "name": "a2",
+          "date": "2026-11-05",
+          "estimatedHours": 10.5,
+          "type": "PRACTICA",
+          "weight": 25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "b3",
+          "courseId": "B",
+          "name": "b3",
+          "date": "2026-11-14",
+          "estimatedHours": 7,
+          "type": "LABORATORIO",
+          "weight": 0.25,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        },
+        {
+          "id": "c4",
+          "courseId": "C",
+          "name": "c4",
+          "date": "2026-11-11",
+          "estimatedHours": 1.5,
+          "type": "PROYECTO",
+          "weight": 10,
+          "topics": [
+            "1.1 Teoría",
+            "1.2 Ejercicios"
+          ],
+          "completed": false
+        }
+      ],
+      "classes": [
+        {
+          "weekday": 1,
+          "start": "08:00",
+          "end": "15:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 2,
+          "start": "09:00",
+          "end": "16:00",
+          "frequency": "SEMANAL"
+        },
+        {
+          "weekday": 3,
+          "start": "10:00",
+          "end": "16:00",
+          "frequency": "B"
+        },
+        {
+          "weekday": 4,
+          "start": "11:00",
+          "end": "14:00",
+          "frequency": "A"
+        },
+        {
+          "weekday": 5,
+          "start": "08:00",
+          "end": "16:00",
+          "frequency": "SEMANAL"
+        }
+      ],
+      "blocks": [],
+      "lastPlanDate": null,
+      "warnings": []
+    },
+    "now": {
+      "date": "2026-11-02",
+      "minutes": 897
+    },
+    "expected": [
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-02",
+        "start": "15:15",
+        "end": "16:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "a2",
+        "date": "2026-11-03",
+        "start": "16:15",
+        "end": "17:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-07",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "c4",
+        "date": "2026-11-09",
+        "start": "15:15",
+        "end": "15:45",
+        "description": "Simulacro final",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-09",
+        "start": "16:00",
+        "end": "16:30",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "z1",
+        "date": "2026-11-10",
+        "start": "16:15",
+        "end": "17:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-11",
+        "start": "16:15",
+        "end": "17:15",
+        "description": "1.1 Teoría",
+        "completed": false
+      },
+      {
+        "evaluationId": "b3",
+        "date": "2026-11-12",
+        "start": "08:00",
+        "end": "09:00",
+        "description": "1.1 Teoría",
+        "completed": false
+      }
+    ]
+  }
+]

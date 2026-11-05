@@ -41,7 +41,7 @@ export function EvaluationForm({ evaluation, courseId, date, onClose }) {
       <Field label="Tipo"><select name="type" defaultValue={evaluation?.type || 'TAREA'}>{Object.entries(LABELS).map(([v, t]) => <option key={v} value={v}>{t}</option>)}</select></Field></div>
     <div className="form-grid"><Field label="Fecha de entrega" name="date" type="date" defaultValue={evaluation?.date || date || session.today} required />
       <Field label="Hora límite" name="time" type="time" defaultValue={evaluation?.time || ''} /></div>
-    <div className="form-grid"><Field label="Peso en la nota (%)" name="weight" type="number" min="0" max="100" step="0.1" defaultValue={evaluation?.weight || 0} required />
+    <div className="form-grid"><Field label="Peso en la nota (%)" name="weight" type="number" min="0" max="100" step="any" defaultValue={evaluation?.weight || 0} required />
       <Field label="Horas de preparación" name="hours" type="number" min="0.5" max="200" step="0.5" placeholder="Auto" defaultValue={evaluation?.estimatedHours || ''} /></div>
     <Field label="Nota obtenida (opcional)" name="grade" type="number" min="0" max="20" step="0.1" defaultValue={evaluation?.grade ?? ''} />
     <Field label="Notas"><textarea name="notes" defaultValue={evaluation?.notes || ''} maxLength={4000} rows="2" /></Field>

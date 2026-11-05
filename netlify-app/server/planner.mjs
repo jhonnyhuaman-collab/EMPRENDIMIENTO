@@ -11,14 +11,14 @@ export function generatePlan(document, now) {
   const today = now.date;
   const blocks = doc.blocks.filter(b => b.completed || b.date < today);
   for (const block of blocks) if (!block.completed && block.date < today) block.reprogrammed = true;
-  const pending = evaluations.filter(e => !e.completed && e.date > today).map(e => {
+  const pending = [...evaluations].sort((a, b) => a.date.localeCompare(b.date)).filter(e => !e.completed && e.date > today).map(e => {
     const course = courses.find(c => c.id === e.courseId);
     const hours = e.estimatedHours ?? estimatedHours(e.type, course.difficulty, e.weight);
     const done = blocks.filter(b => b.evaluationId === e.id && b.completed).reduce((s, b) => s + duration(b), 0);
     let prepDays = Math.min(14, Math.max(3, Math.ceil(hours / 1.5) + 1));
     let start = e.date;
     while (prepDays) { start = addDays(start, -1); if (settings.studyDays.includes(weekday(start))) prepDays--; }
-    return { ...e, course, remaining: Math.max(0, hours - done), start };
+    return { ...e, course, estimatedHours: hours, remaining: Math.max(0, hours - done), consumed: done, steps: reviewPlan({ ...e, estimatedHours: hours, topics: e.topics || [] }), start };
   });
   const end = pending.reduce((last, e) => e.date > last ? e.date : last, today);
   const horizon = addDays(today, 366);
@@ -36,22 +36,25 @@ export function generatePlan(document, now) {
     const occupied = blocks.filter(b => b.date === date && !b.reprogrammed);
     let capacity = half(Math.min(settings.dailyHours, Math.max(1, settings.totalDailyHours - classMinutes / 60)) - occupied.reduce((s, b) => s + duration(b), 0));
     const candidates = pending.filter(e => e.remaining >= .5 && e.start <= date && date < e.date)
-      .sort((a, b) => score(b, date) - score(a, date) || a.id.localeCompare(b.id));
+      .sort((a, b) => score(b, date) - score(a, date));
     const allocations = new Map();
     const quota = new Map(candidates.map(e => {
       let days = 0;
       for (let d = date; d < e.date; d = addDays(d, 1)) if (settings.studyDays.includes(weekday(d))) days++;
-      return [e.id, Math.min(['EXAMEN', 'PROYECTO'].includes(e.type) ? 3 : 2, Math.max(Math.min(1, e.remaining), Math.ceil(e.remaining / Math.max(1, days) * 2) / 2))];
+      const daily = half(Math.min(e.remaining, ['EXAMEN', 'PROYECTO'].includes(e.type) ? 3 : 2, Math.ceil(e.remaining / Math.max(1, days) * 2) / 2));
+      return [e.id, Math.max(daily, Math.min(1, e.remaining))];
     }));
     const courseAllocations = new Map();
     for (const round of [1, .5, 20]) {
       for (const e of candidates) {
+        if (round === .5 && candidates.some(other => other.courseId === e.courseId && allocations.has(other.id))) continue;
         const allocated = allocations.get(e.id) || 0;
         const weekKey = `${e.courseId}:${monday(date)}`;
         const courseUsed = courseAllocations.get(e.courseId) || 0;
         const hours = half(Math.min(round, quota.get(e.id) - allocated, e.remaining - allocated, capacity,
           settings.weeklyCourseHours - (weeks.get(weekKey) || 0) - courseUsed));
-        if (hours < .5) continue;
+        const minimum = allocations.has(e.id) || round === .5 ? .5 : Math.min(1, e.remaining);
+        if (hours < minimum) continue;
         allocations.set(e.id, allocated + hours);
         courseAllocations.set(e.courseId, courseUsed + hours);
         capacity -= hours;
@@ -61,26 +64,22 @@ export function generatePlan(document, now) {
       let requested = allocations.get(e.id) || 0;
       const from = date === today ? Math.ceil(now.minutes / 30) * 30 : 480;
       // Preferir estudiar despues de la ultima clase, sin renunciar a huecos disponibles.
-      const slots = freeSlots(date, from, settings, classes, blocks);
-      const lastClass = Math.max(0, ...dayClasses.map(c => minutes(c.end) + 15));
-      const ordered = [...slots.filter(([a]) => a >= lastClass), ...slots.filter(([a]) => a < lastClass)];
-      for (const [a, b] of ordered) {
-        let cursor = a;
-        while (requested >= .5 && b - cursor >= 30) {
-          const count = Math.min(90, Math.floor(Math.min(requested * 60, b - cursor) / 30) * 30);
+      const lastClass = Math.max(0, ...dayClasses.map(c => minutes(c.end)));
+      while (requested >= .5) {
+          const slots = freeSlots(date, from, settings, classes, blocks);
+          const slot = slots.find(([a, b]) => a >= lastClass && b - a >= 60) || slots[0];
+          if (!slot) break;
+          const [cursor, end] = slot;
+          const count = Math.min(90, Math.floor(Math.min(requested * 60, end - cursor) / 30) * 30);
           if (count < 30) break;
-          const consumed = blocks.filter(block => block.evaluationId === e.id && !block.reprogrammed).reduce((s, block) => s + duration(block), 0);
-          const steps = reviewPlan({ ...e, estimatedHours: e.estimatedHours ?? estimatedHours(e.type, e.course.difficulty, e.weight), topics: e.topics || [] });
-          let accumulated = 0, description = steps.at(-1)?.title || e.name;
-          for (const step of steps) { accumulated += step.hours; if (consumed < accumulated - 1e-8) { description = step.title; break; } }
+          let accumulated = 0, description = e.steps.at(-1)?.title || e.name;
+          for (const step of e.steps) { accumulated += step.hours; if (e.consumed < accumulated) { description = step.title; break; } }
+          e.consumed += count / 60;
           blocks.push({ id: randomUUID(), evaluationId: e.id, date, start: clock(cursor), end: clock(cursor + count), description, completed: false, reprogrammed: false });
           requested -= count / 60;
           e.remaining -= count / 60;
           const key = `${e.courseId}:${monday(date)}`;
           weeks.set(key, (weeks.get(key) || 0) + count / 60);
-          cursor += count + 15;
-        }
-        if (requested < .5) break;
       }
     }
   }
