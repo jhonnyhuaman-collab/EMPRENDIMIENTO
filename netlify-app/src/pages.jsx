@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { formatPercent } from './percent.mjs';
+import { SemesterOverview } from './semester-overview.jsx';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -163,6 +164,7 @@ export function CalendarPage() {
     <div className="tarjeta"><div className="tarjeta-cuerpo pt-4" id="calendario"><FullCalendar ref={calendar} plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]} locale={esLocale} initialDate={session.today} initialView="dayGridMonth" firstDay={1} headerToolbar={{ left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' }} height="auto" events={events} nowIndicator dayMaxEvents={3} slotMinTime="07:00:00" slotMaxTime="24:00:00" datesSet={info => setTitle(info.view.title)}
       dateClick={info => { if (courses.length) setAdding(info.dateStr.slice(0, 10)); }}
       eventClick={({ event }) => { if (event.extendedProps.kind === 'class') setEditingClass(classes.find(c => c.id === event.extendedProps.classId)); else navigate(`/evaluaciones/${event.extendedProps.evaluationId || event.id}`); }} /></div></div><p className="small text-body-secondary mt-3 mb-0"><i className="bi bi-flag-fill me-1" />Evaluaciones en la parte superior de cada día · <i className="bi bi-clock me-1" />Bloques de estudio con hora · Zonas sombreadas: clases (vista semanal)</p>
+    <SemesterOverview />
     {adding && <EvaluationForm date={adding} onClose={() => setAdding(null)} />}{editingClass && <ClassForm item={editingClass} onClose={() => setEditingClass(null)} />}
   </>;
 }

@@ -74,6 +74,13 @@
 .date-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: .9rem; margin: 24px 0 12px; text-transform: capitalize; }
 .week-badge { background: var(--pa-primario-suave); border-radius: 99px; color: var(--pa-primario); font-size: .75rem; padding: 4px 10px; }
 .empty h3 { font-size: 1rem; }
+.semester-weeks { display: grid; gap: 10px; }
+.semester-week summary { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; padding: 18px 22px; cursor: pointer; }
+.semester-week summary > span { font-size: .85rem; color: var(--pa-tinta-2); }
+.semester-topics { list-style: none; margin: 0; padding: 0; }
+.semester-topics li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 0; border-top: 1px solid var(--pa-borde); }
+.semester-topics li > a { flex: 1; min-width: 150px; }
+.semester-topics small { color: var(--pa-tinta-2); }
 .empty-icon { display: inline-grid; place-items: center; width: 64px; height: 64px; background: var(--pa-dorado-suave); border-radius: 18px; margin-bottom: 16px; color: #79603d; }
 @media(max-width: 991px) { .review-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media(max-width: 575px) { .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } .metric { padding: 16px; } .calendar-surface { padding: 12px; } .pa-modal { padding: 20px; } .review-row { padding: 12px; } .row-meta { gap: 4px; } .evaluation-row, .study-row { gap: 10px; padding: 12px; } }

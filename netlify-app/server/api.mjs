@@ -187,7 +187,7 @@ export function createHandler({ db, env, now = () => new Date(), fetchAI = fetch
         const addCourse = raw => {
           const data = courseSchema.parse(raw);
           const existing = doc.courses.find(c => c.code === data.code);
-          if (existing) { Object.assign(existing, { ...data, topics: mode === 'silabo' ? data.topics : existing.topics, difficulty: mode === 'horario' ? existing.difficulty : data.difficulty }); return existing; }
+          if (existing) { Object.assign(existing, { ...data, topics: mode === 'silabo' ? data.topics : existing.topics, topicSchedule: mode === 'silabo' ? data.topicSchedule : existing.topicSchedule || [], difficulty: mode === 'horario' ? existing.difficulty : data.difficulty }); return existing; }
           const c = { ...data, id: randomUUID() }; doc.courses.push(c); return c;
         };
         if (mode === 'silabo') {

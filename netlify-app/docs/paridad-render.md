@@ -1,5 +1,9 @@
 # Porcentajes y distribucion equivalentes a Render
 
+Actualizacion: se conserva esta comparacion como referencia en generateRenderPlan.
+El plan predeterminado generatePlan ahora usa la preparacion de 16 semanas
+solicitada posteriormente. Ver plan-16-semanas.md para sus diferencias deliberadas.
+
 Verificacion del 5 de noviembre de 2026.
 
 Se compilaron y ejecutaron los servicios Java originales del proyecto con JDK 21:

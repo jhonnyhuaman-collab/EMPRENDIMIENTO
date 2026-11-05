@@ -18,7 +18,8 @@ export const settingsSchema = z.object({
 export const courseSchema = z.object({
   code: text(1, 24).transform(s => s.toUpperCase()), name: text(1, 160),
   credits: z.number().min(.5).max(20), difficulty: z.number().int().min(1).max(5),
-  color: z.string().regex(/^#[a-f\d]{6}$/i), topics: z.array(text(1, 300)).max(100).default([])
+  color: z.string().regex(/^#[a-f\d]{6}$/i), topics: z.array(text(1, 300)).max(100).default([]),
+  topicSchedule: z.array(z.object({ title: text(1, 300), week: z.number().int().min(1).max(16) })).max(100).default([])
 });
 export const evaluationSchema = z.object({
   courseId: z.uuid(), name: text(1, 160), type: z.enum(TYPES), date: isoDate,

@@ -1,11 +1,16 @@
 import { randomUUID } from 'node:crypto';
 import { addDays, daysBetween, monday, weekday, minutes, clock, applies, freeSlots, estimatedHours } from './domain.mjs';
 import { reviewPlan } from './review.mjs';
+import { semesterStrategy, semesterQuota, nextSegment } from './semester.mjs';
 
 const half = n => Math.floor((n + 1e-8) * 2) / 2;
 const duration = b => (minutes(b.end) - minutes(b.start)) / 60;
 
-export function generatePlan(document, now) {
+export function generatePlan(document, now) { return generateRenderPlan(document, now, { semester: true }); }
+
+// Se mantiene la referencia Java para pruebas de regresion. La planificacion
+// actual amplía la ventana al ciclo de 16 semanas por solicitud del estudiante.
+export function generateRenderPlan(document, now, { semester = false } = {}) {
   const doc = structuredClone(document);
   const { settings, courses, evaluations, classes } = doc;
   const today = now.date;
@@ -18,9 +23,10 @@ export function generatePlan(document, now) {
     let prepDays = Math.min(14, Math.max(3, Math.ceil(hours / 1.5) + 1));
     let start = e.date;
     while (prepDays) { start = addDays(start, -1); if (settings.studyDays.includes(weekday(start))) prepDays--; }
-    return { ...e, course, estimatedHours: hours, remaining: Math.max(0, hours - done), consumed: done, steps: reviewPlan({ ...e, estimatedHours: hours, topics: e.topics || [] }), start };
+    const strategy = semester ? semesterStrategy({ ...e, estimatedHours: hours }, course, evaluations, settings, today) : {};
+    return { ...e, course, estimatedHours: hours, remaining: Math.max(0, hours - done), consumed: done, initialConsumed: done, steps: reviewPlan({ ...e, estimatedHours: hours, topics: e.topics || [] }), start, end: e.date, ...strategy };
   });
-  const end = pending.reduce((last, e) => e.date > last ? e.date : last, today);
+  const end = pending.reduce((last, e) => e.end > last ? e.end : last, today);
   const horizon = addDays(today, 366);
   const weeks = new Map();
   for (const block of blocks.filter(b => !b.reprogrammed && b.date >= monday(today))) {
@@ -35,10 +41,11 @@ export function generatePlan(document, now) {
     for (const [start, finish] of intervals) { classMinutes += Math.max(0, finish - Math.max(start, covered)); covered = Math.max(covered, finish); }
     const occupied = blocks.filter(b => b.date === date && !b.reprogrammed);
     let capacity = half(Math.min(settings.dailyHours, Math.max(1, settings.totalDailyHours - classMinutes / 60)) - occupied.reduce((s, b) => s + duration(b), 0));
-    const candidates = pending.filter(e => e.remaining >= .5 && e.start <= date && date < e.date)
+    const candidates = pending.filter(e => e.remaining >= .5 && e.start <= date && date < e.end && (!semester || semesterQuota(e, date, settings) >= .5))
       .sort((a, b) => score(b, date) - score(a, date));
     const allocations = new Map();
     const quota = new Map(candidates.map(e => {
+      if (semester) return [e.id, half(semesterQuota(e, date, settings))];
       let days = 0;
       for (let d = date; d < e.date; d = addDays(d, 1)) if (settings.studyDays.includes(weekday(d))) days++;
       const daily = half(Math.min(e.remaining, ['EXAMEN', 'PROYECTO'].includes(e.type) ? 3 : 2, Math.ceil(e.remaining / Math.max(1, days) * 2) / 2));
@@ -53,7 +60,7 @@ export function generatePlan(document, now) {
         const courseUsed = courseAllocations.get(e.courseId) || 0;
         const hours = half(Math.min(round, quota.get(e.id) - allocated, e.remaining - allocated, capacity,
           settings.weeklyCourseHours - (weeks.get(weekKey) || 0) - courseUsed));
-        const minimum = allocations.has(e.id) || round === .5 ? .5 : Math.min(1, e.remaining);
+        const minimum = semester || allocations.has(e.id) || round === .5 ? .5 : Math.min(1, e.remaining);
         if (hours < minimum) continue;
         allocations.set(e.id, allocated + hours);
         courseAllocations.set(e.courseId, courseUsed + hours);
@@ -70,12 +77,15 @@ export function generatePlan(document, now) {
           const slot = slots.find(([a, b]) => a >= lastClass && b - a >= 60) || slots[0];
           if (!slot) break;
           const [cursor, end] = slot;
-          const count = Math.min(90, Math.floor(Math.min(requested * 60, end - cursor) / 30) * 30);
+          const segment = semester ? nextSegment(e, date, Math.min(requested, 1.5)) : null;
+          if (semester && !segment) break;
+          const count = Math.min(90, Math.floor(Math.min(requested * 60, end - cursor, semester ? segment.hours * 60 : Infinity) / 30) * 30);
           if (count < 30) break;
           let accumulated = 0, description = e.steps.at(-1)?.title || e.name;
           for (const step of e.steps) { accumulated += step.hours; if (e.consumed < accumulated) { description = step.title; break; } }
+          if (segment) description = segment.step.title;
           e.consumed += count / 60;
-          blocks.push({ id: randomUUID(), evaluationId: e.id, date, start: clock(cursor), end: clock(cursor + count), description, completed: false, reprogrammed: false });
+          blocks.push({ id: randomUUID(), evaluationId: e.id, date, start: clock(cursor), end: clock(cursor + count), description, ...(segment ? { topics: segment.step.topics, phase: segment.step.phase } : {}), completed: false, reprogrammed: false });
           requested -= count / 60;
           e.remaining -= count / 60;
           const key = `${e.courseId}:${monday(date)}`;
@@ -86,6 +96,10 @@ export function generatePlan(document, now) {
   doc.blocks = blocks;
   doc.lastPlanDate = today;
   doc.warnings = pending.filter(e => e.remaining >= .5).map(e => `${e.course.code} · ${e.name}: faltan ${e.remaining.toFixed(1)} h por planificar. Revisa tus limites y dias de estudio.`);
+  if (semester) for (const e of pending) {
+    if (e.topicsMissing) doc.warnings.push(`${e.course.code} · ${e.name}: no hay temas registrados. Se propone un repaso general; revisa los temas del silabo.`);
+    else if (e.proposedWeeks) doc.warnings.push(`${e.course.code} · ${e.name}: las semanas de temas sin calendario se proponen por orden. Puedes ajustarlas en los datos del curso.`);
+  }
   return doc;
 }
 

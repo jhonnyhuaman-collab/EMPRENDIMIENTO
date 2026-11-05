@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { generatePlan } from '../server/planner.mjs';
+import { generateRenderPlan as generatePlan } from '../server/planner.mjs';
 import { evaluationSchema } from '../server/domain.mjs';
 import { formatPercent } from '../src/percent.mjs';
 const fixtures = JSON.parse(await readFile(new URL('./fixtures/render-planner.json', import.meta.url), 'utf8'));

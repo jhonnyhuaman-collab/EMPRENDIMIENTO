@@ -25,6 +25,12 @@ automaticamente: el procedimiento opcional de migracion esta mas abajo.
 
 ## Lo que incluye
 
+El plan de estudio incluye ahora preparacion semestral por temas, repaso final
+y un resumen de las 16 semanas en Calendario. Las semanas de cada tema pueden
+ajustarse al revisar el silabo o editar el curso. Tras actualizar esta version,
+pulsar Actualizar mi plan para regenerar los pendientes conservando completados.
+Detalles y limites: [plan de 16 semanas](docs/plan-16-semanas.md).
+
 - Registro, login y cierre de sesion, nombres derivados del correo y perfil editable.
 - Cursos, temas, dificultad, colores, tareas, examenes, laboratorios y proyectos.
 - Notas obtenidas y contribucion a la nota final por peso.

@@ -3,15 +3,17 @@ import { Save, Trash2 } from 'lucide-react';
 import { Field, Button, Modal } from './ui.jsx';
 import { useApp, LABELS } from './context.jsx';
 import { DAY_NAMES } from '../server/domain.mjs';
+import { TopicWeeks } from './topic-weeks.jsx';
 
 export const COLORS = ['#235B4E', '#456A9A', '#8D5B84', '#9C6B35', '#477C7A', '#A05252'];
 export function CourseForm({ course, onClose }) {
   const { mutate, busy } = useApp();
   const [color, setColor] = useState(course?.color || COLORS[0]);
+  const [topicsText, setTopicsText] = useState(course?.topics?.join('\n') || ''), [topicSchedule, setTopicSchedule] = useState(course?.topicSchedule || []);
   const submit = async e => {
     e.preventDefault(); const f = new FormData(e.currentTarget);
     const data = { code: f.get('code'), name: f.get('name'), credits: Number(f.get('credits')), difficulty: Number(f.get('difficulty')), color,
-      topics: String(f.get('topics')).split('\n').map(s => s.trim()).filter(Boolean) };
+      topics: String(f.get('topics')).split('\n').map(s => s.trim()).filter(Boolean), topicSchedule: topicSchedule.filter(t => topicsText.split('\n').map(s => s.trim()).includes(t.title)) };
     if (await mutate(course ? `/courses/${course.id}` : '/courses', course ? 'PUT' : 'POST', data)) onClose();
   };
   return <Modal title={course ? 'Editar curso' : 'Nuevo curso'} onClose={onClose}><form onSubmit={submit}>
@@ -20,7 +22,8 @@ export function CourseForm({ course, onClose }) {
       <Field label="Créditos" name="credits" type="number" min="0.5" max="20" step="0.5" defaultValue={course?.credits || 3} required /></div>
     <Field label="Dificultad"><select name="difficulty" defaultValue={course?.difficulty || 3}>{[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n} · {['Muy ligera', 'Ligera', 'Media', 'Exigente', 'Muy exigente'][n - 1]}</option>)}</select></Field>
     <fieldset className="color-picker"><legend>Color del curso</legend>{COLORS.map(c => <button key={c} type="button" style={{ backgroundColor: c }} aria-label={`Color ${c}`} aria-pressed={color === c} onClick={() => setColor(c)} />)}<input type="color" value={color} onChange={e => setColor(e.target.value)} aria-label="Otro color" /></fieldset>
-    <Field label="Temas del curso"><textarea name="topics" defaultValue={course?.topics?.join('\n') || ''} rows="4" maxLength={20000} /></Field>
+    <Field label="Temas del curso"><textarea name="topics" value={topicsText} onChange={e => setTopicsText(e.target.value)} rows="4" maxLength={20000} /></Field>
+    <TopicWeeks topics={topicsText.split('\n').map(t => t.trim())} schedule={topicSchedule} onChange={setTopicSchedule} />
     <div className="form-actions"><Button type="button" variant="secondary" onClick={onClose}>Cancelar</Button><Button type="submit" busy={busy} icon={Save}>Guardar curso</Button></div>
   </form></Modal>;
 }
