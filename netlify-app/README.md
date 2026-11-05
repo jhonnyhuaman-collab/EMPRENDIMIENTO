@@ -4,6 +4,25 @@ Version independiente en React y JavaScript/Node.js. La aplicacion Java de Rende
 no se elimina ni se modifica. La especificacion original del curso exige Java;
 conservar esa version para la entrega si el docente mantiene ese requisito.
 
+## Interfaz original recuperada de Render
+
+Esta version utiliza las hojas `estilos.css`, `marca.css` y `pwa.css` originales,
+el logo, la fotografia, Bootstrap y sus iconos. Se trasladaron a componentes las
+plantillas de Hoy, Agenda (con formulario lateral), Cursos (evaluaciones y temas),
+Horario (grilla semanal), Configuracion, acceso, guia de evaluacion y revision.
+No hay que cambiar carpetas ni crear otro proyecto de Netlify: actualizar este.
+
+Se conservaron el repaso por tipo/tema, simulacro, inicio recomendado, prioridad,
+semanas A/B, importacion con revision y registro manual. Al reimportar horarios se
+reemplazan las clases de los cursos incluidos, conservando evaluaciones. Al
+reimportar silabos se reemplazan sus evaluaciones identificadas como SILABO y se
+conservan los pendientes manuales. Las evaluaciones antiguas sin origen guardado
+se conservan para no borrar registros de la primera version de Netlify.
+
+La adaptacion usa funciones Node en Netlify; no ejecuta Spring Boot alli ni
+depende de Render como proxy. Las cuentas y datos de Render no se han copiado
+automaticamente: el procedimiento opcional de migracion esta mas abajo.
+
 ## Lo que incluye
 
 - Registro, login y cierre de sesion, nombres derivados del correo y perfil editable.

@@ -2,7 +2,7 @@
 
 Fecha: 4 de noviembre de 2026.
 
-- 28 pruebas automatizadas aprobadas con `npm test`: autenticacion, privacidad
+- 38 pruebas automatizadas aprobadas con `npm test`: autenticacion, privacidad
   entre cuentas, CSRF, limites de intentos, concurrencia, validaciones, planificador,
   semanas A/B, calendario ICS, conversion desde Java y respuestas simuladas de IA.
 - `npm run build`: compilacion de produccion correcta. El empaquetador informa

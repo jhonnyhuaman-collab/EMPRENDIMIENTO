@@ -3,7 +3,7 @@ import { X, LoaderCircle, Download, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function Button({ icon: Icon, children, variant = 'primary', busy, ...props }) {
-  return <button className={`button ${variant}`} {...props} disabled={props.disabled || busy}>
+  return <button className={`${variant === 'primary' ? 'btn-premium' : variant === 'metal' ? 'btn-dorado' : 'btn-suave'} button ${variant}`} {...props} disabled={props.disabled || busy}>
     {busy ? <LoaderCircle className="spin" size={18} aria-hidden="true" /> : Icon && <Icon size={18} aria-hidden="true" />}{children}
   </button>;
 }
@@ -14,27 +14,27 @@ export function Field({ label, children, hint, ...props }) {
   const id = useId();
   const identify = element => {
     if (!React.isValidElement(element)) return element;
-    if (['input', 'select', 'textarea'].includes(element.type)) return React.cloneElement(element, { id, ...props });
+    if (['input', 'select', 'textarea'].includes(element.type)) return React.cloneElement(element, { id, ...props, className: `${element.type === 'select' ? 'form-select' : 'form-control'} campo ${element.props.className || ''}` });
     return element.props.children ? React.cloneElement(element, {}, React.Children.map(element.props.children, identify)) : element;
   };
-  return <div className="field"><label htmlFor={id}>{label}</label>{children ? identify(children) : <input id={id} {...props} />}{hint && <small>{hint}</small>}</div>;
+  return <div className="field"><label className="etiqueta-campo" htmlFor={id}>{label}</label>{children ? identify(children) : <input className="form-control campo" id={id} {...props} />}{hint && <small>{hint}</small>}</div>;
 }
 export function Modal({ title, onClose, children }) {
   const dialog = useRef();
   const titleId = useId();
   useEffect(() => { dialog.current.showModal(); return () => dialog.current?.close(); }, []);
-  return <dialog ref={dialog} className="modal" onCancel={e => { e.preventDefault(); onClose(); }} aria-labelledby={titleId}
+  return <dialog ref={dialog} className="pa-modal" onCancel={e => { e.preventDefault(); onClose(); }} aria-labelledby={titleId}
     onClick={e => { if (e.target === e.currentTarget) { const r = e.currentTarget.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) onClose(); } }}>
     <div className="modal-head"><h2 id={titleId}>{title}</h2><IconButton icon={X} label="Cerrar" onClick={onClose} /></div>{children}
   </dialog>;
 }
 export function Empty({ icon: Icon, title, children, action }) {
-  return <div className="empty"><span className="empty-icon"><Icon size={28} /></span><h3>{title}</h3>{children && <p>{children}</p>}{action}</div>;
+  return <div className="vacio empty"><span className="empty-icon"><Icon size={28} /></span><h3>{title}</h3>{children && <p>{children}</p>}{action}</div>;
 }
 export function PageTitle({ eyebrow, title, description, action }) {
-  return <header className="page-title"><div>{eyebrow && <span className="eyebrow">{eyebrow}</span>}<h1>{title}</h1>{description && <p>{description}</p>}</div>{action}</header>;
+  return <header className="encabezado-pagina"><div>{eyebrow && <span className="sobretitulo">{eyebrow}</span>}<h1 className="titulo-pagina">{title}</h1>{description && <p className="subtitulo-pagina">{description}</p>}</div>{action}</header>;
 }
-export function ErrorMessage({ message }) { return message ? <div className="alert error" role="alert">{message}</div> : null; }
+export function ErrorMessage({ message }) { return message ? <div className="aviso-error" role="alert">{message}</div> : null; }
 export function Back({ to, children }) { return <Link className="back" to={to}><ArrowLeft size={16} />{children}</Link>; }
 export function InstallButton() {
   const [prompt, setPrompt] = useState(null);

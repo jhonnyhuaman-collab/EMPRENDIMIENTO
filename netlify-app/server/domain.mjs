@@ -26,7 +26,8 @@ export const evaluationSchema = z.object({
   estimatedHours: z.number().min(.5).max(200).nullable().default(null),
   grade: z.number().min(0).max(20).nullable().default(null),
   notes: text(0, 4000).default(''), topics: z.array(text(1, 300)).max(100).default([]),
-  completed: z.boolean().default(false)
+  completed: z.boolean().default(false),
+  origin: z.enum(['AGENDA', 'SILABO']).default('AGENDA'), week: z.number().int().min(1).max(52).nullable().default(null)
 });
 export const classSchema = z.object({
   courseId: z.uuid(), weekday: z.number().int().min(1).max(7), start: time, end: time,

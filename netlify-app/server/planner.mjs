@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { addDays, daysBetween, monday, weekday, minutes, clock, applies, freeSlots, estimatedHours } from './domain.mjs';
+import { reviewPlan } from './review.mjs';
 
 const half = n => Math.floor((n + 1e-8) * 2) / 2;
 const duration = b => (minutes(b.end) - minutes(b.start)) / 60;
@@ -68,9 +69,11 @@ export function generatePlan(document, now) {
         while (requested >= .5 && b - cursor >= 30) {
           const count = Math.min(90, Math.floor(Math.min(requested * 60, b - cursor) / 30) * 30);
           if (count < 30) break;
-          const done = blocks.filter(block => block.evaluationId === e.id && block.completed).length;
-          const topic = e.topics?.length ? e.topics[(done + blocks.filter(block => block.evaluationId === e.id && !block.completed).length) % e.topics.length] : 'Repaso y ejercicios';
-          blocks.push({ id: randomUUID(), evaluationId: e.id, date, start: clock(cursor), end: clock(cursor + count), description: `${e.name}: ${topic}`, completed: false, reprogrammed: false });
+          const consumed = blocks.filter(block => block.evaluationId === e.id && !block.reprogrammed).reduce((s, block) => s + duration(block), 0);
+          const steps = reviewPlan({ ...e, estimatedHours: e.estimatedHours ?? estimatedHours(e.type, e.course.difficulty, e.weight), topics: e.topics || [] });
+          let accumulated = 0, description = steps.at(-1)?.title || e.name;
+          for (const step of steps) { accumulated += step.hours; if (consumed < accumulated - 1e-8) { description = step.title; break; } }
+          blocks.push({ id: randomUUID(), evaluationId: e.id, date, start: clock(cursor), end: clock(cursor + count), description, completed: false, reprogrammed: false });
           requested -= count / 60;
           e.remaining -= count / 60;
           const key = `${e.courseId}:${monday(date)}`;

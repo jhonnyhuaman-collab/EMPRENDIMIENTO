@@ -1,0 +1,232 @@
+/* Identidad: grafito, esmeralda y metal champagne. */
+:root {
+    --pa-grafito: #191F20;
+    --pa-metal: #D8BC95;
+    --pa-metal-claro: #F1E7D7;
+}
+
+.marca-icono.marca-logo {
+    display: block;
+    width: 48px;
+    height: 48px;
+    flex: none;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 1px solid rgba(216, 188, 149, .4);
+    background: var(--pa-grafito);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+}
+.barra-lateral {
+    background: #192725;
+    border-right-color: rgba(216, 188, 149, .2);
+    scrollbar-color: #71877D #192725;
+}
+.barra-lateral .marca { padding-bottom: 24px; }
+.barra-lateral .marca-texto small { color: var(--pa-metal); }
+.barra-lateral .menu-seccion { color: #A8BCB4; }
+.barra-lateral .menu-item { padding: 9px 10px; gap: 11px; }
+.barra-lateral .menu-item > i {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    flex: none;
+    font-size: 16px;
+    border: 1px solid rgba(216, 188, 149, .2);
+    border-radius: 10px;
+    background: rgba(241, 231, 215, .06);
+    color: #E8CFAC;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 3px 8px rgba(0, 0, 0, .12);
+    transition: background .16s, color .16s;
+}
+.barra-lateral .menu-item:hover { background: #2B3C37; }
+.barra-lateral .menu-item:hover > i { background: #3B4D43; color: #FFF4E3; }
+.barra-lateral .menu-item.activo { background: #EAE4D8; color: #1C382F; }
+.barra-lateral .menu-item.activo > i {
+    background: #235B4E;
+    border-color: #477265;
+    color: #F8E6CC;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), 0 3px 7px rgba(25, 51, 40, .18);
+}
+.barra-lateral .tarjeta-plan-lateral {
+    background: #243D35;
+    border-color: rgba(216, 188, 149, .24);
+}
+.barra-lateral .tarjeta-plan-lateral .bi-stars { color: var(--pa-metal); }
+.barra-lateral .btn-dorado {
+    background: linear-gradient(145deg, #F3E6D3, #D8BC95);
+    border-color: #E4CCAA;
+    color: #233A30;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 3px 9px rgba(0, 0, 0, .12);
+}
+.btn-premium {
+    border-color: #427567;
+    background: linear-gradient(155deg, #326E5F, #214E43);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 5px 14px rgba(21, 58, 46, .17);
+}
+:is(.btn-premium, .btn-dorado, .btn-suave) > i {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 1.25em;
+    height: 1.25em;
+    font-size: 1.05em;
+    line-height: 1;
+}
+.tarjeta-titulo .icono-titulo {
+    width: 42px;
+    height: 42px;
+    flex: none;
+    border: 1px solid rgba(35, 91, 78, .14);
+    font-size: 19px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .85), 0 3px 7px rgba(29, 60, 48, .08);
+}
+:is(.metrica-icono, .zona-icono) {
+    border: 1px solid rgba(35, 91, 78, .14);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 4px 10px rgba(29, 60, 48, .08);
+}
+.indicador-etiqueta > i {
+    width: 34px;
+    height: 34px;
+    flex: none;
+    font-size: 16px;
+    border: 1px solid rgba(35, 91, 78, .1);
+    border-radius: 10px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 2px 5px rgba(29, 60, 48, .06);
+}
+.vacio > i {
+    width: 64px;
+    height: 64px;
+    border: 1px solid #E6D3B7;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #FFFCF5, #EEE0C9);
+    color: #79603D;
+    box-shadow: inset 0 1px 0 #FFF, 0 5px 12px rgba(77, 60, 35, .07);
+}
+.nav-inferior {
+    background: rgba(249, 251, 250, .92);
+    border-color: rgba(180, 199, 190, .8);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+}
+.nav-inferior a { position: relative; }
+.nav-inferior a > i {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    font-size: 19px;
+}
+.nav-inferior a.activo { background: #E5EEE8; color: #1E5747; }
+.nav-inferior a.activo::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: calc(50% - 9px);
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: #B29363;
+}
+
+/* Acceso de vidrio: la fotografia permanece visible sin perder contraste. */
+.pagina-acceso {
+    background-image: linear-gradient(90deg, rgba(14, 28, 23, .08), rgba(14, 28, 23, .28)), url('../images/biblioteca.jpg');
+}
+.acceso-contenedor { width: min(100%, 460px); }
+.acceso-marca {
+    gap: 14px;
+    margin-bottom: 24px;
+    color: #FFF7EB;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, .65);
+}
+.acceso-marca:hover { color: #FFF7EB; }
+.acceso-marca img {
+    display: block;
+    flex: none;
+    width: 64px;
+    height: 64px;
+    border: 1px solid rgba(224, 196, 156, .65);
+    border-radius: 18px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .25);
+}
+.acceso-marca strong { display: block; font-size: 20px; line-height: 1.25; }
+.acceso-marca small { display: block; font-size: 14px; font-weight: 500; color: #F3DFC2; margin-top: 4px; }
+.acceso-panel {
+    position: relative;
+    padding: 36px;
+    background: rgba(244, 249, 246, .78);
+    border: 1px solid rgba(255, 255, 255, .68);
+    -webkit-backdrop-filter: blur(20px) saturate(1.15);
+    backdrop-filter: blur(20px) saturate(1.15);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 24px 70px rgba(9, 25, 18, .28);
+}
+.acceso-panel::before {
+    content: '';
+    position: absolute;
+    left: 36px;
+    right: 36px;
+    top: -1px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #E0BF8B, transparent);
+}
+.acceso-cabecera { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.acceso-cabecera .sobretitulo { color: #355A4C; font-size: 14px; font-weight: 600; margin: 0; }
+.acceso-emblema {
+    width: 42px;
+    height: 42px;
+    flex: none;
+    margin: 0;
+    border-radius: 12px;
+    background: #233D33;
+    color: #F0D9B8;
+    border: 1px solid #4C6555;
+    font-size: 20px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), 0 4px 9px rgba(13, 45, 30, .13);
+}
+.acceso-panel h1 { margin-top: 0; color: #1F332B; }
+.acceso-panel .text-body-secondary { color: #435A50 !important; }
+.acceso-panel .etiqueta-campo { color: #2E493D; font-size: 14px; font-weight: 600; }
+.campo-acceso { position: relative; }
+.campo-acceso > i {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    left: 15px;
+    top: 0;
+    height: 100%;
+    color: #496B5B;
+    pointer-events: none;
+}
+.acceso-panel .campo {
+    min-height: 52px;
+    padding-left: 44px;
+    color: #203A2D;
+    background: rgba(255, 255, 255, .52);
+    border-color: rgba(88, 122, 102, .33);
+    box-shadow: inset 0 1px 2px rgba(40, 70, 50, .025);
+}
+.acceso-panel .campo::placeholder { color: #52685C; opacity: 1; }
+.acceso-panel .campo:focus { background: rgba(255, 255, 255, .82); border-color: #427760; }
+.acceso-panel .ver-password { color: #365B48; }
+.acceso-panel .ver-password:hover { color: #183D2C; }
+.acceso-panel .btn-premium { min-height: 52px; }
+.acceso-panel > p.mt-4 { border-top: 1px solid rgba(72, 106, 83, .2); padding-top: 20px; }
+.acceso-panel a { color: #1C513A; font-weight: 700; text-underline-offset: 4px; }
+.acceso-panel a:hover { text-decoration: underline; }
+.acceso-panel .pwa-instalar { background: rgba(255, 255, 255, .3); border-color: #96AD9D; }
+.acceso-pie { color: #F7EFDF; font-size: 14px; }
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .acceso-panel { background: rgba(244, 249, 246, .94); }
+}
+@media (max-width: 991.98px) {
+    .barra-movil .marca-logo { width: 36px; height: 36px; border-radius: 11px; }
+    .barra-movil { background: rgba(228, 239, 232, .95); }
+}
+@media (max-width: 575.98px) {
+    .acceso-panel { padding: 28px 24px; }
+    .acceso-panel h1 { font-size: 28px; }
+    .acceso-marca img { width: 56px; height: 56px; border-radius: 16px; }
+    .acceso-marca strong { font-size: 18px; }
+}

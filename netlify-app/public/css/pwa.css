@@ -1,0 +1,46 @@
+.pwa-instalar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 14px;
+    border: 1px solid var(--pa-borde);
+    border-radius: 12px;
+    background: var(--pa-superficie);
+    color: var(--pa-primario);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+.pwa-instalar[hidden] { display: none !important; }
+.pwa-instalar:hover { background: var(--pa-primario-suave); }
+.pwa-instalar:focus-visible { outline: 3px solid var(--pa-dorado); outline-offset: 3px; }
+.barra-lateral .pwa-instalar { width: 100%; margin-top: 8px; }
+.acceso-panel .pwa-instalar { width: 100%; margin-top: 20px; }
+.pagina-acceso { min-height: 100dvh; }
+
+@media (max-width: 991.98px) {
+    .barra-movil {
+        padding-top: calc(12px + env(safe-area-inset-top, 0px));
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+    }
+    .nav-inferior {
+        bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+        left: max(12px, env(safe-area-inset-left, 0px));
+        right: max(12px, env(safe-area-inset-right, 0px));
+    }
+    .contenido {
+        padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px));
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+    }
+    .pagina-acceso {
+        padding-top: max(40px, env(safe-area-inset-top, 0px));
+        padding-bottom: max(40px, env(safe-area-inset-bottom, 0px));
+        padding-left: max(20px, env(safe-area-inset-left, 0px));
+        padding-right: max(20px, env(safe-area-inset-right, 0px));
+    }
+}

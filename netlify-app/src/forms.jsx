@@ -31,7 +31,8 @@ export function EvaluationForm({ evaluation, courseId, date, onClose }) {
     e.preventDefault(); const f = new FormData(e.currentTarget);
     const data = { courseId: f.get('courseId'), name: f.get('name'), type: f.get('type'), date: f.get('date'), time: f.get('time') || null,
       weight: Number(f.get('weight')), estimatedHours: f.get('hours') ? Number(f.get('hours')) : null, grade: f.get('grade') !== '' ? Number(f.get('grade')) : null,
-      notes: f.get('notes'), topics: String(f.get('topics')).split('\n').map(s => s.trim()).filter(Boolean), completed: evaluation?.completed || false };
+      notes: f.get('notes'), topics: String(f.get('topics')).split('\n').map(s => s.trim()).filter(Boolean), completed: evaluation?.completed || false,
+      origin: evaluation?.origin || 'AGENDA', week: evaluation?.week || null };
     if (await mutate(evaluation ? `/evaluations/${evaluation.id}` : '/evaluations', evaluation ? 'PUT' : 'POST', data)) onClose();
   };
   return <Modal title={evaluation ? 'Editar pendiente' : 'Nuevo pendiente'} onClose={onClose}><form onSubmit={submit}>

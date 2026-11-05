@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { settingsSchema, courseSchema, evaluationSchema, classSchema, initialDocument, limaNow, daysBetween, addDays, estimatedHours } from './domain.mjs';
 import { generatePlan, calendarIcs } from './planner.mjs';
 import { analyze, importSchema, providerInfo } from './ai.mjs';
+import { alignSyllabusDates } from './review.mjs';
 
 const authSchema = z.object({ email: z.string().trim().toLowerCase().email().max(254), password: z.string().min(8).max(72).refine(s => Buffer.byteLength(s) <= 72, 'La contraseña es demasiado larga.') });
 const versionSchema = z.object({ version: z.number().int().positive() });
@@ -162,7 +163,7 @@ export function createHandler({ db, env, now = () => new Date(), fetchAI = fetch
         if (route.endsWith('/toggle') && method === 'POST') ev.completed = !ev.completed;
         else if (method === 'DELETE') { doc.evaluations = doc.evaluations.filter(e => e.id !== id); doc.blocks = doc.blocks.filter(b => b.evaluationId !== id); }
         else if (method === 'PUT') {
-          const data = evaluationSchema.parse(input.data); const course = requireCourse(doc, data.courseId);
+          const data = evaluationSchema.parse({ ...input.data, origin: input.data.origin ?? ev.origin ?? 'AGENDA', week: input.data.week ?? ev.week ?? null }); const course = requireCourse(doc, data.courseId);
           validateWeight(doc, data, id); data.estimatedHours ??= estimatedHours(data.type, course.difficulty, data.weight);
           doc.evaluations = doc.evaluations.map(e => e.id === id ? { ...data, id } : e);
         } else fail(405, 'Metodo no permitido.');
@@ -178,30 +179,36 @@ export function createHandler({ db, env, now = () => new Date(), fetchAI = fetch
         } else fail(405, 'Metodo no permitido.');
       } else if (/^\/blocks\/[a-f\d-]+\/toggle$/.test(route) && method === 'POST') {
         const block = doc.blocks.find(b => b.id === route.split('/')[2]) || fail(404, 'No se encontro el bloque.');
-        if (block.reprogrammed) fail(400, 'Este bloque ya fue reprogramado.');
+        // Render permite marcar un bloque atrasado si el estudiante si lo realizo.
+        if (block.reprogrammed) block.reprogrammed = false;
         block.completed = !block.completed;
       } else if (route === '/import/save' && method === 'POST') {
         const mode = z.enum(['silabo', 'horario']).parse(input.kind);
-        const colors = ['#235B4E', '#456A9A', '#8D5B84', '#9C6B35', '#477C7A'];
         const addCourse = raw => {
           const data = courseSchema.parse(raw);
           const existing = doc.courses.find(c => c.code === data.code);
-          if (existing) { existing.topics = [...new Set([...existing.topics, ...data.topics])].slice(0, 100); return existing; }
-          const c = { ...data, color: colors[doc.courses.length % colors.length], id: randomUUID() }; doc.courses.push(c); return c;
+          if (existing) { Object.assign(existing, { ...data, topics: mode === 'silabo' ? data.topics : existing.topics, difficulty: mode === 'horario' ? existing.difficulty : data.difficulty }); return existing; }
+          const c = { ...data, id: randomUUID() }; doc.courses.push(c); return c;
         };
         if (mode === 'silabo') {
           const course = addCourse(input.course);
           const entries = z.array(evaluationSchema.omit({ courseId: true })).max(150).parse(input.evaluations);
+          const replacedIds = new Set(doc.evaluations.filter(e => e.courseId === course.id && e.origin === 'SILABO').map(e => e.id));
+          doc.evaluations = doc.evaluations.filter(e => !replacedIds.has(e.id));
+          doc.blocks = doc.blocks.filter(b => !replacedIds.has(b.evaluationId));
           for (const entry of entries) {
             if (doc.evaluations.some(e => e.courseId === course.id && e.name === entry.name && e.date === entry.date)) continue;
-            const data = { ...entry, courseId: course.id, id: randomUUID() };
+            const data = { ...entry, origin: 'SILABO', courseId: course.id, id: randomUUID() };
             validateWeight(doc, data); data.estimatedHours ??= estimatedHours(data.type, course.difficulty, data.weight);
             doc.evaluations.push(data);
           }
         } else {
           const courses = z.array(courseSchema).min(1).max(40).parse(input.courses).map(addCourse);
+          if (new Set(courses.map(c => c.id)).size !== courses.length) fail(400, 'Hay codigos repetidos en la lista de cursos.');
           const { courseId: ignored, ...classFields } = classSchema.shape;
           const entries = z.array(z.object({ ...classFields, code: z.string().max(24) })).max(150).parse(input.classes);
+          const replacedCourses = new Set(courses.map(c => c.id));
+          doc.classes = doc.classes.filter(c => !replacedCourses.has(c.courseId));
           for (const entry of entries) {
             const course = courses.find(c => c.code === entry.code.toUpperCase().trim()) || fail(400, 'La clase no coincide con ningun curso.');
             const cl = classSchema.parse({ ...entry, courseId: course.id });
@@ -209,6 +216,7 @@ export function createHandler({ db, env, now = () => new Date(), fetchAI = fetch
             validateClass(doc, cl); doc.classes.push({ ...cl, id: randomUUID() });
           }
         }
+        alignSyllabusDates(doc);
       } else fail(404, 'Ruta no encontrada.');
       doc = replan(doc);
       return json(await save(user, doc, version));

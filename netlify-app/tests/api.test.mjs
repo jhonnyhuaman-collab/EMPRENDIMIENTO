@@ -14,7 +14,7 @@ before(async () => {
 after(async () => { await db.close(); });
 async function call(path, method = 'GET', body, account, overrides = {}) {
   const headers = { origin: 'https://app.example', ...(body ? { 'content-type': 'application/json' } : {}), ...(account ? { cookie: account.cookie, 'x-csrf-token': account.csrfToken } : {}), ...overrides };
-  const response = await handler(new Request('https://app.example/api' + path, { method, headers, ...(body ? { body: JSON.stringify(body) } : {}) }), { ip: 'test-' + (account?.email || 'anonymous') });
+  const response = await handler(new Request('https://app.example/api' + path, { method, headers, ...(body ? { body: JSON.stringify(body) } : {}) }), { ip: 'test-' + (account?.email || (path === '/register' ? body.email : 'anonymous')) });
   const result = response.headers.get('content-type')?.startsWith('application/json') ? await response.json() : await response.text();
   return { response, result };
 }
@@ -118,6 +118,29 @@ test('limitacion de intentos persiste en PostgreSQL', async () => {
     const result = await call('/login', 'POST', { email: 'unknown@example.com', password: 'ClaveSegura2026' });
     assert.equal(result.response.status, i < 12 ? 401 : 429);
   }
+});
+
+test('reimportar horario reemplaza clases, conserva evaluaciones y acepta el color revisado', async () => {
+  const a = await account();
+  const first = await call('/import/save', 'POST', { version: a.version, kind: 'horario', courses: [course], classes: [{ code: course.code, weekday: 1, start: '10:00', end: '12:00', frequency: 'SEMANAL' }] }, a);
+  Object.assign(a, first.result);
+  const id = a.state.courses[0].id;
+  Object.assign(a, (await call('/evaluations', 'POST', { version: a.version, data: { courseId: id, name: 'Tarea manual', type: 'TAREA', date: '2026-11-20', weight: 0 } }, a)).result);
+  const second = await call('/import/save', 'POST', { version: a.version, kind: 'horario', courses: [{ ...course, color: '#456a9a' }], classes: [{ code: course.code, weekday: 2, start: '14:00', end: '16:00', frequency: 'B' }] }, a);
+  assert.equal(second.response.status, 200); assert.equal(second.result.state.classes.length, 1);
+  assert.equal(second.result.state.classes[0].weekday, 2); assert.equal(second.result.state.courses[0].color, '#456a9a');
+  assert.equal(second.result.state.evaluations[0].name, 'Tarea manual');
+});
+
+test('reimportar silabo sustituye sus evaluaciones pero conserva las de agenda', async () => {
+  const a = await account(); const entry = { name: 'Parcial', type: 'EXAMEN', date: '2026-11-17', weight: 20, week: 15 };
+  Object.assign(a, (await call('/import/save', 'POST', { version: a.version, kind: 'silabo', course, evaluations: [entry] }, a)).result);
+  const courseId = a.state.courses[0].id;
+  Object.assign(a, (await call('/evaluations', 'POST', { version: a.version, data: { courseId, name: 'Informe manual', type: 'TAREA', date: '2026-11-20', weight: 0 } }, a)).result);
+  const result = await call('/import/save', 'POST', { version: a.version, kind: 'silabo', course, evaluations: [{ ...entry, name: 'Final', weight: 40 }] }, a);
+  assert.equal(result.response.status, 200);
+  assert.deepEqual(result.result.state.evaluations.map(e => e.name).sort(), ['Final', 'Informe manual']);
+  assert.equal(result.result.state.evaluations.find(e => e.name === 'Final').origin, 'SILABO');
 });
 test('en produccion la cookie es Secure y no se aceptan secretos ausentes', async () => {
   const a = await account();

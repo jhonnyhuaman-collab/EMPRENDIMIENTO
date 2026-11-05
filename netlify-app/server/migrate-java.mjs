@@ -34,6 +34,7 @@ export function convertJava(data) {
         date: e.fecha ? date(e.fecha) : addDays(document.settings.cycleStart, ((e.semana || 1) - 1) * 7),
         time: e.hora_entrega ? hour(e.hora_entrega) : null, weight: e.peso_en_nota_final || 0,
         estimatedHours: e.horas_estimadas ?? null, grade: e.nota ?? null, completed: !!e.completada,
+        origin: e.origen === 'SILABO' ? 'SILABO' : 'AGENDA', week: e.semana || null,
         notes: e.notas || '', topics: data.topics.filter(t => topicIds.includes(String(t.id))).map(t => t.titulo)
       }), id });
     }
