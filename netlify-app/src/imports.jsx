@@ -27,7 +27,15 @@ export function ImportPage({ initialKind, embedded = false, manual = false }) {
       setProgress(`${i + 1} de ${list.length} · ${list[i].name}`);
       try {
         const body = await readDocument(list[i], kind);
-        const result = await request('/import/analyze', { method: 'POST', data: body, csrfToken: session.csrfToken, signal: AbortSignal.timeout(65000) });
+        const analyze = () => request('/import/analyze', { method: 'POST', data: body, csrfToken: session.csrfToken, signal: AbortSignal.timeout(65000) });
+        let result;
+        try { result = await analyze(); } catch (e) {
+          // Plan gratuito de Groq: limite por minuto. Esperar lo que indica el proveedor y reintentar una vez.
+          if (!e.providerRateLimited || !(e.retryAfter <= 90)) throw e;
+          for (let left = e.retryAfter; left > 0; left--) { setProgress(`${i + 1} de ${list.length} · La IA alcanzó su límite por minuto. Reintento en ${left} s…`); await new Promise(r => setTimeout(r, 1000)); }
+          setProgress(`${i + 1} de ${list.length} · ${list[i].name}`);
+          result = await analyze();
+        }
         const palette = ['#235B4E', '#456A9A', '#8D5B84', '#9C6B35', '#477C7A'];
         (kind === 'silabo' ? [result.course] : result.courses).forEach((c, n) => { c.color = session.state.courses.find(old => old.code === c.code)?.color || palette[(session.state.courses.length + n) % palette.length]; });
         results.push({ ...result, kind, filename: list[i].name });

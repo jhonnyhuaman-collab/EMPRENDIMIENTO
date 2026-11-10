@@ -97,7 +97,7 @@ test('auto puede pasar a Gemini cuando Groq responde cuota agotada', async () =>
 });
 test('un proveedor fijo no cambia a otro sin configuracion auto', async () => {
   let calls = 0;
-  await assert.rejects(analyze(input, { IA_PROVEEDOR: 'groq', GROQ_API_KEY: 'test', GEMINI_API_KEY: 'test' }, '2026-08-10', async () => { calls++; return new Response('', { status: 429 }); }), e => e.status === 502);
+  await assert.rejects(analyze(input, { IA_PROVEEDOR: 'groq', GROQ_API_KEY: 'test', GEMINI_API_KEY: 'test' }, '2026-08-10', async () => { calls++; return new Response('', { status: 429 }); }), e => e.status === 429 && e.providerRateLimited);
   assert.equal(calls, 1);
 });
 test('rechaza datos invalidos devueltos por IA en lugar de guardarlos', async () => {
@@ -107,7 +107,7 @@ test('rechaza datos invalidos devueltos por IA en lugar de guardarlos', async ()
 });
 
 test('informa errores HTTP sin filtrar claves ni mensajes privados del proveedor', async () => {
-  for (const [code, expected] of [[401, /clave rechazada/], [403, /acceso denegado/], [404, /modelo o recurso/], [429, /cuota o limite/], [400, /incompatible/], [503, /temporalmente/]]) {
+  for (const [code, expected] of [[401, /clave rechazada/], [403, /acceso denegado/], [404, /modelo o recurso/], [400, /incompatible/], [503, /temporalmente/]]) {
     await assert.rejects(analyze(input, { GROQ_API_KEY: 'clave-privada' }, '2026-08-10', async () => Response.json({ error: 'documento y clave-privada' }, { status: code })), error => {
       assert.equal(error.status, 502); assert.match(error.message, expected);
       assert.ok(!error.message.includes('clave-privada')); assert.ok(!error.message.includes('documento y'));
@@ -158,4 +158,51 @@ test('peso real se calcula como en Render: componente x peso interno', () => {
   const out = normalizeExtraction(raw, 'silabo');
   assert.equal(out.evaluations[0].weight, 19.8);
   assert.equal(out.evaluations[1].weight, 25);
+});
+
+test('limite por minuto de Groq devuelve 429 con el tiempo de espera del proveedor', async () => {
+  await assert.rejects(analyze(input, { GROQ_API_KEY: 'clave-privada' }, '2026-08-10', async () => new Response('{"error":{"message":"Rate limit reached"}}', { status: 429, headers: { 'retry-after': '23' } })), error => {
+    assert.equal(error.status, 429); assert.equal(error.retryAfter, 23); assert.equal(error.providerRateLimited, true);
+    assert.match(error.message, /limite por minuto/); assert.ok(!error.message.includes('clave-privada'));
+    return true;
+  });
+});
+
+test('documento demasiado grande para Groq no se reintenta como limite por minuto', async () => {
+  await assert.rejects(analyze(input, { GROQ_API_KEY: 'test' }, '2026-08-10', async () => new Response('{"error":{"message":"Request too large for model on tokens per minute (TPM): Limit 8000, Requested 12000"}}', { status: 429 })), error => {
+    assert.equal(error.status, 502); assert.ok(!error.providerRateLimited);
+    assert.match(error.message, /demasiado grande/);
+    return true;
+  });
+});
+
+test('pesos: conserva el peso final de la IA si el producto por componentes no suma 100', () => {
+  const raw = structuredClone(data);
+  raw.evaluations = [20, 30, 50].map((w, i) => ({ ...raw.evaluations[0], name: `E${i}`, weight: w, componentWeight: 60, weightInComponent: w }));
+  const out = normalizeExtraction(raw, 'silabo');
+  assert.deepEqual(out.evaluations.map(e => e.weight), [20, 30, 50]);
+  assert.ok(!out.warnings.some(w => /deben sumar 100/.test(w)));
+});
+
+test('pesos: usa componente x peso interno cuando el peso final de la IA no suma 100', () => {
+  const raw = structuredClone(data);
+  raw.evaluations = [
+    ...[1, 2, 3].map(n => ({ ...raw.evaluations[0], name: `EC${n}`, weight: 33.33, componentWeight: 60, weightInComponent: 100 / 3 })),
+    { ...raw.evaluations[0], name: 'Final', weight: 40, componentWeight: 100, weightInComponent: 40 }
+  ];
+  const out = normalizeExtraction(raw, 'silabo');
+  assert.deepEqual(out.evaluations.map(e => e.weight), [20, 20, 20, 40]);
+});
+
+test('pesos: avisa cuando el total no suma 100', () => {
+  const raw = structuredClone(data);
+  raw.evaluations = [{ ...raw.evaluations[0], weight: 30, componentWeight: 100, weightInComponent: 30 }];
+  const out = normalizeExtraction(raw, 'silabo');
+  assert.ok(out.warnings.some(w => /suman 30% y deben sumar 100%/.test(w)));
+});
+
+test('el esquema para la IA describe como calcular los pesos', () => {
+  const ev = extractionJsonSchema('silabo').properties.evaluations.items.properties;
+  assert.match(ev.componentWeight.description, /componente/);
+  assert.match(ev.weight.description, /100/);
 });

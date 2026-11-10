@@ -8,10 +8,11 @@ export const importSchema = z.object({
 const extractedEvaluation = z.object({
   name: z.string().min(1).max(160), type: z.enum(TYPES), week: z.number().int().min(1).max(52).default(1),
   weekday: z.number().int().min(1).max(7).default(1), date: isoDate.nullable().optional(), time: time.nullable().optional(),
-  weight: z.number().min(0).max(100), topics: z.array(z.string().max(300)).max(100).default([]),
+  weight: z.number().min(0).max(100).describe('Peso real en % de la nota final: componentWeight * weightInComponent / 100. La suma de todas las evaluaciones es 100.'),
+  topics: z.array(z.string().max(300)).max(100).default([]),
   // Como en Render (CalculadoraPesoService): la IA da los pesos y la app multiplica.
-  componentWeight: z.number().min(0).max(100).nullable().optional(),
-  weightInComponent: z.number().min(0).max(100).nullable().optional()
+  componentWeight: z.number().min(0).max(100).nullable().optional().describe('Peso en % del componente que la contiene sobre la nota final; 100 si no pertenece a un componente'),
+  weightInComponent: z.number().min(0).max(100).nullable().optional().describe('Peso en % de esta evaluacion dentro de su componente; si no pertenece a uno, su peso directo')
 });
 const extractedClass = z.object({
   code: z.string().min(1).max(24), weekday: z.number().int().min(1).max(7), start: time, end: time,
@@ -24,13 +25,14 @@ export function extractionJsonSchema(kind) {
   const source = z.toJSONSchema(kind === 'silabo' ? syllabus : timetable, { io: 'input' });
   // Subconjunto portable: validamos limites, fechas y relaciones de nuevo con Zod.
   const convert = node => {
-    if (node.anyOf) return { anyOf: node.anyOf.map(convert) };
+    const described = node.description ? { description: node.description } : {};
+    if (node.anyOf) return { anyOf: node.anyOf.map(convert), ...described };
     if (node.type === 'object') {
       const properties = Object.fromEntries(Object.entries(node.properties).map(([key, value]) => [key,
         ['credits', 'difficulty'].includes(key) ? { anyOf: [convert(value), { type: 'null' }] } : convert(value)]));
       return { type: 'object', properties, required: Object.keys(properties), additionalProperties: false };
     }
-    return { type: node.type, ...(node.enum ? { enum: node.enum } : {}), ...(node.items ? { items: convert(node.items) } : {}) };
+    return { type: node.type, ...described, ...(node.enum ? { enum: node.enum } : {}), ...(node.items ? { items: convert(node.items) } : {}) };
   };
   const result = convert(source);
   if (kind === 'silabo') result.properties.course = { anyOf: [result.properties.course, { type: 'null' }] };
@@ -70,11 +72,20 @@ export function normalizeExtraction(value, kind) {
     if (course.topics == null) course.topics = [];
     if (course.topicSchedule == null) course.topicSchedule = [];
   }
-  if (kind === 'silabo' && Array.isArray(result.evaluations)) for (const e of result.evaluations) {
-    if (!e || typeof e !== 'object') continue;
-    for (const key of ['weight', 'componentWeight', 'weightInComponent', 'week', 'weekday']) e[key] = numeric(e[key]);
-    if (typeof e.componentWeight === 'number' && typeof e.weightInComponent === 'number') e.weight = Math.round(e.componentWeight * e.weightInComponent) / 100;
-    if (e.weight == null && typeof e.weightInComponent === 'number') e.weight = e.weightInComponent;
+  if (kind === 'silabo' && Array.isArray(result.evaluations)) {
+    const evs = result.evaluations.filter(e => e && typeof e === 'object');
+    for (const e of evs) for (const key of ['weight', 'componentWeight', 'weightInComponent', 'week', 'weekday']) e[key] = numeric(e[key]);
+    const isNum = v => typeof v === 'number' && Number.isFinite(v);
+    // Dos lecturas posibles: el peso final que dio la IA y el producto componente x peso interno
+    // (CalculadoraPesoService de Render). Se usa la que suma mas cerca de 100%.
+    const product = evs.map(e => isNum(e.componentWeight) && isNum(e.weightInComponent) ? Math.round(e.componentWeight * e.weightInComponent) / 100 : null);
+    const direct = evs.map(e => isNum(e.weight) ? e.weight : null);
+    const total = list => list.reduce((s, v) => s + (isNum(v) ? v : 0), 0);
+    const complete = list => list.length > 0 && list.every(isNum);
+    const useProduct = complete(product) && (!complete(direct) || Math.abs(total(product) - 100) <= Math.abs(total(direct) - 100));
+    evs.forEach((e, i) => { e.weight = useProduct ? product[i] : direct[i] ?? product[i] ?? (isNum(e.weightInComponent) ? e.weightInComponent : 0); });
+    const sum = Math.round(total(evs.map(e => e.weight)) * 100) / 100;
+    if (evs.length && Math.abs(sum - 100) > 0.5) warnings.push(`Los pesos extraidos suman ${sum}% y deben sumar 100%. Revisalos con el silabo o usa "Ajustar a 100%" antes de guardar.`);
   }
   if (kind === 'horario' && Array.isArray(result.classes)) for (const entry of result.classes) {
     if (!entry || typeof entry !== 'object') continue;
@@ -94,6 +105,17 @@ export function providerInfo(env) {
   return { configured, selected: env.IA_PROVEEDOR?.trim().toLowerCase() || 'auto' };
 }
 
+async function providerError(response) {
+  const detail = await response.text().catch(() => '');
+  const seconds = Number(response.headers.get('retry-after'));
+  return Object.assign(new Error('Proveedor no disponible'), {
+    code: response.status,
+    retryAfter: Number.isFinite(seconds) && seconds > 0 ? Math.ceil(seconds) : null,
+    // Groq responde 413 o 429 "Request too large" cuando un solo documento supera su limite por minuto.
+    tooLarge: response.status === 413 || (response.status === 429 && /request too large|requested \d+/i.test(detail))
+  });
+}
+
 function failureReason(error) {
   if (error.code === 'CONTEXT_LIMIT') return 'el texto supera el limite del modelo; divide el silabo en partes';
   if (error.code === 'TRUNCATED') return 'respuesta incompleta; divide el documento en secciones mas pequenas';
@@ -101,7 +123,8 @@ function failureReason(error) {
   if (error.code === 401) return 'clave rechazada (401)';
   if (error.code === 403) return 'acceso denegado; revisa permisos y disponibilidad (403)';
   if (error.code === 404) return 'modelo o recurso no disponible; revisa la variable de modelo (404)';
-  if (error.code === 429) return 'cuota o limite de solicitudes alcanzado (429)';
+  if (error.tooLarge) return 'el documento es demasiado grande para el limite por minuto del plan gratuito';
+  if (error.code === 429) return 'limite por minuto alcanzado (429)';
   if (error.code === 400 || error.code === 422) return `solicitud o modelo incompatible (${error.code})`;
   if (error.code >= 500) return `servicio temporalmente no disponible (${error.code})`;
   if (error instanceof z.ZodError) {
@@ -149,7 +172,7 @@ Devuelve {courses:[{code,name,credits,difficulty,color,topics:[]}],classes:[{cod
     ? `Fecha de inicio del ciclo (lunes de la semana 1): ${cycleStart}\n\nTexto del silabo:\n<silabo>\n${input.text}\n</silabo>`
     : input.text?.trim() ? `${horarioMessage}\n\n<documento>\n${input.text}\n</documento>` : horarioMessage;
   const deadline = AbortSignal.timeout(45000);
-  const failures = [];
+  const failures = [], rateLimits = [];
   for (const provider of providers) {
     try {
       let response, data, content;
@@ -172,7 +195,7 @@ Devuelve {courses:[{code,name,credits,difficulty,color,topics:[]}],classes:[{cod
           if (/context[_ ]?(length|window)|maximum context|too many tokens|reduce.*tokens|input.*too (long|large)/i.test(message)) throw Object.assign(new Error('Limite de texto'), { code: 'CONTEXT_LIMIT' });
           response = await send({ ...payload, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: system + '\nFormato obligatorio de la respuesta JSON: ' + JSON.stringify(extractionJsonSchema('silabo')) }, { role: 'user', content: user }] });
         }
-        if (!response.ok) throw Object.assign(new Error('Proveedor no disponible'), { code: response.status });
+        if (!response.ok) throw await providerError(response);
         data = await response.json();
         if (data.choices?.[0]?.finish_reason === 'length') throw Object.assign(new Error('Respuesta incompleta'), { code: 'TRUNCATED' });
         content = data.choices?.[0]?.message?.content;
@@ -182,7 +205,7 @@ Devuelve {courses:[{code,name,credits,difficulty,color,topics:[]}],classes:[{cod
         response = await requestFetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(env.GEMINI_MODEL || 'gemini-3.8-flash')}:generateContent`, {
           ...common, headers: { ...common.headers, 'x-goog-api-key': env.GEMINI_API_KEY },
           body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ role: 'user', parts }], generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 6500, temperature: .1 } }) });
-        if (!response.ok) throw Object.assign(new Error('Proveedor no disponible'), { code: response.status });
+        if (!response.ok) throw await providerError(response);
         data = await response.json();
         if (data.candidates?.[0]?.finishReason === 'MAX_TOKENS') throw Object.assign(new Error('Respuesta incompleta'), { code: 'TRUNCATED' });
         content = data.candidates?.[0]?.content?.parts?.filter(p => !p.thought).map(p => p.text || '').join('');
@@ -192,7 +215,7 @@ Devuelve {courses:[{code,name,credits,difficulty,color,topics:[]}],classes:[{cod
         response = await requestFetch('https://api.anthropic.com/v1/messages', { ...common,
           headers: { ...common.headers, 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
           body: JSON.stringify({ model: env.ANTHROPIC_MODEL || 'claude-sonnet-5', max_tokens: 6500, system, messages: [{ role: 'user', content: contentParts }] }) });
-        if (!response.ok) throw Object.assign(new Error('Proveedor no disponible'), { code: response.status });
+        if (!response.ok) throw await providerError(response);
         data = await response.json();
         if (data.stop_reason === 'max_tokens') throw Object.assign(new Error('Respuesta incompleta'), { code: 'TRUNCATED' });
         content = data.content?.filter(c => c.type === 'text').map(c => c.text).join('');
@@ -211,10 +234,15 @@ Devuelve {courses:[{code,name,credits,difficulty,color,topics:[]}],classes:[{cod
       if (error.documentMismatch) throw error;
       const reason = failureReason(error);
       failures.push(`${provider}: ${reason}`);
+      if (error.code === 429 && !error.tooLarge) rateLimits.push(error.retryAfter || 60);
       // No registrar documentos, respuestas del proveedor, claves ni URLs con secretos.
       console.warn('IA no disponible', provider, reason);
       if (deadline.aborted || info.selected !== 'auto') break;
     }
+  }
+  if (rateLimits.length && rateLimits.length === failures.length) {
+    const retryAfter = Math.min(120, Math.max(...rateLimits));
+    throw Object.assign(new Error(`La IA alcanzo su limite por minuto (${failures.join('; ')}). Espera ${retryAfter} s y vuelve a intentar. Tus datos no se han guardado.`), { status: 429, retryAfter, providerRateLimited: true });
   }
   throw Object.assign(new Error(`La IA no pudo completar la lectura. ${failures.join('; ')}. Tus datos no se han guardado.`), { status: 502 });
 }

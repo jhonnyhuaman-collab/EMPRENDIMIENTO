@@ -232,7 +232,7 @@ export function createHandler({ db, env, now = () => new Date(), fetchAI = fetch
     } catch (error) {
       if (error instanceof z.ZodError) return json({ error: error.issues[0]?.message || 'Revisa los datos del formulario.' }, 400);
       if (error.code === '23505') return json({ error: 'El registro ya existe. Actualiza antes de continuar.' }, 409);
-      if (error.status) return json({ error: error.message }, error.status, error.status === 429 ? { 'Retry-After': '60' } : {});
+      if (error.status) return json({ error: error.message, ...(error.providerRateLimited ? { retryAfter: error.retryAfter, providerRateLimited: true } : {}) }, error.status, error.status === 429 ? { 'Retry-After': String(error.retryAfter || 60) } : {});
       console.warn('Error interno del planificador', error.code || error.name);
       return json({ error: error.code === '42P01' ? 'La base no esta preparada. Ejecuta db:prepare en la base de la nueva version.' : 'No se pudo conectar con el servidor. Tus cambios no se han guardado.' }, 503);
     }

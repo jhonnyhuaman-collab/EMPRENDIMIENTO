@@ -5,7 +5,7 @@ export async function request(path, { method = 'GET', data, csrfToken, signal } 
     ...(data !== undefined ? { body: JSON.stringify(data) } : {})
   });
   const body = await response.json().catch(() => ({ error: 'El servidor no devolvio una respuesta valida.' }));
-  if (!response.ok) throw Object.assign(new Error(body.error || 'No se pudo completar la solicitud.'), { status: response.status });
+  if (!response.ok) throw Object.assign(new Error(body.error || 'No se pudo completar la solicitud.'), { status: response.status, retryAfter: body.retryAfter ?? null, providerRateLimited: !!body.providerRateLimited });
   return body;
 }
 export async function download(path, filename) {
