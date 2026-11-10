@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { generatePlan } from '../server/planner.mjs';
+import { generateSemesterPlan as generatePlan } from '../server/planner.mjs';
 import { semesterSteps, orderedTopics } from '../server/semester.mjs';
 import { initialDocument, addDays, academicWeek, minutes } from '../server/domain.mjs';
 function fixture(hours = 24, count = 16) {

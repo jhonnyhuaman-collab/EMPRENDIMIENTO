@@ -126,11 +126,36 @@ test('un timeout de proveedor permite intentar el siguiente y normaliza auto', a
   assert.equal(result.provider, 'gemini'); assert.equal(calls, 2);
 });
 
-test('imagen omite Groq sin modelo de vision aunque haya otros proveedores', async () => {
+test('imagen de horario usa Groq con el modelo de vision de Render por defecto', async () => {
   const timetable = { courses: [data.course], classes: [], warnings: [] };
-  const result = await analyze({ kind: 'horario', text: '', image: 'data:image/jpeg;base64,YQ==' }, { GROQ_API_KEY: 'test', GEMINI_API_KEY: 'test' }, '2026-08-10', async url => {
-    assert.ok(!url.includes('groq.com'));
-    return Response.json({ candidates: [{ content: { parts: [{ text: JSON.stringify(timetable) }] } }] });
+  const result = await analyze({ kind: 'horario', text: '', image: 'data:image/jpeg;base64,YQ==' }, { GROQ_API_KEY: 'test', GEMINI_API_KEY: 'test' }, '2026-08-10', async (url, options) => {
+    assert.match(url, /groq\.com/);
+    const sent = JSON.parse(options.body);
+    assert.equal(sent.model, 'qwen/qwen3.8-27b');
+    assert.match(sent.messages[1].content[0].text, /cursos matriculados y su horario semanal/);
+    return Response.json({ choices: [{ message: { content: JSON.stringify(timetable) } }] });
   });
-  assert.equal(result.provider, 'gemini');
+  assert.equal(result.provider, 'groq');
+});
+
+test('silabo envia la fecha de inicio del ciclo y las reglas de Render', async () => {
+  await analyze(input, { GROQ_API_KEY: 'test' }, '2026-08-10', async (_, options) => {
+    const sent = JSON.parse(options.body);
+    assert.match(sent.messages[0].content, /EC1, EC2, EC3/);
+    assert.match(sent.messages[0].content, /la app ubica cada evaluacion en la clase del alumno/);
+    assert.match(sent.messages[1].content, /^Fecha de inicio del ciclo \(lunes de la semana 1\): 2026-08-10/);
+    assert.match(sent.messages[1].content, /<silabo>\nTexto academico/);
+    return Response.json({ choices: [{ message: { content: JSON.stringify(data) } }] });
+  });
+});
+
+test('peso real se calcula como en Render: componente x peso interno', () => {
+  const raw = structuredClone(data);
+  raw.evaluations = [
+    { ...raw.evaluations[0], weight: 20, componentWeight: 60, weightInComponent: 33 },
+    { ...raw.evaluations[0], name: 'Final', weight: null, componentWeight: '100', weightInComponent: '25' }
+  ];
+  const out = normalizeExtraction(raw, 'silabo');
+  assert.equal(out.evaluations[0].weight, 19.8);
+  assert.equal(out.evaluations[1].weight, 25);
 });

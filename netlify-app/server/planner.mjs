@@ -6,10 +6,13 @@ import { semesterStrategy, semesterQuota, nextSegment } from './semester.mjs';
 const half = n => Math.floor((n + 1e-8) * 2) / 2;
 const duration = b => (minutes(b.end) - minutes(b.start)) / 60;
 
-export function generatePlan(document, now) { return generateRenderPlan(document, now, { semester: true }); }
+// El plan predeterminado reparte el estudio igual que la version Java de Render.
+export function generatePlan(document, now) { return generateRenderPlan(document, now); }
 
-// Se mantiene la referencia Java para pruebas de regresion. La planificacion
-// actual amplía la ventana al ciclo de 16 semanas por solicitud del estudiante.
+// Variante de 16 semanas: ya no es la predeterminada; se conserva con sus pruebas.
+export function generateSemesterPlan(document, now) { return generateRenderPlan(document, now, { semester: true }); }
+
+// Algoritmo equivalente al PlanificadorService de Java (32 escenarios comparados).
 export function generateRenderPlan(document, now, { semester = false } = {}) {
   const doc = structuredClone(document);
   const { settings, courses, evaluations, classes } = doc;

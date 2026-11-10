@@ -202,6 +202,15 @@ export function createHandler({ db, env, now = () => new Date(), fetchAI = fetch
             validateWeight(doc, data); data.estimatedHours ??= estimatedHours(data.type, course.difficulty, data.weight);
             doc.evaluations.push(data);
           }
+          // Horario de clases del silabo (como RegistroSilaboService en Render): si el curso
+          // ya tenia horario importado, ese horario manda y estas filas se ignoran.
+          const { weekday: rowDay, start: rowStart, end: rowEnd } = classSchema.shape;
+          const rows = z.array(z.object({ weekday: rowDay, start: rowStart, end: rowEnd })).max(40).parse(input.classes || []);
+          if (rows.length && !doc.classes.some(c => c.courseId === course.id)) for (const row of rows) {
+            const cl = classSchema.parse({ ...row, courseId: course.id, frequency: 'SEMANAL', detail: '' });
+            if (doc.classes.some(c => c.courseId === cl.courseId && c.weekday === cl.weekday && c.start === cl.start && c.end === cl.end)) continue;
+            validateClass(doc, cl); doc.classes.push({ ...cl, id: randomUUID() });
+          }
         } else {
           const courses = z.array(courseSchema).min(1).max(40).parse(input.courses).map(addCourse);
           if (new Set(courses.map(c => c.id)).size !== courses.length) fail(400, 'Hay codigos repetidos en la lista de cursos.');

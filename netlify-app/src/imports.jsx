@@ -15,7 +15,7 @@ export function ImportPage({ initialKind, embedded = false, manual = false }) {
   const kind = initialKind || (params.get('tipo') === 'horario' ? 'horario' : 'silabo');
   const [chosen, setChosen] = useState([]);
   const [reading, setReading] = useState(false), [progress, setProgress] = useState(''), [error, setError] = useState(''), [dragging, setDragging] = useState(false);
-  const [drafts, setDrafts] = useState(() => manual ? [{ kind: 'silabo', filename: '', course: { code: '', name: '', credits: 3, difficulty: 3, color: '#235B4E', topics: [] }, evaluations: [], warnings: [] }] : []), [selected, setSelected] = useState(0);
+  const [drafts, setDrafts] = useState(() => manual ? [{ kind: 'silabo', filename: '', course: { code: '', name: '', credits: 3, difficulty: 3, color: '#235B4E', topics: [] }, evaluations: [], classes: [], warnings: [] }] : []), [selected, setSelected] = useState(0);
   const input = useRef(); const active = drafts[selected];
   const patch = change => setDrafts(values => values.map((d, i) => i === selected ? { ...d, ...change } : d));
   const updateRow = (list, index, key, value) => patch({ [list]: active[list].map((r, i) => i === index ? { ...r, [key]: value } : r) });
@@ -40,7 +40,8 @@ export function ImportPage({ initialKind, embedded = false, manual = false }) {
     const cleanCourse = course => ({ ...course, code: course.code.trim().toUpperCase(), topics: course.topics.map(t => t.trim()).filter(Boolean) });
     const payload = { kind: active.kind, ...(active.kind === 'silabo' ? {
       course: cleanCourse(active.course),
-      evaluations: active.evaluations.map(e => ({ ...e, time: e.time || null, estimatedHours: e.estimatedHours || null, grade: null, notes: '', completed: false, topics: e.topics || [] }))
+      evaluations: active.evaluations.map(e => ({ ...e, time: e.time || null, estimatedHours: e.estimatedHours || null, grade: null, notes: '', completed: false, topics: e.topics || [] })),
+      classes: (active.classes || []).map(({ weekday, start, end }) => ({ weekday, start, end }))
     } : { courses: active.courses.map(cleanCourse), classes: active.classes.map(cl => ({ ...cl, code: cl.code.trim().toUpperCase() })) }) };
     if (await mutate('/import/save', 'POST', {}, payload)) {
       setDrafts(values => values.filter((_, i) => i !== selected)); setSelected(0); setNotice({ message: 'Importación guardada. Tu plan se ha actualizado.' });
