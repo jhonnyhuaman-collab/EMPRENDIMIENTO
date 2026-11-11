@@ -1,7 +1,7 @@
 import { randomBytes, randomUUID, createHash, createHmac, timingSafeEqual } from 'node:crypto';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
-import { settingsSchema, courseSchema, evaluationSchema, classSchema, initialDocument, limaNow, daysBetween, addDays, estimatedHours } from './domain.mjs';
+import { settingsSchema, courseSchema, evaluationSchema, classSchema, initialDocument, limaNow, DAY_NAMES, daysBetween, addDays, estimatedHours } from './domain.mjs';
 import { generatePlan, calendarIcs } from './planner.mjs';
 import { analyze, importSchema, providerInfo } from './ai.mjs';
 import { alignSyllabusDates } from './review.mjs';
@@ -66,9 +66,15 @@ export function createHandler({ db, env, now = () => new Date(), fetchAI = fetch
     const total = doc.evaluations.filter(e => e.courseId === evaluation.courseId && e.id !== ignoreId).reduce((sum, e) => sum + e.weight, 0) + evaluation.weight;
     if (total > 100.001) fail(400, 'Los pesos de las evaluaciones de este curso superan el 100%.');
   }
-  function validateClass(doc, cl, ignoreId) {
+  // Con `notes`, el cruce se avisa y la clase se guarda igual (como Render al importar horario o silabo:
+  // un consolidado real puede tener cruces). Sin `notes` (clase agregada a mano) se rechaza.
+  function validateClass(doc, cl, ignoreId, notes) {
     const conflict = doc.classes.find(c => c.id !== ignoreId && c.weekday === cl.weekday && c.start < cl.end && cl.start < c.end && (c.frequency === 'SEMANAL' || cl.frequency === 'SEMANAL' || c.frequency === cl.frequency));
-    if (conflict) fail(400, 'La clase se cruza con otra del horario. Revisa el dia, las horas o la frecuencia A/B.');
+    if (!conflict) return;
+    if (!notes) fail(400, 'La clase se cruza con otra del horario. Revisa el dia, las horas o la frecuencia A/B.');
+    const code = id => doc.courses.find(c => c.id === id)?.code || 'Curso';
+    const from = cl.start > conflict.start ? cl.start : conflict.start, to = cl.end < conflict.end ? cl.end : conflict.end;
+    notes.push(`${code(conflict.courseId)} y ${code(cl.courseId)} se cruzan el ${DAY_NAMES[cl.weekday - 1]} de ${from} a ${to}; se guardaron ambas clases.`);
   }
   const replan = doc => generatePlan(doc, limaNow(now()));
 
@@ -132,6 +138,7 @@ export function createHandler({ db, env, now = () => new Date(), fetchAI = fetch
       const { version } = versionSchema.parse(input);
       if (version !== user.version) fail(409, 'Tus datos cambiaron en otra ventana. Actualiza antes de guardar.');
       let doc = structuredClone(user.document);
+      const notes = [];
       if (route === '/settings' && method === 'PUT') {
         const settings = settingsSchema.parse(input.data);
         const shift = daysBetween(doc.settings.cycleStart, settings.cycleStart);
@@ -209,7 +216,7 @@ export function createHandler({ db, env, now = () => new Date(), fetchAI = fetch
           if (rows.length && !doc.classes.some(c => c.courseId === course.id)) for (const row of rows) {
             const cl = classSchema.parse({ ...row, courseId: course.id, frequency: 'SEMANAL', detail: '' });
             if (doc.classes.some(c => c.courseId === cl.courseId && c.weekday === cl.weekday && c.start === cl.start && c.end === cl.end)) continue;
-            validateClass(doc, cl); doc.classes.push({ ...cl, id: randomUUID() });
+            validateClass(doc, cl, undefined, notes); doc.classes.push({ ...cl, id: randomUUID() });
           }
         } else {
           const courses = z.array(courseSchema).min(1).max(40).parse(input.courses).map(addCourse);
@@ -222,13 +229,13 @@ export function createHandler({ db, env, now = () => new Date(), fetchAI = fetch
             const course = courses.find(c => c.code === entry.code.toUpperCase().trim()) || fail(400, 'La clase no coincide con ningun curso.');
             const cl = classSchema.parse({ ...entry, courseId: course.id });
             if (doc.classes.some(c => c.courseId === cl.courseId && c.weekday === cl.weekday && c.start === cl.start && c.end === cl.end && c.frequency === cl.frequency)) continue;
-            validateClass(doc, cl); doc.classes.push({ ...cl, id: randomUUID() });
+            validateClass(doc, cl, undefined, notes); doc.classes.push({ ...cl, id: randomUUID() });
           }
         }
         alignSyllabusDates(doc);
       } else fail(404, 'Ruta no encontrada.');
       doc = replan(doc);
-      return json(await save(user, doc, version));
+      return json({ ...(await save(user, doc, version)), notes });
     } catch (error) {
       if (error instanceof z.ZodError) return json({ error: error.issues[0]?.message || 'Revisa los datos del formulario.' }, 400);
       if (error.code === '23505') return json({ error: 'El registro ya existe. Actualiza antes de continuar.' }, 409);

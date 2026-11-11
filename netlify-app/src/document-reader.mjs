@@ -1,6 +1,6 @@
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist/legacy/build/pdf.mjs';
 import workerUrl from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?url';
-import { pageText } from './pdf-layout.mjs';
+import { pageText, streamText } from './pdf-layout.mjs';
 GlobalWorkerOptions.workerSrc = workerUrl;
 
 export async function readDocument(file, kind) {
@@ -16,7 +16,8 @@ export async function readDocument(file, kind) {
       for (let p = 1; p <= pdf.numPages; p++) {
         const page = await pdf.getPage(p); const content = await page.getTextContent();
         text += `\n--- Pagina ${p} ---\n`;
-        text += pageText(content.items) + '\n';
+        // Horario: orden original del PDF, como Render. Silabo: filas y columnas de tablas.
+        text += (kind === 'horario' ? streamText(content.items) : pageText(content.items)) + '\n';
         if (text.length > 150000) throw new Error('El documento tiene demasiado texto. Divide el PDF antes de analizarlo.');
         page.cleanup();
       }

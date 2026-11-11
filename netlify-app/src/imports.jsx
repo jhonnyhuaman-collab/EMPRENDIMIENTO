@@ -51,8 +51,10 @@ export function ImportPage({ initialKind, embedded = false, manual = false }) {
       evaluations: active.evaluations.map(e => ({ ...e, time: e.time || null, estimatedHours: e.estimatedHours || null, grade: null, notes: '', completed: false, topics: e.topics || [] })),
       classes: (active.classes || []).map(({ weekday, start, end }) => ({ weekday, start, end }))
     } : { courses: active.courses.map(cleanCourse), classes: active.classes.map(cl => ({ ...cl, code: cl.code.trim().toUpperCase() })) }) };
-    if (await mutate('/import/save', 'POST', {}, payload)) {
-      setDrafts(values => values.filter((_, i) => i !== selected)); setSelected(0); setNotice({ message: 'Importación guardada. Tu plan se ha actualizado.' });
+    const saved = await mutate('/import/save', 'POST', {}, payload);
+    if (saved) {
+      // Los cruces del horario se guardan igual (como en Render) y se avisan aquí.
+      setDrafts(values => values.filter((_, i) => i !== selected)); setSelected(0); setNotice({ message: ['Importación guardada. Tu plan se ha actualizado.', ...(saved.notes || [])].join(' ') });
       if (drafts.length === 1) navigate(active.kind === 'horario' ? '/horario' : '/cursos');
     }
   };

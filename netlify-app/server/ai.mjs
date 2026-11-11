@@ -36,6 +36,17 @@ export function extractionJsonSchema(kind) {
   };
   const result = convert(source);
   if (kind === 'silabo') result.properties.course = { anyOf: [result.properties.course, { type: 'null' }] };
+  if (kind === 'horario') {
+    // Como EsquemasJson.horario de Render: cada curso trae sus propias sesiones. Asi la IA no
+    // tiene que enlazar clases sueltas por codigo; normalizeExtraction las aplana despues.
+    const { code, ...sessionProps } = result.properties.classes.items.properties;
+    const session = { type: 'object', properties: sessionProps, required: Object.keys(sessionProps), additionalProperties: false };
+    const course = result.properties.courses.items;
+    course.properties.sessions = { type: 'array', description: 'Sesiones semanales de clase de este curso', items: session };
+    course.required.push('sessions');
+    delete result.properties.classes;
+    result.required = result.required.filter(key => key !== 'classes');
+  }
   result.properties.documentType = { type: 'string', enum: ['silabo', 'horario', 'desconocido'] };
   result.required.push('documentType');
   return result;
@@ -61,12 +72,24 @@ export function normalizeExtraction(value, kind) {
   if (!result.evaluations && result.evaluaciones) result.evaluations = result.evaluaciones;
   const warnings = Array.isArray(result.warnings) ? result.warnings : [];
   const numeric = value => typeof value === 'string' && /^\d+(?:[.,]\d+)?$/.test(value.trim()) ? Number(value.trim().replace(',', '.')) : value;
+  // Horario: aplanar las sesiones de cada curso (formato de Render) a la lista de clases.
+  if (kind === 'horario' && Array.isArray(result.courses)) {
+    const nested = [];
+    for (const course of result.courses) {
+      if (!course || typeof course !== 'object') continue;
+      const sessions = course.sessions ?? course.sesiones;
+      if (Array.isArray(sessions)) for (const session of sessions) if (session && typeof session === 'object') nested.push({ ...session, code: course.code ?? course.codigo });
+      delete course.sessions; delete course.sesiones;
+    }
+    result.classes = [...(Array.isArray(result.classes) ? result.classes : []), ...nested];
+  }
   const courses = kind === 'silabo' ? [result.course] : result.courses;
   if (Array.isArray(courses)) for (const course of courses) {
     if (!course || typeof course !== 'object') continue;
     for (const [key, alias] of Object.entries({ code: 'codigo', name: 'nombre', credits: 'creditos', difficulty: 'dificultad', topics: 'temas' })) if (course[key] === undefined && course[alias] !== undefined) course[key] = course[alias];
     if (course.credits == null) { course.credits = 3; warnings.push('Creditos no indicados: se propone 3. Corrige este valor antes de guardar.'); }
-    if (course.difficulty == null) { course.difficulty = 3; warnings.push('Dificultad no indicada: se propone nivel 3, editable antes de guardar.'); }
+    // Un horario nunca trae dificultad: Render usa 3 sin avisar (se ajusta al subir el silabo).
+    if (course.difficulty == null) { course.difficulty = 3; if (kind === 'silabo') warnings.push('Dificultad no indicada: se propone nivel 3, editable antes de guardar.'); }
     course.credits = numeric(course.credits); course.difficulty = numeric(course.difficulty);
     if (course.color == null) course.color = '#235B4E';
     if (course.topics == null) course.topics = [];
@@ -128,7 +151,7 @@ function failureReason(error) {
   if (error.code === 400 || error.code === 422) return `solicitud o modelo incompatible (${error.code})`;
   if (error.code >= 500) return `servicio temporalmente no disponible (${error.code})`;
   if (error instanceof z.ZodError) {
-    const allowed = new Set(['courses', 'course', 'classes', 'evaluations', 'code', 'name', 'credits', 'difficulty', 'color', 'topics', 'weekday', 'start', 'end', 'frequency', 'detail', 'date', 'time', 'weight', 'week', 'warnings', 'type']);
+    const allowed = new Set(['sessions', 'courses', 'course', 'classes', 'evaluations', 'code', 'name', 'credits', 'difficulty', 'color', 'topics', 'weekday', 'start', 'end', 'frequency', 'detail', 'date', 'time', 'weight', 'week', 'warnings', 'type']);
     const fields = [...new Set(error.issues.slice(0, 4).map(issue => issue.path.filter(p => typeof p === 'number' || allowed.has(p)).join('.')).filter(Boolean))];
     return `la respuesta no cumple el formato${fields.length ? `; revisa ${fields.join(', ')}` : ' de cursos u horarios'}`;
   }
@@ -165,7 +188,8 @@ Devuelve {course:{code,name,credits,difficulty,color,topics,topicSchedule},evalu
 6. frequency: si una clase indica "Semana A" es quincenal en semanas impares (1, 3, 5...) -> A; si indica "Semana B" es quincenal en semanas pares (2, 4, 6...) -> B; si no dice nada -> SEMANAL. No pongas "Semana A/B" en detail.
 7. Ignora datos personales (nombre del alumno, DNI, codigo de alumno) y totales de pago.
 8. No inventes datos. Si algo es ilegible o ambiguo, usa tu mejor estimacion y explicalo brevemente en warnings.
-Devuelve {courses:[{code,name,credits,difficulty,color,topics:[]}],classes:[{code,weekday,start:"HH:mm",end:"HH:mm",frequency:"SEMANAL"|"A"|"B",detail:""}],warnings:[]}. weekday 1=lunes..7=domingo. Cada code de classes debe coincidir con un curso.`}`;
+9. Cada sesion pertenece al curso cuya fila la contiene en el documento. No asignes a un curso sesiones de la fila anterior o siguiente. Un consolidado puede tener clases que se cruzan: inclúyelas tal cual, sin moverlas ni descartarlas.
+Devuelve {courses:[{code,name,credits,difficulty:null,color,topics:[],sessions:[{weekday,start:"HH:mm",end:"HH:mm",frequency:"SEMANAL"|"A"|"B",detail:""}]}],warnings:[]}. weekday 1=lunes..7=domingo. Cada curso lleva dentro todas sus sesiones.`}`;
   // Mensaje de usuario como en InstruccionesIa.mensajeUsuario de Java.
   const horarioMessage = 'Extrae los cursos matriculados y su horario semanal de clases de este documento.';
   const userText = input.kind === 'silabo'

@@ -113,6 +113,26 @@ test('importacion de horario funciona y respeta las referencias', async () => {
   assert.equal(saved.response.status, 200); assert.equal(saved.result.state.classes.length, 1);
   assert.equal(saved.result.state.classes[0].courseId, saved.result.state.courses[0].id);
 });
+test('horario con clases que se cruzan se guarda igual y avisa el cruce, como Render', async () => {
+  // Consolidado real 2026-2: MT5307 (Lun 16-19) y EL5102 (Lun 18-19, virtual) se cruzan de 18 a 19.
+  const a = await account();
+  const c = (code, name) => ({ code, name, credits: 4, difficulty: 3, color: '#235B4E', topics: [] });
+  const s = (code, weekday, start, end, frequency = 'SEMANAL', detail = '') => ({ code, weekday, start, end, frequency, detail });
+  const saved = await call('/import/save', 'POST', { version: a.version, kind: 'horario',
+    courses: [c('GI4101', 'Evaluación Financiera de Proyectos'), c('EL5102', 'Proyecto Final de Ingeniería Electrónica I'), c('EL5313', 'Procesamiento de Imágenes Digitales'), c('MT5306', 'Robótica industrial'), c('MT5307', 'Control Inteligente'), c('AD6100', 'Emprendimiento I')],
+    classes: [s('GI4101', 1, '19:00', '22:00'), s('EL5102', 1, '18:00', '19:00'), s('EL5102', 4, '09:00', '12:00'), s('EL5313', 3, '17:00', '19:00'), s('EL5313', 5, '16:00', '18:00'),
+      s('MT5306', 1, '10:00', '13:00'), s('MT5306', 5, '10:00', '14:00', 'B'), s('MT5307', 1, '16:00', '19:00'), s('MT5307', 4, '18:00', '22:00', 'A'), s('AD6100', 2, '20:00', '21:00'), s('AD6100', 3, '20:00', '22:00')] }, a);
+  assert.equal(saved.response.status, 200);
+  assert.equal(saved.result.state.classes.length, 11);
+  assert.equal(saved.result.notes.length, 1);
+  assert.match(saved.result.notes[0], /EL5102 y MT5307 se cruzan el Lun de 18:00 a 19:00/);
+});
+test('una clase agregada a mano que se cruza sigue rechazada', async () => {
+  const a = await account();
+  Object.assign(a, (await call('/import/save', 'POST', { version: a.version, kind: 'horario', courses: [course], classes: [{ code: course.code, weekday: 1, start: '10:00', end: '12:00', frequency: 'SEMANAL' }] }, a)).result);
+  const added = await call('/classes', 'POST', { version: a.version, data: { courseId: a.state.courses[0].id, weekday: 1, start: '11:00', end: '13:00', frequency: 'SEMANAL', detail: '' } }, a);
+  assert.equal(added.response.status, 400);
+});
 test('limitacion de intentos persiste en PostgreSQL', async () => {
   for (let i = 0; i < 13; i++) {
     const result = await call('/login', 'POST', { email: 'unknown@example.com', password: 'ClaveSegura2026' });

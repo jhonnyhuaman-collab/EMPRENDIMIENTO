@@ -14,3 +14,12 @@ export function pageText(items) {
     return parts.map(word => { const separator = end === null ? '' : word.x - end > 16 ? ' | ' : ' '; end = word.x + word.width; return separator + word.text; }).join('');
   }).join('\n');
 }
+
+// Orden original del PDF, celda por celda (como PDFBox en la version Render). En un consolidado
+// de matricula cada curso queda seguido de sus propias sesiones; la reconstruccion por filas de
+// pageText mezcla sesiones de cursos vecinos porque las celdas estan centradas verticalmente.
+export function streamText(items) {
+  return items.filter(item => typeof item.str === 'string')
+    .map(item => item.str + (item.hasEOL ? '\n' : ''))
+    .join('').replace(/[ \t]+\n/g, '\n').replace(/\n{2,}/g, '\n').trim();
+}

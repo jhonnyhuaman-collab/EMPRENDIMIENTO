@@ -65,7 +65,8 @@ test('horario admite perfil ausente con advertencias y formatos equivalentes', a
   assert.equal(result.courses[0].credits, 3); assert.equal(result.courses[0].code, 'MT');
   assert.equal(result.classes[0].code, 'MT'); assert.equal(result.classes[0].start, '08:00');
   assert.equal(result.classes[0].end, '10:00'); assert.equal(result.classes[0].frequency, 'A');
-  assert.equal(result.warnings.length, 2); assert.equal(extracted.courses[0].credits, null);
+  // Solo avisa los creditos: un horario nunca trae dificultad (Render usa 3 sin avisar).
+  assert.equal(result.warnings.length, 1); assert.match(result.warnings[0], /Creditos/); assert.equal(extracted.courses[0].credits, null);
 });
 
 test('no inventa el dia, no acepta horas invalidas ni referencias ajenas', async () => {
@@ -205,4 +206,25 @@ test('el esquema para la IA describe como calcular los pesos', () => {
   const ev = extractionJsonSchema('silabo').properties.evaluations.items.properties;
   assert.match(ev.componentWeight.description, /componente/);
   assert.match(ev.weight.description, /100/);
+});
+
+test('horario: la IA devuelve cada curso con sus sesiones y la app las aplana, como Render', async () => {
+  const schema = extractionJsonSchema('horario');
+  assert.ok(!schema.properties.classes);
+  assert.ok(schema.properties.courses.items.required.includes('sessions'));
+  assert.ok(!schema.properties.courses.items.properties.sessions.items.properties.code);
+  const extracted = { documentType: 'horario', warnings: [], courses: [
+    { code: 'GI4101', name: 'Evaluación Financiera de Proyectos', credits: 3, difficulty: null, color: '#235B4E', topics: [], sessions: [{ weekday: 1, start: '19:00', end: '22:00', frequency: 'SEMANAL', detail: 'Teoría · Virtual' }] },
+    { code: 'EL5102', name: 'Proyecto Final de Ingeniería Electrónica I', credits: 4, difficulty: null, color: '#235B4E', topics: [], sessions: [{ weekday: 1, start: '18:00', end: '19:00', frequency: 'SEMANAL', detail: 'Teoría · Virtual' }, { weekday: 4, start: '09:00', end: '12:00', frequency: 'SEMANAL', detail: 'Laboratorio · Virtual 110' }] },
+    { code: 'MT5307', name: 'Control Inteligente', credits: 4, difficulty: null, color: '#235B4E', topics: [], sessions: [{ weekday: 1, start: '16:00', end: '19:00', frequency: 'SEMANAL', detail: 'Teoría · M803' }, { weekday: 4, start: '18:00', end: '22:00', frequency: 'A', detail: 'Laboratorio · L413' }] }] };
+  const result = await analyze({ kind: 'horario', text: input.text }, { GROQ_API_KEY: 'test' }, '2026-08-10', async (_, options) => {
+    const sent = JSON.parse(options.body);
+    assert.match(sent.messages[0].content, /Cada sesion pertenece al curso cuya fila la contiene/);
+    return Response.json({ choices: [{ message: { content: JSON.stringify(extracted) } }] });
+  });
+  assert.equal(result.classes.length, 5);
+  assert.deepEqual(result.classes.filter(c => c.code === 'GI4101').map(c => c.start), ['19:00']);
+  assert.equal(result.classes.find(c => c.code === 'MT5307' && c.weekday === 4).frequency, 'A');
+  assert.ok(result.courses.every(c => !('sessions' in c)));
+  assert.equal(result.warnings.length, 0);
 });
