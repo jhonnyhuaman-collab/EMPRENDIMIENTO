@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { analyze, importSchema, providerInfo, normalizeExtraction, extractionJsonSchema } from '../server/ai.mjs';
+import { analyze, importSchema, providerInfo, normalizeExtraction, extractionJsonSchema, compactSyllabus } from '../server/ai.mjs';
 
 const input = { kind: 'silabo', text: 'Texto academico de prueba con una evaluacion.' };
 const data = { course: { code: 'MT', name: 'Control', credits: 4, difficulty: 3, color: '#235B4E', topics: [] }, evaluations: [{ name: 'PC1', type: 'PRACTICA', week: 4, weekday: 5, weight: 19.8 }], warnings: [] };
@@ -227,4 +227,52 @@ test('horario: la IA devuelve cada curso con sus sesiones y la app las aplana, c
   assert.equal(result.classes.find(c => c.code === 'MT5307' && c.weekday === 4).frequency, 'A');
   assert.ok(result.courses.every(c => !('sessions' in c)));
   assert.equal(result.warnings.length, 0);
+});
+
+test('compacta el silabo: quita paginas, encabezados repetidos y bibliografia, conserva la evaluacion', () => {
+  const page = n => `--- Pagina ${n} ---\nUTEC · Silabo MT5307 · 2026-2\nContenido de la pagina ${n}\n${n}`;
+  const text = [page(1), page(2), page(3), 'Bibliografia', 'Ogata, K. (2010). Ingenieria de control moderna. Pearson.', 'Sistema de evaluacion', 'EC1 semana 4 20%'].join('\n');
+  const out = compactSyllabus(text);
+  assert.ok(!out.includes('--- Pagina'));
+  assert.ok(!out.includes('UTEC · Silabo MT5307'));
+  assert.ok(!out.includes('Ogata'));
+  assert.match(out, /Sistema de evaluacion\nEC1 semana 4 20%/);
+  assert.match(out, /Contenido de la pagina 3/);
+});
+
+test('silabo: pide menos tokens de respuesta a Groq e informa los tokens usados', async () => {
+  const result = await analyze(input, { GROQ_API_KEY: 'test' }, '2026-08-10', async (_, options) => {
+    assert.equal(JSON.parse(options.body).max_completion_tokens, 4000);
+    return Response.json({ choices: [{ message: { content: JSON.stringify(data) } }], usage: { total_tokens: 5321 } });
+  });
+  assert.equal(result.tokens, 5321);
+});
+
+test('pesos: quita un componente contado junto con sus partes', () => {
+  const raw = structuredClone(data);
+  raw.evaluations = [
+    { ...raw.evaluations[0], name: 'Evaluaciones continuas', week: 4, weight: 60 },
+    ...[4, 6, 10].map((week, i) => ({ ...raw.evaluations[0], name: `EC${i + 1}`, week, weight: 20 })),
+    { ...raw.evaluations[0], name: 'Examen final', type: 'EXAMEN', week: 16, weight: 40 }
+  ];
+  const out = normalizeExtraction(raw, 'silabo');
+  assert.deepEqual(out.evaluations.map(e => e.name), ['EC1', 'EC2', 'EC3', 'Examen final']);
+  assert.ok(out.warnings.some(w => /Se quito "Evaluaciones continuas"/.test(w)));
+  assert.ok(!out.warnings.some(w => /deben sumar 100/.test(w)));
+});
+
+test('fechas: avisa semanas fuera del ciclo, semanas repetidas y examenes fuera de lo habitual', () => {
+  const raw = structuredClone(data);
+  raw.evaluations = [
+    { ...raw.evaluations[0], name: 'Examen parcial', type: 'EXAMEN', week: 3, weight: 30 },
+    { ...raw.evaluations[0], name: 'PC1', week: 3, weight: 10 }, { ...raw.evaluations[0], name: 'PC2', week: 3, weight: 10 },
+    { ...raw.evaluations[0], name: 'PC2', week: 3, weight: 10 },
+    { ...raw.evaluations[0], name: 'Examen final', type: 'EXAMEN', week: 18, weight: 50 }
+  ];
+  const out = normalizeExtraction(raw, 'silabo');
+  assert.equal(out.evaluations.filter(e => e.name === 'PC2').length, 1);
+  assert.ok(out.warnings.some(w => /Se quito "PC2"/.test(w)));
+  assert.ok(out.warnings.some(w => /semana 18, fuera de las 16 semanas/.test(w)));
+  assert.ok(out.warnings.some(w => /3 evaluaciones en la semana 3/.test(w)));
+  assert.ok(out.warnings.some(w => /parciales suelen ser en la semana 8/.test(w)));
 });

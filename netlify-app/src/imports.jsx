@@ -8,6 +8,16 @@ import { readDocument } from './document-reader.mjs';
 import { DAY_NAMES } from '../server/domain.mjs';
 import { Review } from './render-review.jsx';
 
+// Lecturas guardadas en este navegador: volver a subir el mismo archivo no gasta otra vez la cuota de IA.
+// La clave incluye el inicio del ciclo porque las fechas dependen de el. "v2" invalida lecturas antiguas.
+async function readingKey(body, cycleStart) {
+  const data = new TextEncoder().encode(['v2', body.kind, cycleStart, body.text || '', body.image || ''].join('|'));
+  const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', data));
+  return 'ia-lectura:' + [...digest].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+const savedReading = key => { try { const v = JSON.parse(localStorage.getItem(key)); return v && Date.now() - v.at < 7 * 86400000 ? v.result : null; } catch { return null; } };
+const saveReading = (key, result) => { try { localStorage.setItem(key, JSON.stringify({ at: Date.now(), result })); } catch { /* sin almacenamiento: no pasa nada */ } };
+
 export function ImportPage({ initialKind, embedded = false, manual = false }) {
   const [params] = useSearchParams();
   const navigate = useNavigate();
@@ -16,26 +26,30 @@ export function ImportPage({ initialKind, embedded = false, manual = false }) {
   const [chosen, setChosen] = useState([]);
   const [reading, setReading] = useState(false), [progress, setProgress] = useState(''), [error, setError] = useState(''), [dragging, setDragging] = useState(false);
   const [drafts, setDrafts] = useState(() => manual ? [{ kind: 'silabo', filename: '', course: { code: '', name: '', credits: 3, difficulty: 3, color: '#235B4E', topics: [] }, evaluations: [], classes: [], warnings: [] }] : []), [selected, setSelected] = useState(0);
-  const input = useRef(); const active = drafts[selected];
+  const input = useRef(); const active = drafts[selected]; const [reread, setReread] = useState(false);
   const patch = change => setDrafts(values => values.map((d, i) => i === selected ? { ...d, ...change } : d));
   const updateRow = (list, index, key, value) => patch({ [list]: active[list].map((r, i) => i === index ? { ...r, [key]: value } : r) });
   const files = async fileList => {
     const list = [...fileList]; if (!list.length || reading) return;
-    if (list.length > 5) { setError('Elige como maximo cinco documentos por lote.'); return; }
+    // Un documento por vez: varios seguidos agotan rapido el limite por minuto del plan gratuito de IA.
+    if (list.length > 1) { setError('Sube un documento a la vez: así no se agota el límite gratuito de la IA.'); return; }
     setError(''); setReading(true); const results = []; const errors = [];
     for (let i = 0; i < list.length; i++) {
       setProgress(`${i + 1} de ${list.length} · ${list[i].name}`);
       try {
         const body = await readDocument(list[i], kind);
         const analyze = () => request('/import/analyze', { method: 'POST', data: body, csrfToken: session.csrfToken, signal: AbortSignal.timeout(65000) });
-        let result;
-        try { result = await analyze(); } catch (e) {
+        const key = await readingKey(body, session.state.settings.cycleStart).catch(() => null);
+        let result = key && !reread ? savedReading(key) : null;
+        if (result) result = { ...structuredClone(result), reused: true };
+        else try { result = await analyze(); } catch (e) {
           // Plan gratuito de Groq: limite por minuto. Esperar lo que indica el proveedor y reintentar una vez.
           if (!e.providerRateLimited || !(e.retryAfter <= 90)) throw e;
           for (let left = e.retryAfter; left > 0; left--) { setProgress(`${i + 1} de ${list.length} · La IA alcanzó su límite por minuto. Reintento en ${left} s…`); await new Promise(r => setTimeout(r, 1000)); }
           setProgress(`${i + 1} de ${list.length} · ${list[i].name}`);
           result = await analyze();
         }
+        if (key && !result.reused) saveReading(key, result);
         const palette = ['#235B4E', '#456A9A', '#8D5B84', '#9C6B35', '#477C7A'];
         (kind === 'silabo' ? [result.course] : result.courses).forEach((c, n) => { c.color = session.state.courses.find(old => old.code === c.code)?.color || palette[(session.state.courses.length + n) % palette.length]; });
         results.push({ ...result, kind, filename: list[i].name });
@@ -72,9 +86,9 @@ export function ImportPage({ initialKind, embedded = false, manual = false }) {
     <ErrorMessage message={error} />
     {!session.provider.configured.length && <div className="aviso-dorado">Falta configurar la IA. Mientras tanto, puedes <Link to="/silabos/manual">registrar el curso manualmente</Link>.</div>}
     <div className="row g-4"><section className="col-lg-7"><form className="tarjeta p-4 h-100" onSubmit={e => { e.preventDefault(); files(chosen); }}><label className={`zona-subida ${dragging ? 'arrastrando' : ''}`} onDragOver={e => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={e => { e.preventDefault(); setDragging(false); if (!reading) setChosen([...e.dataTransfer.files]); }}>
-      <input ref={input} type="file" accept={kind === 'silabo' ? 'application/pdf,.pdf' : 'application/pdf,image/jpeg,image/png,image/webp'} multiple={kind === 'silabo'} disabled={reading || !session.provider.configured.length} onChange={e => setChosen([...e.target.files])} aria-label="Documentos para analizar" />
+      <input ref={input} type="file" accept={kind === 'silabo' ? 'application/pdf,.pdf' : 'application/pdf,image/jpeg,image/png,image/webp'} disabled={reading || !session.provider.configured.length} onChange={e => setChosen([...e.target.files])} aria-label="Documentos para analizar" />
       <span className={`zona-icono ${kind === 'horario' ? 'zona-icono-horario' : ''}`}><i className={`bi bi-${kind === 'horario' ? 'calendar-week' : 'file-earmark-pdf'}`} /></span><strong>{chosen.length ? chosen.map(f => f.name).join(' · ') : kind === 'horario' ? 'Arrastra la foto de tu horario aquí' : 'Arrastra tu sílabo aquí'}</strong><span className="text-body-secondary small">{kind === 'horario' ? 'o haz clic para elegir · JPG, PNG, WEBP o PDF (máx. 15 MB)' : 'o haz clic para elegir un PDF (máx. 15 MB)'}</span>
-    </label><div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-4"><small className="text-body-secondary"><i className="bi bi-cpu me-1" />{session.provider.configured.join(' · ')}</small><Button type="submit" icon={Sparkles} busy={reading} disabled={!chosen.length || !session.provider.configured.length}>{kind === 'horario' ? 'Leer horario con IA' : 'Analizar con IA'}</Button></div></form>{kind === 'silabo' && <p className="small text-body-secondary mt-3 mb-0">¿Prefieres hacerlo tú? <Link to="/silabos/manual">Registra el curso manualmente</Link>.</p>}</section><section className="col-lg-5"><div className="tarjeta h-100"><div className="tarjeta-cabecera"><h2 className="tarjeta-titulo"><span className="icono-titulo"><i className={`bi bi-${kind === 'horario' ? 'lightbulb' : 'magic'}`} /></span>{kind === 'horario' ? 'Qué puedes subir' : 'Cómo funciona'}</h2></div><div className="tarjeta-cuerpo">{kind === 'horario' ? <ul className="lista-consejos"><li><i className="bi bi-phone" /><span><strong>Captura o foto</strong> de tu horario semanal (Canvas, intranet o impreso).</span></li><li><i className="bi bi-file-earmark-pdf" /><span><strong>Consolidado o constancia de matrícula</strong> en PDF.</span></li><li><i className="bi bi-brightness-high" /><span>Que se lea bien: buena luz, sin cortes ni reflejos.</span></li><li><i className="bi bi-palette" /><span>Cada curso recibe su propio color; si ya existía, conserva el suyo y sus evaluaciones.</span></li></ul> : <ol className="pasos"><li><strong>Sube el PDF</strong><p>El sílabo oficial de tu curso.</p></li><li><strong>Revisa lo que encontró la IA</strong><p>Evaluaciones, semanas, pesos y temas. Puedes corregir todo.</p></li><li><strong>Guarda y empieza</strong><p>Tu calendario y tu plan de estudio se actualizan automáticamente.</p></li></ol>}</div></div></section></div>
+    </label><div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-4"><small className="text-body-secondary"><i className="bi bi-cpu me-1" />{session.provider.configured.join(' · ')}<label className="ms-3"><input type="checkbox" className="me-1" checked={reread} onChange={e => setReread(e.target.checked)} />Volver a leer con IA aunque ya lo haya subido</label></small><Button type="submit" icon={Sparkles} busy={reading} disabled={!chosen.length || !session.provider.configured.length}>{kind === 'horario' ? 'Leer horario con IA' : 'Analizar con IA'}</Button></div></form>{kind === 'silabo' && <p className="small text-body-secondary mt-3 mb-0">¿Prefieres hacerlo tú? <Link to="/silabos/manual">Registra el curso manualmente</Link>.</p>}</section><section className="col-lg-5"><div className="tarjeta h-100"><div className="tarjeta-cabecera"><h2 className="tarjeta-titulo"><span className="icono-titulo"><i className={`bi bi-${kind === 'horario' ? 'lightbulb' : 'magic'}`} /></span>{kind === 'horario' ? 'Qué puedes subir' : 'Cómo funciona'}</h2></div><div className="tarjeta-cuerpo">{kind === 'horario' ? <ul className="lista-consejos"><li><i className="bi bi-phone" /><span><strong>Captura o foto</strong> de tu horario semanal (Canvas, intranet o impreso).</span></li><li><i className="bi bi-file-earmark-pdf" /><span><strong>Consolidado o constancia de matrícula</strong> en PDF.</span></li><li><i className="bi bi-brightness-high" /><span>Que se lea bien: buena luz, sin cortes ni reflejos.</span></li><li><i className="bi bi-palette" /><span>Cada curso recibe su propio color; si ya existía, conserva el suyo y sus evaluaciones.</span></li></ul> : <ol className="pasos"><li><strong>Sube el PDF</strong><p>El sílabo oficial de tu curso.</p></li><li><strong>Revisa lo que encontró la IA</strong><p>Evaluaciones, semanas, pesos y temas. Puedes corregir todo.</p></li><li><strong>Guarda y empieza</strong><p>Tu calendario y tu plan de estudio se actualizan automáticamente.</p></li></ol>}</div></div></section></div>
     {reading && <div className="cargando" aria-live="polite"><div className="cargando-tarjeta"><div className="cargando-anillo" /><strong>{kind === 'horario' ? 'Leyendo tu horario…' : 'Analizando tu sílabo…'}</strong><span>{progress}</span><span>La IA está identificando tus cursos, días y horas. Suele tardar entre 10 y 40 segundos.</span></div></div>}
     {drafts.length > 0 && <section className="import-review"><div className="section-heading"><h2><CheckCircle2 size={20} />Revisar antes de guardar</h2><span className="muted">{drafts.length} documentos</span></div>
       <div className="tabs draft-tabs">{drafts.map((d, i) => <button key={i} aria-pressed={selected === i} onClick={() => setSelected(i)}><FileText size={15} />{d.filename}</button>)}</div>

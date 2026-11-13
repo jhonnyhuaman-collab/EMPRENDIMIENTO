@@ -107,8 +107,34 @@ export function normalizeExtraction(value, kind) {
     const complete = list => list.length > 0 && list.every(isNum);
     const useProduct = complete(product) && (!complete(direct) || Math.abs(total(product) - 100) <= Math.abs(total(direct) - 100));
     evs.forEach((e, i) => { e.weight = useProduct ? product[i] : direct[i] ?? product[i] ?? (isNum(e.weightInComponent) ? e.weightInComponent : 0); });
+    const label = e => String(e.name || '').trim();
+    const key = e => label(e).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ');
+    // Evaluacion repetida (mismo nombre y semana): se deja una sola.
+    const seen = new Set();
+    for (const e of [...evs]) {
+      const id = key(e) + '|' + e.week;
+      if (key(e) && seen.has(id)) { evs.splice(evs.indexOf(e), 1); warnings.push(`Se quito "${label(e)}" porque aparecia repetida.`); }
+      seen.add(id);
+    }
+    // Componente contado junto con sus partes (ej. "Evaluaciones continuas 60%" + EC1..EC3):
+    // si sobra exactamente su peso, se quita el componente.
+    const excess = total(evs.map(e => e.weight)) - 100;
+    if (excess > 0.5) {
+      const group = evs.find(e => Math.abs(e.weight - excess) <= 0.5 && /promedio|componente|total|continuas|calificadas|laboratorios|pr[aá]cticas|tareas|evaluaciones|teor[ií]a/i.test(label(e)));
+      if (group) { evs.splice(evs.indexOf(group), 1); warnings.push(`Se quito "${label(group)}" (${group.weight}%) porque su peso ya estaba repartido entre sus partes.`); }
+    }
     const sum = Math.round(total(evs.map(e => e.weight)) * 100) / 100;
     if (evs.length && Math.abs(sum - 100) > 0.5) warnings.push(`Los pesos extraidos suman ${sum}% y deben sumar 100%. Revisalos con el silabo o usa "Ajustar a 100%" antes de guardar.`);
+    // Fechas: semanas fuera del ciclo, varias evaluaciones en una misma semana y examenes fuera de lo habitual.
+    for (const e of evs) if (isNum(e.week) && (e.week < 1 || e.week > 16)) warnings.push(`"${label(e)}" quedo en la semana ${e.week}, fuera de las 16 semanas del ciclo. Revisa la fecha.`);
+    const byWeek = new Map();
+    for (const e of evs) if (isNum(e.week)) byWeek.set(e.week, [...(byWeek.get(e.week) || []), label(e)]);
+    for (const [week, names] of byWeek) if (names.length >= 3) warnings.push(`Hay ${names.length} evaluaciones en la semana ${week} (${names.join(', ')}). Confirma en el cronograma que no se repitio la semana.`);
+    for (const e of evs) {
+      if (/parcial/i.test(label(e)) && isNum(e.week) && (e.week < 6 || e.week > 10)) warnings.push(`"${label(e)}" quedo en la semana ${e.week}; los parciales suelen ser en la semana 8. Confirmalo en el silabo.`);
+      if (/examen final|^final\b/i.test(label(e)) && isNum(e.week) && e.week < 14) warnings.push(`"${label(e)}" quedo en la semana ${e.week}; los finales suelen ser en la semana 16. Confirmalo en el silabo.`);
+    }
+    result.evaluations = evs;
   }
   if (kind === 'horario' && Array.isArray(result.classes)) for (const entry of result.classes) {
     if (!entry || typeof entry !== 'object') continue;
@@ -121,6 +147,29 @@ export function normalizeExtraction(value, kind) {
   }
   result.warnings = [...new Set(warnings)];
   return result;
+}
+
+// Enviar a la IA solo lo util del silabo: la cuota gratuita de Groq se mide en tokens.
+// Quita marcadores y numeros de pagina, encabezados/pies repetidos y la bibliografia,
+// pero conserva cualquier bloque de evaluacion o cronograma que aparezca despues.
+export function compactSyllabus(text) {
+  const pageMark = /^--- Pagina \d+ ---$/;
+  let lines = String(text || '').split('\n').map(line => line.replace(/[ \t]+/g, ' ').trim());
+  const pages = Math.max(1, lines.filter(line => pageMark.test(line)).length);
+  const counts = new Map();
+  for (const line of lines) if (line && !pageMark.test(line)) counts.set(line, (counts.get(line) || 0) + 1);
+  const repeated = line => pages >= 3 && line.length < 120 && counts.get(line) >= Math.max(3, Math.ceil(pages * 0.6));
+  const pageNumber = /^(p[aá]g(ina)?\.?\s*)?\d{1,3}(\s*(de|\/)\s*\d{1,3})?$/i;
+  lines = lines.filter(line => line && !pageMark.test(line) && !pageNumber.test(line) && !repeated(line));
+  const bibliography = /^(\d+[.)]?\s*)?(bibliograf[ií]a|referencias( bibliogr[aá]ficas)?|fuentes de informaci[oó]n)\b/i;
+  const keepAgain = /evaluaci[oó]n|calificaci[oó]n|cronograma|sistema de|semana\s*\d|r[uú]brica/i;
+  const kept = []; let skipping = false;
+  for (const line of lines) {
+    if (line.length < 60 && bibliography.test(line)) { skipping = true; continue; }
+    if (skipping && keepAgain.test(line)) skipping = false;
+    if (!skipping) kept.push(line);
+  }
+  return kept.join('\n');
 }
 
 export function providerInfo(env) {
@@ -179,6 +228,7 @@ ${input.kind === 'silabo' ? `Lees silabos de cursos universitarios peruanos (UTE
 5. Temas: copia las unidades/temas del contenido con su numeracion en course.topics. En cada evaluacion indica en topics los temas que evalua (numero y titulo como en course.topics); si el silabo no lo dice, infierelo con el cronograma (los temas vistos desde la evaluacion anterior del mismo tipo) y mencionalo en warnings.
 6. difficulty: estima 1..5 segun creditos y contenido si no consta, y mencionalo en warnings.
 7. No inventes datos. Si algo es ambiguo, usa tu mejor estimacion y explicalo brevemente en warnings para que el estudiante lo revise.
+8. Antes de responder, verifica: (a) la suma de weight de todas las evaluaciones es 100; si pasa de 100, seguramente listaste un componente y tambien sus partes (ej. "Evaluaciones continuas 60%" y EC1, EC2, EC3): deja solo las partes. (b) cada week sale del cronograma o calendario de evaluaciones del silabo, no de una suposicion; si el silabo no la indica, adviertelo en warnings. (c) no repitas una evaluacion.
 Devuelve {course:{code,name,credits,difficulty,color,topics,topicSchedule},evaluations:[{name,type,week,weekday,date:null,time:null,componentWeight,weightInComponent,weight,topics:[]}],warnings:[]}. weekday 1=lunes..7=domingo.` : `Lees horarios de clases universitarios peruanos (UTEC, Lima): fotos o capturas del horario semanal, o el consolidado / constancia de matricula. Reglas (las mismas de la version Render):
 1. Lista cada curso UNA sola vez, con todas sus sesiones semanales (teoria, laboratorio, practica, taller...). Si un curso aparece en varias celdas o filas, junta sus sesiones en el mismo curso.
 2. code: el codigo del curso tal como figura (ej. MT5307, CS1111). Si no figura, usa las iniciales del nombre y adviertelo en warnings.
@@ -193,13 +243,13 @@ Devuelve {courses:[{code,name,credits,difficulty:null,color,topics:[],sessions:[
   // Mensaje de usuario como en InstruccionesIa.mensajeUsuario de Java.
   const horarioMessage = 'Extrae los cursos matriculados y su horario semanal de clases de este documento.';
   const userText = input.kind === 'silabo'
-    ? `Fecha de inicio del ciclo (lunes de la semana 1): ${cycleStart}\n\nTexto del silabo:\n<silabo>\n${input.text}\n</silabo>`
+    ? `Fecha de inicio del ciclo (lunes de la semana 1): ${cycleStart}\n\nTexto del silabo:\n<silabo>\n${compactSyllabus(input.text)}\n</silabo>`
     : input.text?.trim() ? `${horarioMessage}\n\n<documento>\n${input.text}\n</documento>` : horarioMessage;
   const deadline = AbortSignal.timeout(45000);
   const failures = [], rateLimits = [];
   for (const provider of providers) {
     try {
-      let response, data, content;
+      let response, data, content, tokens = null;
       // Reservar tiempo para los demas proveedores: uno lento no debe consumir todo el plazo.
       const attempt = AbortSignal.timeout(Math.floor(40000 / providers.length));
       const common = { method: 'POST', signal: AbortSignal.any([deadline, attempt]), headers: { 'Content-Type': 'application/json' } };
@@ -207,7 +257,9 @@ Devuelve {courses:[{code,name,credits,difficulty:null,color,topics:[],sessions:[
         const model = input.image ? groqVision : env.GROQ_MODEL || 'openai/gpt-oss-120b';
         const structured = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b'].includes(model);
         const user = input.image ? [{ type: 'text', text: userText }, { type: 'image_url', image_url: { url: input.image } }] : userText;
-        const payload = { model, messages: [{ role: 'system', content: system }, { role: 'user', content: user }], response_format: structured ? { type: 'json_schema', json_schema: { name: `academic_${input.kind}`, strict: true, schema: extractionJsonSchema(input.kind) } } : { type: 'json_object' }, ...(structured ? { reasoning_effort: 'low' } : {}), temperature: .1, max_completion_tokens: 6000 };
+        const payload = { model, messages: [{ role: 'system', content: system }, { role: 'user', content: user }], response_format: structured ? { type: 'json_schema', json_schema: { name: `academic_${input.kind}`, strict: true, schema: extractionJsonSchema(input.kind) } } : { type: 'json_object' }, ...(structured ? { reasoning_effort: 'low' } : {}), temperature: .1,
+          // El plan gratuito de Groq cuenta los tokens reservados para la respuesta: no pedir de mas.
+          max_completion_tokens: input.kind === 'silabo' ? 4000 : 2500 };
         const send = body => requestFetch('https://api.groq.com/openai/v1/chat/completions', { ...common, headers: { ...common.headers, Authorization: `Bearer ${env.GROQ_API_KEY}` }, body: JSON.stringify(body) });
         response = await send(payload);
         // Algunos silabos provocan un 400 de generacion/esquema en modo estricto.
@@ -222,7 +274,7 @@ Devuelve {courses:[{code,name,credits,difficulty:null,color,topics:[],sessions:[
         if (!response.ok) throw await providerError(response);
         data = await response.json();
         if (data.choices?.[0]?.finish_reason === 'length') throw Object.assign(new Error('Respuesta incompleta'), { code: 'TRUNCATED' });
-        content = data.choices?.[0]?.message?.content;
+        content = data.choices?.[0]?.message?.content; tokens = data.usage?.total_tokens ?? null;
       } else if (provider === 'gemini') {
         const parts = [{ text: userText }];
         if (input.image) { const [head, body] = input.image.split(','); parts.push({ inlineData: { mimeType: head.slice(5).split(';')[0], data: body } }); }
@@ -232,7 +284,7 @@ Devuelve {courses:[{code,name,credits,difficulty:null,color,topics:[],sessions:[
         if (!response.ok) throw await providerError(response);
         data = await response.json();
         if (data.candidates?.[0]?.finishReason === 'MAX_TOKENS') throw Object.assign(new Error('Respuesta incompleta'), { code: 'TRUNCATED' });
-        content = data.candidates?.[0]?.content?.parts?.filter(p => !p.thought).map(p => p.text || '').join('');
+        content = data.candidates?.[0]?.content?.parts?.filter(p => !p.thought).map(p => p.text || '').join(''); tokens = data.usageMetadata?.totalTokenCount ?? null;
       } else {
         const contentParts = [{ type: 'text', text: userText }];
         if (input.image) { const [head, body] = input.image.split(','); contentParts.push({ type: 'image', source: { type: 'base64', media_type: head.slice(5).split(';')[0], data: body } }); }
@@ -242,7 +294,7 @@ Devuelve {courses:[{code,name,credits,difficulty:null,color,topics:[],sessions:[
         if (!response.ok) throw await providerError(response);
         data = await response.json();
         if (data.stop_reason === 'max_tokens') throw Object.assign(new Error('Respuesta incompleta'), { code: 'TRUNCATED' });
-        content = data.content?.filter(c => c.type === 'text').map(c => c.text).join('');
+        content = data.content?.filter(c => c.type === 'text').map(c => c.text).join(''); tokens = data.usage ? (data.usage.input_tokens || 0) + (data.usage.output_tokens || 0) : null;
       }
       const raw = String(content || '').trim().replace(/^```(?:json)?\s*/, '').replace(/\s*```$/, '');
       const normalized = normalizeExtraction(JSON.parse(raw), input.kind);
@@ -253,7 +305,7 @@ Devuelve {courses:[{code,name,credits,difficulty:null,color,topics:[],sessions:[
         if (result.classes.some(c => !codes.has(c.code))) throw Object.assign(new Error('Referencia de curso invalida'), { code: 422 });
       }
       if (input.kind === 'silabo') result.evaluations = result.evaluations.map(e => ({ ...e, date: e.date || addDays(cycleStart, (e.week - 1) * 7 + e.weekday - 1), time: e.time || null }));
-      return { ...result, provider };
+      return { ...result, provider, tokens };
     } catch (error) {
       if (error.documentMismatch) throw error;
       const reason = failureReason(error);
